@@ -73,7 +73,7 @@ def create_graph(id_operateur,mouvements):
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True)
     fig.update_yaxes(fixedrange=True)
-    fig.show()
+    #fig.show()
 
     # GRAPHE DANS UN FICHIER HTML
     fig.write_html(dossier_graphes+id_operateur+"_graphe3.html")
