@@ -12,8 +12,8 @@ import argparse
 # In[ ]:
 
 
-dossier_graphes="../../graphes/"
-csv = "../../data/drm/export_bi_drm_stock.csv"  #il manque un ; à la fin du header.
+dossier_graphes="graphes/"
+csv = "data/drm/export_bi_drm_stock.csv"  #il manque un ; à la fin du header.
 source = "DRM Inter-Rhône"
 
 

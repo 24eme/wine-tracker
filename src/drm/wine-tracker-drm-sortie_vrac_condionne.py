@@ -12,8 +12,8 @@ import argparse
 # In[ ]:
 
 
-dossier_graphes="../../graphes/"
-csv = "../../data/drm/export_bi_mouvements.csv"
+dossier_graphes="graphes/"
+csv = "data/drm/export_bi_mouvements.csv"
 source = "DRM Inter-Rhône"
 
 

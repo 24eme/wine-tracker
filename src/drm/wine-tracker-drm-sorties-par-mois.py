@@ -12,8 +12,8 @@ import argparse
 # In[ ]:
 
 
-dossier_graphes="../../graphes/"
-csv = "../../data/drm/export_bi_mouvements.csv"
+dossier_graphes="graphes/"
+csv = "data/drm/export_bi_mouvements.csv"
 source = "DRM Inter-Rhône"
 
 mois = { "08" : "Août" , "09" : "Septembre", "10" : "Octobre", "11" : "Novembre" , "12" : "Décembre",

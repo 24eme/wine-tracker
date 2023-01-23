@@ -14,3 +14,7 @@ pip3 install nbconvert
 Pour générer les .py: 
 
 make dans le dossier  src/drm
+
+Pour générer tous les graphes :
+
+bash src/drm/generate_all.sh
