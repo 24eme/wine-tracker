@@ -12,7 +12,7 @@ import argparse
 # In[ ]:
 
 
-dossier_graphes="graphes/"
+dossier_graphes = "graphes/"
 csv = "data/drm/export_bi_mouvements.csv"
 source = "DRM Inter-Rhône"
 
@@ -56,6 +56,8 @@ def create_graph(id_operateur,mouvements):
     sorties = sorties.groupby(['campagne', 'periode'])['volume mouvement'].sum().reset_index()
     sorties['mois'] = sorties["periode"].str.extract('.*(\d{2})', expand = False)
     sorties['mois'] = sorties['mois'].map(mois,na_action=None)
+
+    sorties = sorties.sort_values(by=['mois','campagne'])
 
     # CREATION DU GRAPHE
     fig = px.histogram(sorties, x="mois", y="volume mouvement",
