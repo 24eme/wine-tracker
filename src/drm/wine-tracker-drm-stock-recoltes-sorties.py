@@ -74,7 +74,19 @@ def create_graph(id_operateur,drm):
 
     #final.loc[:, "volume"] = final["volume"].map('{:.f}'.format)
 
-    final = final.sort_values(by=['campagne'])
+    final = final.sort_values(by=['campagne']).reset_index()
+
+    #SUR LES 10 dernières années :
+    first_campagne = final['campagne'][0][0 : 4]
+    last_campagne = final['campagne'][len(final)-1][0 :4]
+    limit_start_with = int(last_campagne)-10
+
+    if(int(first_campagne) < limit_start_with):
+        #il faut couper le tableau final et prendre seulement les derniers.
+        limit_start_with = str(limit_start_with)+"-"+str(limit_start_with+1)
+        index_where_slice = final.index[final['campagne'] == limit_start_with].tolist()[0]
+        final = (final.iloc[index_where_slice:len(final)-1]).reset_index()
+
     # CREATION DU GRAPHE
     fig = px.line(final, x="campagne", y="volume", color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue", "green", "red"],
                   title="Evolution des MES stocks, récoltes et sorties<br>(en hl. Sorties hors replis, hors déclassements, Sources "+source+")")
