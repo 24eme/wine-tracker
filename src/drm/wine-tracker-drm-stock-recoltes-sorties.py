@@ -74,8 +74,7 @@ def create_graph(id_operateur,drm):
 
     #final.loc[:, "volume"] = final["volume"].map('{:.f}'.format)
 
-    #print(final)
-
+    final = final.sort_values(by=['campagne'])
     # CREATION DU GRAPHE
     fig = px.line(final, x="campagne", y="volume", color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue", "green", "red"],
                   title="Evolution des MES stocks, récoltes et sorties<br>(en hl. Sorties hors replis, hors déclassements, Sources "+source+")")
