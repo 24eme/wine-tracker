@@ -1,0 +1,15 @@
+body{
+  font-family : 'Helvetica'
+}
+
+.navbar{
+  background-color: #e75047;
+}
+
+.nav-link{
+  color : black;
+}
+
+.active{
+  color : #e75047 !important;
+}
