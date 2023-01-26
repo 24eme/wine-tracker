@@ -54,10 +54,38 @@ def create_graph(id_operateur,mouvements):
     sorties = mouvements.query("sorties == True")
 
     sorties = sorties.groupby(['campagne', 'periode'])['volume mouvement'].sum().reset_index()
+
+    #SUR LES 5 dernières années :
+    first_campagne = sorties['campagne'][0][0 : 4]
+    last_campagne = sorties['campagne'][len(sorties)-1][0 :4]
+    limit_start_with = int(last_campagne)-5
+
+    if(int(first_campagne) < limit_start_with):
+        #il faut couper le tableau final et prendre seulement les derniers.
+        limit_start_with = str(limit_start_with)+"-"+str(limit_start_with+1)
+        index_where_slice = sorties.index[sorties['campagne'] == limit_start_with].tolist()[0]
+        sorties = (sorties.iloc[index_where_slice:len(sorties)-1]).reset_index()
+
     sorties['mois'] = sorties["periode"].str.extract('.*(\d{2})', expand = False)
+
+    sorties = sorties.sort_values(by=["mois",'campagne']).reset_index()
+
     sorties['mois'] = sorties['mois'].map(mois,na_action=None)
 
-    sorties = sorties.sort_values(by=['mois','campagne'])
+    mois_sort = { "Août" : "01" , "Septembre" : "02", "Octobre" : "03", "Novembre" : "04" , "Décembre" : "05",
+            "Janvier" : "06", "Février" : "07", "Mars" : "08", "Avril" : "09", "Mai" : "10", "Juin" : "11",
+            "Juillet" : "12" }
+
+
+    sorties['ordre_mois']= sorties['mois'].map(mois_sort,na_action=None)
+
+    del sorties['level_0']
+
+    sorties = sorties.sort_values(by=["ordre_mois",'campagne']).reset_index()
+
+    del sorties['level_0']
+    del sorties['index']
+    #print(sorties)
 
     # CREATION DU GRAPHE
     fig = px.histogram(sorties, x="mois", y="volume mouvement",
