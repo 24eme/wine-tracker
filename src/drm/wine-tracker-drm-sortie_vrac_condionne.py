@@ -80,7 +80,22 @@ def create_graph(id_operateur,mouvements):
     final = pd.melt(final, id_vars=['campagne'], value_vars=['Vrac','Conditionné','Autres'])
     final.rename(columns = {'value':'volume'}, inplace = True)
 
-    #print(final)
+
+    final = final.sort_values(by=['campagne']).reset_index()
+
+
+    #SUR LES 10 dernières années :
+    first_campagne = final['campagne'][0][0 : 4]
+    last_campagne = final['campagne'][len(final)-1][0 :4]
+    limit_start_with = int(last_campagne)-10
+
+    if(int(first_campagne) < limit_start_with):
+        #il faut couper le tableau final et prendre seulement les derniers.
+        limit_start_with = str(limit_start_with)+"-"+str(limit_start_with+1)
+        index_where_slice = final.index[final['campagne'] == limit_start_with].tolist()[0]
+        final = (final.iloc[index_where_slice:len(final)-1]).reset_index()
+
+
     # CREATION DU GRAPHE
     fig = px.bar(final, x="campagne", y="volume", color="variable",color_discrete_sequence=["blue", "red", "purple"],
                  text_auto=True,
