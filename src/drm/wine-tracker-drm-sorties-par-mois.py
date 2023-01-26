@@ -90,7 +90,8 @@ def create_graph(id_operateur,mouvements):
     # CREATION DU GRAPHE
     fig = px.histogram(sorties, x="mois", y="volume mouvement",
                  color='campagne', barmode='group',
-                 height=500)
+                 height=500,
+                 title="Evolution de MES sorties de Chais <br>(en hl, Sources "+source+"-Cumul depuis le début de la campagne)")
     fig.update_layout(xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,
