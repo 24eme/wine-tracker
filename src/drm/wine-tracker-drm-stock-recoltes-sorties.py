@@ -54,11 +54,11 @@ def create_graph(id_operateur,drm):
 
 
     #SOMME PRODUCTION
-    production = drm["entree revendiquee"].groupby(drm['campagne']).agg('sum').reset_index()
+    production = drm["entree"].groupby(drm['campagne']).agg('sum').reset_index()
 
 
     #SOMME SORTIES
-    sorties = drm["sortie revendiquee"].groupby(drm['campagne']).agg('sum').reset_index()
+    sorties = drm["sortie"].groupby(drm['campagne']).agg('sum').reset_index()
 
 
     #MERGE
@@ -66,7 +66,7 @@ def create_graph(id_operateur,drm):
     final = pd.merge(final, stock_physique_debut_campagne ,how='outer', on=['campagne'])
 
     #RENOMMAGE DES COLONNES
-    final.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','entree revendiquee' : 'Production (hl)', 'sortie revendiquee' : 'Sorties de chais (hl)'}, inplace = True)
+    final.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','entree' : 'Production (hl)', 'sortie' : 'Sorties de chais (hl)'}, inplace = True)
 
     #FORMATTAGE DU TABLEAU
     final = pd.melt(final, id_vars=['campagne'], value_vars=['Stock physique en début de camp production (hl)','Production (hl)','Sorties de chais (hl)'])
@@ -97,7 +97,7 @@ def create_graph(id_operateur,drm):
                       legend_title=None,
                       paper_bgcolor="#fff6ad",
                       plot_bgcolor = "white",
-                      yaxis=dict(tickformat=".f"),
+                      yaxis=dict(tickformat=".0f"),
                       legend=dict(orientation="h",xanchor = "center",x = 0.5)
                      )
     fig.for_each_xaxis(lambda x: x.update(showgrid=False))
