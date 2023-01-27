@@ -116,7 +116,7 @@ def create_graph(id_operateur,mouvements):
     #fig.show()
 
 
-    fig.write_html(dossier_graphes+id_operateur+"_graphe2.html")
+    fig.write_html(dossier_graphes+id_operateur+"_graphe2.html",include_plotlyjs=False)
     return
 
 

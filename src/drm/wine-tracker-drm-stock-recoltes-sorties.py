@@ -109,7 +109,7 @@ def create_graph(id_operateur,drm):
     #IL FAUT AJOUTER DES ESPACES DANS POUR LES MILLIERS.
 
     # GRAPHE DANS UN FICHIER HTML
-    fig.write_html(dossier_graphes+id_operateur+"_graphe1.html")
+    fig.write_html(dossier_graphes+id_operateur+"_graphe1.html",include_plotlyjs=False)
     return
 
 

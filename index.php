@@ -3,6 +3,7 @@
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="web/main.css" rel="stylesheet">
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="web/plotly-2.18.0.min.js"></script>
   </head>
   <body>
     <nav class="navbar">
