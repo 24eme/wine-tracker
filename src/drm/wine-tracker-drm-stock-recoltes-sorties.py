@@ -5,6 +5,7 @@
 
 
 import pandas as pd
+import numpy as np
 import plotly.express as px
 import argparse
 
@@ -21,7 +22,7 @@ source = "DRM Inter-Rhône"
 
 
 #arguments
-id_operateur=None
+id_operateur= None
 
 parser = argparse.ArgumentParser()
 parser.add_argument("id_operateur", help="Identifiant opérateur", default=id_operateur, nargs='?')
@@ -38,57 +39,144 @@ except:
 
 #préparations des données de l'opérateur sans filtres
 drm = pd.read_csv(csv, sep=";",encoding="iso8859_15")
+if(id_operateur):
+    drm = drm.query("identifiant == @id_operateur").reset_index()
 
 
 # In[ ]:
 
 
-def create_graph(id_operateur,drm):
-    drm = drm.query("identifiant == @id_operateur").reset_index()
+# PAR APPELLATION ET COULEUR
 
-    #SOMME STOCK DEBUT DE CAMPAGNE
-    stock_physique_debut_campagne = drm
-    stock_physique_debut_campagne['debut_campagne'] = stock_physique_debut_campagne["date"].str.lower().str.endswith("08")
-    stock_physique_debut_campagne = stock_physique_debut_campagne.query("debut_campagne == True")
-    stock_physique_debut_campagne = stock_physique_debut_campagne["stock debut"].groupby(stock_physique_debut_campagne['campagne']).agg('sum').reset_index()
+#SOMME PRODUCTION #A CHANGER
+drm_production = drm.groupby(["identifiant", "campagne","certifications", "genres", "appellations", "mentions", "lieux", "couleurs"]).sum(["entree"])[["entree"]]
+
+#SOMME SORTIES
+drm_sortie = drm.groupby(["identifiant", "campagne","certifications", "genres", "appellations", "mentions", "lieux", "couleurs"]).sum(["sortie"])[["sortie"]]
+
+#SOMME STOCK DEBUT DE CAMPAGNE
+drm_stock_debut = drm
+drm_stock_debut['debut_campagne'] = drm["date"].str.lower().str.endswith("08")
+drm_stock_debut = drm_stock_debut.query("debut_campagne == True")
+drm_stock_debut = drm_stock_debut.groupby(["identifiant", "campagne","certifications", "genres", "appellations", "mentions", "lieux", "couleurs"]).sum(["stock debut"])[["stock debut"]]
+
+df_final = pd.merge(drm_production, drm_sortie,how='outer', on=["identifiant", "campagne","certifications", "genres", "appellations", "mentions", "lieux", "couleurs"])
+df_final = pd.merge(df_final, drm_stock_debut ,how='outer', on=["identifiant", "campagne","certifications", "genres", "appellations", "mentions", "lieux", "couleurs"])
+
+df_final = df_final.reset_index()
+
+df_final['filtre_produit'] = df_final['appellations'] + "/" + df_final['lieux'] + "/" +df_final['certifications']+ "/" +df_final['genres']
+df_final.index = [df_final['identifiant'],df_final['filtre_produit'],df_final['couleurs']]
+df_final.drop(['certifications', 'genres','appellations','mentions','lieux'], axis=1, inplace=True)
+df_final.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','entree' : 'Production (hl)', 'sortie' : 'Sorties de chais (hl)'}, inplace = True)
 
 
-    #SOMME PRODUCTION
-    production = drm["entree"].groupby(drm['campagne']).agg('sum').reset_index()
+df_final['filtre'] = "SPE-SPE"
+
+#df_final
 
 
-    #SOMME SORTIES
-    sorties = drm["sortie"].groupby(drm['campagne']).agg('sum').reset_index()
+# In[ ]:
 
 
-    #MERGE
-    final = pd.merge(production, sorties,how='outer', on=['campagne'])
-    final = pd.merge(final, stock_physique_debut_campagne ,how='outer', on=['campagne'])
+# PAR COULEUR
 
-    #RENOMMAGE DES COLONNES
-    final.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','entree' : 'Production (hl)', 'sortie' : 'Sorties de chais (hl)'}, inplace = True)
 
-    #FORMATTAGE DU TABLEAU
-    final = pd.melt(final, id_vars=['campagne'], value_vars=['Stock physique en début de camp production (hl)','Production (hl)','Sorties de chais (hl)'])
-    final.rename(columns = {'value':'volume'}, inplace = True)
+drm_production_all_spe = drm_production.groupby(["identifiant","campagne","couleurs"]).sum(["entree"])[["entree"]]
+drm_sortie_all_spe = drm_sortie.groupby(["identifiant", "campagne","couleurs"]).sum(["sortie"])[["sortie"]]
+drm_stock_debut_all_spe = drm_stock_debut.groupby(["identifiant", "campagne","couleurs"]).sum(["stock debut"])[["stock debut"]]
 
-    #final.loc[:, "volume"] = final["volume"].map('{:.f}'.format)
+drm_merge_all_spe = pd.merge(drm_production_all_spe, drm_sortie_all_spe,how='outer', on=["identifiant", "campagne","couleurs"])
+drm_merge_all_spe = pd.merge(drm_merge_all_spe, drm_stock_debut_all_spe ,how='outer', on=["identifiant", "campagne","couleurs"])
 
-    final = final.sort_values(by=['campagne']).reset_index()
+drm_merge_all_spe = drm_merge_all_spe.reset_index()
 
-    #SUR LES 10 dernières années :
-    first_campagne = final['campagne'][0][0 : 4]
-    last_campagne = final['campagne'][len(final)-1][0 :4]
-    limit_start_with = int(last_campagne)-10
+drm_merge_all_spe['filtre_produit'] = "TOUT"
 
-    if(int(first_campagne) < limit_start_with):
-        #il faut couper le tableau final et prendre seulement les derniers.
-        limit_start_with = str(limit_start_with)+"-"+str(limit_start_with+1)
-        index_where_slice = final.index[final['campagne'] == limit_start_with].tolist()[0]
-        final = (final.iloc[index_where_slice:len(final)-1]).reset_index()
+drm_merge_all_spe.index = [drm_merge_all_spe['identifiant'],drm_merge_all_spe['filtre_produit'],drm_merge_all_spe['couleurs']]
+
+drm_merge_all_spe.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','entree' : 'Production (hl)', 'sortie' : 'Sorties de chais (hl)'}, inplace = True)
+
+drm_merge_all_spe['filtre'] = "ALL-SPE"
+
+#drm_merge_all_spe
+
+
+# In[ ]:
+
+
+# PAR APPELLATIONS
+
+drm_production_spe_all = drm_production.groupby(["identifiant","campagne","certifications", "genres", "appellations", "mentions", "lieux"]).sum(["entree"])[["entree"]]
+drm_sortie_spe_all = drm_sortie.groupby(["identifiant", "campagne","certifications", "genres", "appellations", "mentions", "lieux"]).sum(["sortie"])[["sortie"]]
+drm_stock_debut_spe_all = drm_stock_debut.groupby(["identifiant", "campagne","certifications", "genres", "appellations", "mentions", "lieux"]).sum(["stock debut"])[["stock debut"]]
+
+drm_merge_spe_all = pd.merge(drm_production_spe_all, drm_sortie_spe_all,how='outer', on=["identifiant", "campagne","certifications", "genres", "appellations", "mentions", "lieux"])
+drm_merge_spe_all = pd.merge(drm_merge_spe_all, drm_stock_debut_spe_all ,how='outer', on=["identifiant", "campagne","certifications", "genres", "appellations", "mentions", "lieux"])
+
+drm_merge_spe_all = drm_merge_spe_all.reset_index()
+
+drm_merge_spe_all['filtre_produit'] = drm_merge_spe_all['appellations'] + "/" + drm_merge_spe_all['lieux'] + "/" +drm_merge_spe_all['certifications']+ "/" +drm_merge_spe_all['genres']
+drm_merge_spe_all['couleurs'] = "TOUT"
+
+drm_merge_spe_all.index = [drm_merge_spe_all['identifiant'],drm_merge_spe_all['filtre_produit'],drm_merge_spe_all['couleurs']]
+drm_merge_spe_all.drop(['certifications', 'genres','appellations','mentions','lieux'], axis=1, inplace=True)
+
+
+drm_merge_spe_all.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','entree' : 'Production (hl)', 'sortie' : 'Sorties de chais (hl)'}, inplace = True)
+
+drm_merge_spe_all['filtre'] = "SPE-ALL"
+
+#drm_merge_spe_all
+
+
+# In[ ]:
+
+
+#AUCUN FILTRE TOUTES LES APPELLATIONS ET TOUTES LES COULEURS
+
+drm_production_all_all = drm_production_spe_all.groupby(["identifiant","campagne"]).sum(["entree"])[["entree"]]
+drm_sortie_all_all = drm_sortie_spe_all.groupby(["identifiant", "campagne"]).sum(["sortie"])[["sortie"]]
+drm_stock_debut_all_all = drm_stock_debut.groupby(["identifiant", "campagne"]).sum(["stock debut"])[["stock debut"]]
+
+
+drm_merge_all_all = pd.merge(drm_production_all_all, drm_sortie_all_all,how='outer', on=["identifiant", "campagne"])
+drm_merge_all_all = pd.merge(drm_merge_all_all, drm_stock_debut_all_all ,how='outer', on=["identifiant", "campagne"])
+
+drm_merge_all_all = drm_merge_all_all.reset_index()
+
+drm_merge_all_all['filtre_produit'] = "TOUT"
+drm_merge_all_all['couleurs'] = "TOUT"
+
+drm_merge_all_all.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','entree' : 'Production (hl)', 'sortie' : 'Sorties de chais (hl)'}, inplace = True)
+drm_merge_all_all.index = [drm_merge_all_all['identifiant'],drm_merge_all_all['filtre_produit'],drm_merge_all_all['couleurs']]
+
+drm_merge_all_all['filtre'] = "ALL-ALL"
+
+#drm_merge_all_all
+
+
+# In[ ]:
+
+
+df_final = pd.concat([df_final, drm_merge_all_spe])
+
+df_final = pd.concat([df_final, drm_merge_spe_all])
+
+df_final = pd.concat([df_final, drm_merge_all_all])
+
+df_final.drop(['identifiant','filtre_produit',"couleurs"], axis=1, inplace=True)
+
+df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleurs'])
+
+
+# In[ ]:
+
+
+def create_graphique(final,identifiant,appellation,couleur):
 
     # CREATION DU GRAPHE
-    fig = px.line(final, x="campagne", y="volume", color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue", "green", "red"],
+    fig = px.line(final, x="campagne", y="value", color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue", "green", "red"],
                   title="Evolution des MES stocks, récoltes et sorties<br>(en hl. Sorties hors replis, hors déclassements, Sources "+source+")")
     fig.update_traces(mode="markers+lines", hovertemplate=None)
     fig.update_layout(hovermode="x")
@@ -105,20 +193,18 @@ def create_graph(id_operateur,drm):
     fig.update_xaxes(fixedrange=True)
     fig.update_yaxes(fixedrange=True)
     #fig.show()
-
-    #IL FAUT AJOUTER DES ESPACES DANS POUR LES MILLIERS.
-
-    # GRAPHE DANS UN FICHIER HTML
-    fig.write_html(dossier_graphes+id_operateur+"_graphe1.html",include_plotlyjs=False)
+    
+    fig.write_html(dossier_graphes+identifiant+"_graphe1_"+appellation+"_"+couleur+".html",include_plotlyjs=False)
     return
 
 
 # In[ ]:
 
 
-if(id_operateur):
-    create_graph(id_operateur,drm)
-else :
-    for identifiant in drm.identifiant.unique():
-        create_graph(identifiant,drm)
+for bloc in df_final.index.unique():
+    df = df_final.loc[[bloc]]
+    df = df.reset_index()
+    df = pd.melt(df, id_vars=['identifiant','filtre_produit','couleurs','campagne'], value_vars=['Stock physique en début de camp production (hl)','Production (hl)','Sorties de chais (hl)'])
+    appellation = bloc[1].replace("/", "_")
+    create_graphique(df,bloc[0],appellation,bloc[2])
 
