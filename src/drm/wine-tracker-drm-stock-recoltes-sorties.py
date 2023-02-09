@@ -8,13 +8,16 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import argparse
+import pathlib
 
 
 # In[ ]:
 
 
-dossier_graphes="graphes/"
-csv = "data/drm/export_bi_drm_stock.csv"  #il manque un ; à la fin du header.
+path = pathlib.Path().absolute()
+path = str(path).replace("src/drm","")
+dossier_graphes=path+"/graphes/"
+csv = path+"/data/drm/export_bi_drm_stock.csv"  #il manque un ; à la fin du header.
 source = "DRM Inter-Rhône"
 
 
@@ -65,41 +68,14 @@ df_final = pd.merge(df_final, drm_stock_debut ,how='outer', on=["identifiant", "
 
 df_final = df_final.reset_index()
 
-df_final['filtre_produit'] = df_final['appellations'] + "/" + df_final['lieux'] + "/" +df_final['certifications']+ "/" +df_final['genres']
+df_final['filtre_produit'] = df_final['appellations'] + "-" + df_final['lieux'] + "-" +df_final['certifications']+ "-" +df_final['genres']
 df_final.index = [df_final['identifiant'],df_final['filtre_produit'],df_final['couleurs']]
 df_final.drop(['certifications', 'genres','appellations','mentions','lieux'], axis=1, inplace=True)
 df_final.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','entree' : 'Production (hl)', 'sortie' : 'Sorties de chais (hl)'}, inplace = True)
 
-
 df_final['filtre'] = "SPE-SPE"
 
 #df_final
-
-
-# In[ ]:
-
-
-# PAR COULEUR
-
-
-drm_production_all_spe = drm_production.groupby(["identifiant","campagne","couleurs"]).sum(["entree"])[["entree"]]
-drm_sortie_all_spe = drm_sortie.groupby(["identifiant", "campagne","couleurs"]).sum(["sortie"])[["sortie"]]
-drm_stock_debut_all_spe = drm_stock_debut.groupby(["identifiant", "campagne","couleurs"]).sum(["stock debut"])[["stock debut"]]
-
-drm_merge_all_spe = pd.merge(drm_production_all_spe, drm_sortie_all_spe,how='outer', on=["identifiant", "campagne","couleurs"])
-drm_merge_all_spe = pd.merge(drm_merge_all_spe, drm_stock_debut_all_spe ,how='outer', on=["identifiant", "campagne","couleurs"])
-
-drm_merge_all_spe = drm_merge_all_spe.reset_index()
-
-drm_merge_all_spe['filtre_produit'] = "TOUT"
-
-drm_merge_all_spe.index = [drm_merge_all_spe['identifiant'],drm_merge_all_spe['filtre_produit'],drm_merge_all_spe['couleurs']]
-
-drm_merge_all_spe.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','entree' : 'Production (hl)', 'sortie' : 'Sorties de chais (hl)'}, inplace = True)
-
-drm_merge_all_spe['filtre'] = "ALL-SPE"
-
-#drm_merge_all_spe
 
 
 # In[ ]:
@@ -116,7 +92,7 @@ drm_merge_spe_all = pd.merge(drm_merge_spe_all, drm_stock_debut_spe_all ,how='ou
 
 drm_merge_spe_all = drm_merge_spe_all.reset_index()
 
-drm_merge_spe_all['filtre_produit'] = drm_merge_spe_all['appellations'] + "/" + drm_merge_spe_all['lieux'] + "/" +drm_merge_spe_all['certifications']+ "/" +drm_merge_spe_all['genres']
+drm_merge_spe_all['filtre_produit'] = drm_merge_spe_all['appellations'] + "-" + drm_merge_spe_all['lieux'] + "-" +drm_merge_spe_all['certifications']+ "-" +drm_merge_spe_all['genres']
 drm_merge_spe_all['couleurs'] = "TOUT"
 
 drm_merge_spe_all.index = [drm_merge_spe_all['identifiant'],drm_merge_spe_all['filtre_produit'],drm_merge_spe_all['couleurs']]
@@ -159,8 +135,6 @@ drm_merge_all_all['filtre'] = "ALL-ALL"
 # In[ ]:
 
 
-df_final = pd.concat([df_final, drm_merge_all_spe])
-
 df_final = pd.concat([df_final, drm_merge_spe_all])
 
 df_final = pd.concat([df_final, drm_merge_all_all])
@@ -168,6 +142,8 @@ df_final = pd.concat([df_final, drm_merge_all_all])
 df_final.drop(['identifiant','filtre_produit',"couleurs"], axis=1, inplace=True)
 
 df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleurs'])
+
+#df_final
 
 
 # In[ ]:
@@ -193,8 +169,12 @@ def create_graphique(final,identifiant,appellation,couleur):
     fig.update_xaxes(fixedrange=True)
     fig.update_yaxes(fixedrange=True)
     #fig.show()
-    
-    fig.write_html(dossier_graphes+identifiant+"_graphe1_"+appellation+"_"+couleur+".html",include_plotlyjs=False)
+
+    dossier = dossier_graphes+"/"+identifiant+"/"+appellation+"-"+couleur
+    pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
+
+    fig.write_html(dossier+"/graphe1.html",include_plotlyjs=False)
+
     return
 
 
@@ -205,6 +185,5 @@ for bloc in df_final.index.unique():
     df = df_final.loc[[bloc]]
     df = df.reset_index()
     df = pd.melt(df, id_vars=['identifiant','filtre_produit','couleurs','campagne'], value_vars=['Stock physique en début de camp production (hl)','Production (hl)','Sorties de chais (hl)'])
-    appellation = bloc[1].replace("/", "_")
-    create_graphique(df,bloc[0],appellation,bloc[2])
+    create_graphique(df,bloc[0],bloc[1],bloc[2])
 
