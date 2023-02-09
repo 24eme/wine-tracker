@@ -7,18 +7,25 @@
 import pandas as pd
 import plotly.express as px
 import argparse
+import pathlib
 
 
 # In[ ]:
 
 
-dossier_graphes = "graphes/"
-csv = "data/drm/export_bi_mouvements.csv"
+path = pathlib.Path().absolute()
+path = str(path).replace("src/drm","")
+dossier_graphes=path+"/graphes/"
+csv = path+"/data/drm/export_bi_mouvements.csv"  #il manque un ; à la fin du header.
 source = "DRM Inter-Rhône"
 
 mois = { "08" : "Août" , "09" : "Septembre", "10" : "Octobre", "11" : "Novembre" , "12" : "Décembre",
         "01" : "Janvier", "02" : "Février", "03" : "Mars", "04" : "Avril", "05" : "Mai", "06" : "Juin",
         "07" : "Juillet" }
+
+mois_sort = { "Août" : "01" , "Septembre" : "02", "Octobre" : "03", "Novembre" : "04" , "Décembre" : "05",
+        "Janvier" : "06", "Février" : "07", "Mars" : "08", "Avril" : "09", "Mai" : "10", "Juin" : "11",
+        "Juillet" : "12" }
 
 
 # In[ ]:
@@ -41,54 +48,86 @@ except:
 
 
 #préparations des données de l'opérateur sans filtres
+
 mouvements = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False)
+mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = True)
+
+if(id_operateur):
+    mouvements = mouvements.query("identifiant == @id_operateur").reset_index()
+
 mouvements["volume mouvement"] = mouvements["volume mouvement"]*(-1)
-mouvements.rename(columns = {'identifiant declarant':'identifiant_declarant'}, inplace = True)
+mouvements['sorties'] = mouvements["type de mouvement"].str.lower().str.startswith("sorties/")
+mouvements['filtre_produit'] = mouvements['appellation'] + "-" + mouvements['lieu'] + "-" +mouvements['certification']+ "-" +mouvements['genre']
 
 
 # In[ ]:
 
 
-def create_graph(id_operateur,mouvements):
-    mouvements['sorties'] = mouvements["type de mouvement"].str.lower().str.startswith("sorties/")
-    sorties = mouvements.query("sorties == True")
+### PAR APPELLATION ET COULEUR
 
-    sorties = sorties.groupby(['campagne', 'periode'])['volume mouvement'].sum().reset_index()
+sorties = mouvements.query("sorties == True")
 
-    #SUR LES 5 dernières années :
-    first_campagne = sorties['campagne'][0][0 : 4]
-    last_campagne = sorties['campagne'][len(sorties)-1][0 :4]
-    limit_start_with = int(last_campagne)-5
+sorties = sorties.groupby(["identifiant","filtre_produit","couleur",'campagne','periode']).sum(["volume mouvement"])[["volume mouvement"]]
+sorties = sorties.reset_index()
 
-    if(int(first_campagne) < limit_start_with):
-        #il faut couper le tableau final et prendre seulement les derniers.
-        limit_start_with = str(limit_start_with)+"-"+str(limit_start_with+1)
-        index_where_slice = sorties.index[sorties['campagne'] == limit_start_with].tolist()[0]
-        sorties = (sorties.iloc[index_where_slice:len(sorties)-1]).reset_index()
+sorties.set_index(['identifiant','filtre_produit','couleur'], inplace = True)
 
-    sorties['mois'] = sorties["periode"].str.extract('.*(\d{2})', expand = False)
+sorties['mois'] = sorties["periode"].str.extract('.*(\d{2})', expand = False)
+sorties['mois'] = sorties['mois'].map(mois,na_action=None)
 
-    sorties = sorties.sort_values(by=["mois",'campagne']).reset_index()
+sorties['ordre_mois']= sorties['mois'].map(mois_sort,na_action=None)
 
-    sorties['mois'] = sorties['mois'].map(mois,na_action=None)
+sorties_spe_spe = sorties.sort_values(by=["identifiant",'filtre_produit','couleur',"ordre_mois","campagne"])
 
-    mois_sort = { "Août" : "01" , "Septembre" : "02", "Octobre" : "03", "Novembre" : "04" , "Décembre" : "05",
-            "Janvier" : "06", "Février" : "07", "Mars" : "08", "Avril" : "09", "Mai" : "10", "Juin" : "11",
-            "Juillet" : "12" }
+#sorties
 
 
-    sorties['ordre_mois']= sorties['mois'].map(mois_sort,na_action=None)
+# In[ ]:
 
-    del sorties['level_0']
 
-    sorties = sorties.sort_values(by=["ordre_mois",'campagne']).reset_index()
+# PAR APPELLATIONS
 
-    del sorties['level_0']
-    del sorties['index']
-    #print(sorties)
+sorties_spe_all = sorties_spe_spe.groupby(["identifiant","filtre_produit",'campagne','periode',"mois","ordre_mois"]).sum(["volume mouvement"])[["volume mouvement"]]
+sorties_spe_all["couleur"] = "TOUT"
+sorties_spe_all = sorties_spe_all.reset_index()
+sorties_spe_all.set_index(['identifiant','filtre_produit','couleur'], inplace = True)
+
+#sorties_spe_all
+
+
+# In[ ]:
+
+
+#AUCUN FILTRE TOUTES LES APPELLATIONS ET TOUTES LES COULEURS
+
+sorties_all_all = sorties_spe_spe.groupby(["identifiant",'campagne','periode',"mois","ordre_mois"]).sum(["volume mouvement"])[["volume mouvement"]]
+sorties_all_all["couleur"] = "TOUT"
+sorties_all_all["filtre_produit"] = "TOUT"
+sorties_all_all = sorties_all_all.reset_index()
+
+sorties_all_all.set_index(['identifiant','filtre_produit','couleur'], inplace = True)
+
+#sorties_all_all
+
+
+# In[ ]:
+
+
+#CONCATENATION DES 3 TABLEAUX :
+df_final = pd.concat([sorties_spe_spe, sorties_spe_all])
+df_final = pd.concat([df_final, sorties_all_all])
+
+df_final.rename(columns = {'volume mouvement':'volume'}, inplace = True)
+#df_final
+
+
+# In[ ]:
+
+
+def create_graphe(final,identifiant,appellation,couleur):
 
     # CREATION DU GRAPHE
-    fig = px.histogram(sorties, x="mois", y="volume mouvement",
+    fig = px.histogram(final, x="mois", y="volume",
                  color='campagne', barmode='group',
                  height=500,
                  title="Evolution de MES sorties de Chais <br>(en hl, Sources "+source+"-Cumul depuis le début de la campagne)")
@@ -106,17 +145,18 @@ def create_graph(id_operateur,mouvements):
     fig.update_yaxes(fixedrange=True)
     #fig.show()
 
-    # GRAPHE DANS UN FICHIER HTML
-    fig.write_html(dossier_graphes+id_operateur+"_graphe3.html",include_plotlyjs=False)
+    dossier = dossier_graphes+"/"+identifiant+"/"+appellation+"-"+couleur
+    pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
+
+    fig.write_html(dossier+"/graphe3.html",include_plotlyjs=False)
+
     return
 
 
 # In[ ]:
 
 
-if(id_operateur):
-    create_graph(id_operateur,mouvements)
-else :
-    for identifiant in mouvements.identifiant_declarant.unique():
-        create_graph(identifiant,mouvements)
+for bloc in df_final.index.unique():
+    df = df_final.loc[[bloc]]
+    create_graphe(df,bloc[0],bloc[1],bloc[2])
 
