@@ -124,7 +124,7 @@ df_final_all_all.set_index(['filtre_produit','couleur'], inplace = True)
 #MERGE DES 3 SOUS TABLEAUX :
 df_final = pd.concat([df_final_spe_spe, df_final_spe_all])
 df_final = pd.concat([df_final, df_final_all_all])
-df_final = df_final.sort_values(by=['filtre_produit','couleur'])
+df_final = df_final.sort_values(by=['filtre_produit','couleur','campagne'])
 
 #df_final
 

@@ -56,7 +56,7 @@ mouvements_all_all.set_index(['filtre_produit','couleur'], inplace = True)
 #CONCATENATION DES 3 TABLEAUX :
 df_final = pd.concat([mouvements_spe_spe, mouvements_spe_all])
 df_final = pd.concat([df_final, mouvements_all_all])
-df_final = df_final.sort_values(by=['filtre_produit','couleur'])
+df_final = df_final.sort_values(by=['filtre_produit','couleur','campagne'])
 df_final.rename(columns = {'volume mouvement':'volume'}, inplace = True)
 
 
