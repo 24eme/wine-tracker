@@ -19,6 +19,10 @@ source = "DRM Inter-Rhône"
 
 
 mouvements = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False)
+
+lastcampagnes = mouvements['campagne'].unique()[-10:]
+mouvements = mouvements.query('campagne in @lastcampagnes')
+
 mouvements["volume mouvement"] = mouvements["volume mouvement"]*(-1)
 mouvements.rename(columns = {'type de mouvement':'type_de_mouvement'}, inplace = True)
 mouvements['sorties'] = mouvements["type_de_mouvement"].str.lower().str.startswith("sorties/")

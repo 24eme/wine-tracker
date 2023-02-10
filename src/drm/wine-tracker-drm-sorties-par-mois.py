@@ -50,6 +50,10 @@ except:
 #préparations des données de l'opérateur sans filtres
 
 mouvements = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False)
+
+lastcampagnes = mouvements['campagne'].unique()[-5:]
+mouvements = mouvements.query('campagne in @lastcampagnes')
+
 mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = True)
 
 if(id_operateur):
@@ -135,13 +139,14 @@ def create_graphe(final,identifiant,appellation,couleur):
     fig = px.histogram(final, x="mois", y="volume",
                  color='campagne', barmode='group',
                  height=500,
+                 color_discrete_sequence=["#e75047", "#477be5", "#ba2e27","#936260","#8ebc7c"],
                  title="Evolution de MES sorties de Chais <br>(en hl, Sources "+source+"-Cumul depuis le début de la campagne)")
     fig.update_layout(title_font_size=14,
                       title_font_color="black",
                       xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,
-                      paper_bgcolor="#b7e1e5",
+                      paper_bgcolor="white",
                       plot_bgcolor = "white",
                       yaxis=dict(tickformat=".f"),
                       legend=dict(orientation="h",xanchor = "center",x = 0.5)
