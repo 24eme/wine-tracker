@@ -150,7 +150,7 @@ def create_graphe(final,identifiant,appellation,couleur):
     fig.update_yaxes(fixedrange=True)
     #fig.show()
 
-    dossier = dossier_graphes+"/"+identifiant+"/"+appellation+"-"+couleur
+    dossier = dossier_graphes+"/"+identifiant+"/drm/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
 
     fig.write_html(dossier+"/graphe3.html",include_plotlyjs=False)

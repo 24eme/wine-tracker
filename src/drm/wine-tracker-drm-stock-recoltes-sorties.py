@@ -25,7 +25,7 @@ source = "DRM Inter-Rhône"
 
 
 #arguments
-id_operateur= None
+id_operateur=None
 
 parser = argparse.ArgumentParser()
 parser.add_argument("id_operateur", help="Identifiant opérateur", default=id_operateur, nargs='?')
@@ -172,7 +172,7 @@ def create_graphique(final,identifiant,appellation,couleur):
     fig.update_yaxes(fixedrange=True)
     #fig.show()
 
-    dossier = dossier_graphes+"/"+identifiant+"/"+appellation+"-"+couleur
+    dossier = dossier_graphes+"/"+identifiant+"/drm/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
 
     fig.write_html(dossier+"/graphe1.html",include_plotlyjs=False)
