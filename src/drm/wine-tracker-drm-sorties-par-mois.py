@@ -117,7 +117,10 @@ sorties_all_all.set_index(['identifiant','filtre_produit','couleur'], inplace = 
 df_final = pd.concat([sorties_spe_spe, sorties_spe_all])
 df_final = pd.concat([df_final, sorties_all_all])
 
+df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleur'])
+
 df_final.rename(columns = {'volume mouvement':'volume'}, inplace = True)
+
 #df_final
 
 
