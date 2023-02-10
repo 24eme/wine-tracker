@@ -45,7 +45,9 @@ drm = pd.read_csv(csv, sep=";",encoding="iso8859_15")
 if(id_operateur):
     drm = drm.query("identifiant == @id_operateur").reset_index()
 
-lastcampagnes = drm['campagne'].unique()[-10:]
+lastcampagnes = drm['campagne'].unique()
+lastcampagnes.sort()
+lastcampagnes = lastcampagnes[-10:]
 drm = drm.query('campagne in @lastcampagnes')
 
 
