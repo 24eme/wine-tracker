@@ -136,7 +136,9 @@ def create_graphe(final,identifiant,appellation,couleur):
                  color='campagne', barmode='group',
                  height=500,
                  title="Evolution de MES sorties de Chais <br>(en hl, Sources "+source+"-Cumul depuis le début de la campagne)")
-    fig.update_layout(xaxis_title=None,
+    fig.update_layout(title_font_size=14,
+                      title_font_color="black",
+                      xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,
                       paper_bgcolor="#b7e1e5",

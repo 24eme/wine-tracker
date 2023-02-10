@@ -68,7 +68,9 @@ def create_graphe(final,appellation,couleur):
     fig = px.bar(final, x="campagne", y="volume", color="type_de_mouvement",
                  text_auto=True,
                  title="Evolution de MES sorties de Chais Vrac/Conditionné <br>(en hl, Sources "+source+")")
-    fig.update_layout(xaxis_title=None, 
+    fig.update_layout(title_font_size=14,
+                      title_font_color="black",
+                      xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,
                       paper_bgcolor="#b7e1e5",
