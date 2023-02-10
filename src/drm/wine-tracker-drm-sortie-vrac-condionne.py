@@ -46,7 +46,7 @@ mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = T
 if(id_operateur):
     mouvements = mouvements.query("identifiant == @id_operateur").reset_index()
     
-mouvements
+#mouvements
 
 
 # In[ ]:
@@ -87,6 +87,7 @@ df_final_spe_spe = pd.concat([df_final_spe_spe, autres],axis=1)
 df_final_spe_spe = df_final_spe_spe.sort_values(by=['identifiant', 'filtre_produit','couleur'])
 
 df_final_spe_spe = df_final_spe_spe.reset_index()
+df_final_spe_spe['couleur'] = df_final_spe_spe['couleur'].str.upper()
 df_final_spe_spe.set_index(['identifiant','filtre_produit','couleur'], inplace = True)
 
 #df_final_spe_spe

@@ -61,6 +61,7 @@ mouvements['filtre_produit'] = mouvements['appellation'] + "-" + mouvements['lie
 ### PAR APPELLATION ET COULEUR
 mouvements_spe_spe = mouvements.groupby(["identifiant","filtre_produit","couleur","campagne","type_de_mouvement"]).sum(["volume mouvement"])[["volume mouvement"]]
 mouvements_spe_spe = mouvements_spe_spe.reset_index()
+mouvements_spe_spe['couleur'] = mouvements_spe_spe['couleur'].str.upper()
 mouvements_spe_spe.set_index(['identifiant','filtre_produit','couleur'], inplace = True)
 
 

@@ -70,6 +70,8 @@ sorties = mouvements.query("sorties == True")
 sorties = sorties.groupby(["identifiant","filtre_produit","couleur",'campagne','periode']).sum(["volume mouvement"])[["volume mouvement"]]
 sorties = sorties.reset_index()
 
+sorties['couleur'] = sorties['couleur'].str.upper()
+
 sorties.set_index(['identifiant','filtre_produit','couleur'], inplace = True)
 
 sorties['mois'] = sorties["periode"].str.extract('.*(\d{2})', expand = False)

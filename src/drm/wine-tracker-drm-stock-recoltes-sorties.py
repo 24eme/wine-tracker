@@ -68,6 +68,8 @@ df_final = pd.merge(df_final, drm_stock_debut ,how='outer', on=["identifiant", "
 
 df_final = df_final.reset_index()
 
+df_final['couleurs'] = df_final['couleurs'].str.upper()
+
 df_final['filtre_produit'] = df_final['appellations'] + "-" + df_final['lieux'] + "-" +df_final['certifications']+ "-" +df_final['genres']
 df_final.index = [df_final['identifiant'],df_final['filtre_produit'],df_final['couleurs']]
 df_final.drop(['certifications', 'genres','appellations','mentions','lieux'], axis=1, inplace=True)
