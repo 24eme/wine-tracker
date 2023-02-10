@@ -47,11 +47,11 @@ except:
 # In[ ]:
 
 
-#préparations des données de l'opérateur sans filtres
-
 mouvements = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False)
 
-lastcampagnes = mouvements['campagne'].unique()[-5:]
+lastcampagnes = mouvements['campagne'].unique()
+lastcampagnes.sort()
+lastcampagnes = lastcampagnes[-5:]
 mouvements = mouvements.query('campagne in @lastcampagnes')
 
 mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = True)
