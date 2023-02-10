@@ -158,13 +158,15 @@ df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleur'])
 
 
 def create_graphe(final,identifiant,appellation,couleur):
-    fig = px.bar(final, x="campagne", y="volume", color="variable",color_discrete_sequence=["blue", "red", "purple"],
+    fig = px.bar(final, x="campagne", y="volume", color="variable",color_discrete_sequence=["#e75047", "#477be5", "#ba2e27"],
                  text_auto=True,
                  title="Evolution de MES sorties de Chais Vrac/Conditionné <br>(en hl, Sources "+source+")")
-    fig.update_layout(xaxis_title=None, 
+    fig.update_layout(title_font_size=14,
+                      title_font_color="black",
+                      xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,
-                      paper_bgcolor="#b7e1e5",
+                      paper_bgcolor="white",
                       plot_bgcolor = "white",
                       hovermode = False,
                       yaxis=dict(tickformat=".0f"),

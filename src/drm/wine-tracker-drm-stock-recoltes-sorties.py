@@ -154,14 +154,16 @@ df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleurs'])
 def create_graphique(final,identifiant,appellation,couleur):
 
     # CREATION DU GRAPHE
-    fig = px.line(final, x="campagne", y="value", color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue", "green", "red"],
+    fig = px.line(final, x="campagne", y="value", color='variable', markers=True, symbol="variable",color_discrete_sequence=["#477be5", "#24b724", "#e75047"],
                   title="Evolution des MES stocks, récoltes et sorties<br>(en hl. Sorties hors replis, hors déclassements, Sources "+source+")")
     fig.update_traces(mode="markers+lines", hovertemplate=None)
     fig.update_layout(hovermode="x")
-    fig.update_layout(xaxis_title=None,
+    fig.update_layout(title_font_size=14,
+                      title_font_color="black",
+                      xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,
-                      paper_bgcolor="#fff6ad",
+                      paper_bgcolor="white",
                       plot_bgcolor = "white",
                       yaxis=dict(tickformat=".0f"),
                       legend=dict(orientation="h",xanchor = "center",x = 0.5)
