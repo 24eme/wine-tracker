@@ -61,7 +61,7 @@ if(id_operateur):
 
 mouvements["volume mouvement"] = mouvements["volume mouvement"]*(-1)
 mouvements['sorties'] = mouvements["type de mouvement"].str.lower().str.startswith("sorties/")
-mouvements['filtre_produit'] = mouvements['appellation'] + "-" + mouvements['lieu'] + "-" +mouvements['certification']+ "-" +mouvements['genre']
+mouvements['filtre_produit'] = mouvements['appellation'] + "-" + mouvements['lieu'] + "-" +mouvements['certification']+ "-" +mouvements['genre']+ "-" +mouvements['mention']
 
 
 # In[ ]:

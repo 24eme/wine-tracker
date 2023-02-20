@@ -59,11 +59,14 @@ mouvements.rename(columns = {'volume mouvement':'entree'}, inplace = True)
 # In[ ]:
 
 
+drm['filtre_produit'] = drm['appellations'] + "-" + drm['lieux'] + "-" +drm['certifications']+ "-" +drm['genres']+ "-" +drm['mentions']
+mouvements['filtre_produit'] = mouvements['appellations'] + "-" + mouvements['lieux'] + "-" +mouvements['certifications']+ "-" +mouvements['genres']+ "-" +mouvements['mentions']
+
+
+# In[ ]:
+
+
 # PAR APPELLATION ET COULEUR
-
-drm['filtre_produit'] = drm['appellations'] + "-" + drm['lieux'] + "-" +drm['certifications']+ "-" +drm['genres']
-mouvements['filtre_produit'] = mouvements['appellations'] + "-" + mouvements['lieux'] + "-" +mouvements['certifications']+ "-" +mouvements['genres']
-
 
 #SOMME PRODUCTION
 
