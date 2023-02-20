@@ -45,12 +45,29 @@ drm = drm.query('campagne in @lastcampagnes')
 # In[ ]:
 
 
+#pour les volumes récoltés :
+csv_mouvements = path+"/data/drm/export_bi_mouvements.csv"  #il manque un ; à la fin du header.
+mouvements = pd.read_csv(csv_mouvements, sep=";",encoding="iso8859_15")
+mouvements.rename(columns = {'identifiant declarant':'identifiant','type de mouvement':'type_de_mouvement','certification':'certifications','genre':'genres','appellation':'appellations','mention':'mentions','lieu':'lieux','couleur':'couleurs'}, inplace = True)
+mouvements = mouvements.query("type_de_mouvement == 'entrees/recolte'")
+mouvements = mouvements.query('campagne in @lastcampagnes')
+mouvements.rename(columns = {'volume mouvement':'entree'}, inplace = True)
+
+#mouvements
+
+
+# In[ ]:
+
+
 # PAR APPELLATION ET COULEUR
 
-#SOMME PRODUCTION #A CHANGER
 drm['filtre_produit'] = drm['appellations'] + "-" + drm['lieux'] + "-" +drm['certifications']+ "-" +drm['genres']
+mouvements['filtre_produit'] = mouvements['appellations'] + "-" + mouvements['lieux'] + "-" +mouvements['certifications']+ "-" +mouvements['genres']
 
-drm_production = drm.groupby(["campagne",'filtre_produit', "couleurs"]).sum(["entree"])[["entree"]]
+
+#SOMME PRODUCTION
+
+drm_production = mouvements.groupby(["campagne",'filtre_produit', "couleurs"]).sum(["entree"])[["entree"]]
 
 
 #SOMME SORTIES
