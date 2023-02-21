@@ -1,12 +1,19 @@
 <?php
 $path = "graphes/".$_GET['id']."/drm";
-$filtres = array_diff(scandir($path), array('.', '..'));
+$filtres = array_diff(scandir($path), array('.', '..',$_GET['id'].".json"));
 
-#choix TOUT-TOUT au tout début.
-$index = array_search("TOUT-TOUT",$filtres);
+function replace_TOUT($filtre){
+  return str_replace("-TOUT",'-1',$filtre);
+}
+$filtres = array_map('replace_TOUT', $filtres);
+sort($filtres);
+
+#choix TOUT au tout début.
+$index = array_search("TOUT-1",$filtres);
 $touttout = $filtres[$index];
 unset($filtres[$index]);
 array_unshift($filtres, $touttout);
+
 ?>
 
 <html>
@@ -82,7 +89,11 @@ array_unshift($filtres, $touttout);
             <div class="col-md-5 shadow bg-white rounded">
               <select id="filtre" name="filtre" class="form-select form-control" onchange="changeFilter(this)">
                 <?php foreach($filtres as $f): ?>
-                  <option value="<?php echo($f);?>"><?php echo($f);?></option>
+                  <?php $tout = preg_match('/-1/',$f,$test);?>
+                  <?php if($tout):?>
+                  <optgroup label="<?php echo str_replace("-1","",$f);?>">
+                  <?php endif;?>
+                  <option value="<?php echo str_replace("-1","-TOUT",$f);?>"><?php echo str_replace("-1","-TOUT",$f);?></option>
                 <?php  endforeach; ?>
               </select>
             </div>
