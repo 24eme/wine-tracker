@@ -18,3 +18,15 @@ make dans le dossier  src/drm
 Pour générer tous les graphes :
 
 bash src/drm/generate_all.sh
+
+Pour générer tous les graphes du "vignoble" :
+
+bash src/drm/generate_levignoble.sh
+
+Pour générer tous les graphes de "ma cave" pour tous les opérateurs :
+
+bash src/drm/generate_macave.sh
+
+Pour générer tous les graphes de "ma cave" pour tous 1 opérateur :
+
+bash src/drm/generate_macave.sh $cvi
