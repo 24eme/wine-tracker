@@ -149,7 +149,8 @@ def create_graphe(final,identifiant,appellation,couleur):
                       paper_bgcolor="white",
                       plot_bgcolor = "white",
                       yaxis=dict(tickformat=".f"),
-                      legend=dict(orientation="h",xanchor = "center",x = 0.5)
+                      legend=dict(orientation="h",xanchor = "center",x = 0.5),
+                      legend_itemdoubleclick=False
                      )
     fig.for_each_xaxis(lambda x: x.update(showgrid=False))
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))

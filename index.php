@@ -147,47 +147,47 @@ array_unshift($filtres, $touttout);
     window.location = href;
   }
 
-  document.addEventListener('dblclick', function(e) {
-      if( e.target.className.baseVal != "legendtoggle"){
-        return;
-      }
-      var tab = document.getElementsByClassName('legendtext');
-      var elementclicked = e.target.previousElementSibling.previousElementSibling;
-      //je désactive tout :
-      for(const element of tab){
-        if(element.dataset.unformatted == elementclicked.dataset.unformatted && element != elementclicked){
-          var tab2 = element.parentNode.parentNode.parentNode.parentNode.getElementsByClassName('legendtoggle');
-          for( const el of tab2){
-            el.dispatchEvent(new Event('mouseup'));
-          }
-          break;
-        }
-      }
-
-      //ok  -----------
-
-      //si un de mes voisins vaut 0.5 en opacity alors je clique sur mon jumeau :
-      var elementstracesfromsamegraphe = e.target.parentNode.parentNode.parentNode.getElementsByClassName('traces'); //moi et mes voisins
-      for (n of elementstracesfromsamegraphe){
-        console.log(n.style.opacity);
-        if(n.style.opacity == 0.5 ){ //si un de mes voisins est grisé je click sur mon jumeau :
-          console.log(tab2) //tab2 a tous les elements voisins dont mon jumeau
-          for(const element of tab2){
-            if( elementclicked.dataset.unformatted == element.parentNode.firstChild.dataset.unformatted){ //si mon jumeau
-              element.dispatchEvent(new Event('mouseup')); //je clique sur lui
-            }
-          }
-          return
-        }
-      }
-
-      //si ils sont tous à 1 //je les séléctionne tous
-      for(const element of tab2){
-        if( elementclicked.dataset.unformatted == element.parentNode.firstChild.dataset.unformatted){ //si mon jumeau
-          element.dispatchEvent(new Event('mouseup'));
-        }
-      }
-  });
+  // document.addEventListener('dblclick', function(e) {
+  //     if( e.target.className.baseVal != "legendtoggle"){
+  //       return;
+  //     }
+  //     var tab = document.getElementsByClassName('legendtext');
+  //     var elementclicked = e.target.previousElementSibling.previousElementSibling;
+  //     //je désactive tout :
+  //     for(const element of tab){
+  //       if(element.dataset.unformatted == elementclicked.dataset.unformatted && element != elementclicked){
+  //         var tab2 = element.parentNode.parentNode.parentNode.parentNode.getElementsByClassName('legendtoggle');
+  //         for( const el of tab2){
+  //           el.dispatchEvent(new Event('mouseup'));
+  //         }
+  //         break;
+  //       }
+  //     }
+  //
+  //     //ok  -----------
+  //
+  //     //si un de mes voisins vaut 0.5 en opacity alors je clique sur mon jumeau :
+  //     var elementstracesfromsamegraphe = e.target.parentNode.parentNode.parentNode.getElementsByClassName('traces'); //moi et mes voisins
+  //     for (n of elementstracesfromsamegraphe){
+  //       console.log(n.style.opacity);
+  //       if(n.style.opacity == 0.5 ){ //si un de mes voisins est grisé je click sur mon jumeau :
+  //         console.log(tab2) //tab2 a tous les elements voisins dont mon jumeau
+  //         for(const element of tab2){
+  //           if( elementclicked.dataset.unformatted == element.parentNode.firstChild.dataset.unformatted){ //si mon jumeau
+  //             element.dispatchEvent(new Event('mouseup')); //je clique sur lui
+  //           }
+  //         }
+  //         return
+  //       }
+  //     }
+  //
+  //     //si ils sont tous à 1 //je les séléctionne tous
+  //     for(const element of tab2){
+  //       if( elementclicked.dataset.unformatted == element.parentNode.firstChild.dataset.unformatted){ //si mon jumeau
+  //         element.dispatchEvent(new Event('mouseup'));
+  //       }
+  //     }
+  // });
 
   document.addEventListener('click', function(e) {
       if( e.target.className.baseVal != "legendtoggle"){
