@@ -34,9 +34,38 @@ array_unshift($filtres, $touttout);
           <div>
             <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
           </div>
-          
           <div class="mt-5">
-            <h4>Statistiques</h4>
+            <p class="mt-3">Dernière mise à jour : XX/XX/XXXX</p>
+            <div class="row">
+              <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
+                <div class="col-md-3">
+                  <div class="chiffre">
+                    <h2>35%</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="chiffre">
+                    <h2>1000hl</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="chiffre">
+                    <h2>60</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="chiffre">
+                    <h2>99%</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-5">
             <ul class="nav nav-tabs">
               <li id="drm" class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">DRM</a>
@@ -48,9 +77,8 @@ array_unshift($filtres, $touttout);
                 <a class="nav-link" href="#">AUTRES</a>
               </li>
             </ul>
-            <p class="mt-3">Dernière mise à jour : XX/XX/XXXX</p>
           </div>
-          <div class="mt-5">
+          <div class="mt-3 d-flex align-items-end flex-column">
             <div class="col-md-5 shadow bg-white rounded">
               <select id="filtre" name="filtre" class="form-select form-control" onchange="changeFilter(this)">
                 <?php foreach($filtres as $f): ?>

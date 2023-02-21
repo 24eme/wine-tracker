@@ -16,4 +16,10 @@ body{
 
 .entete{
   color : #e75047;
+  font-size: 1.5em;
+  /* text-shadow: grey 0.1em 0.1em 0.1em; */
+}
+
+.chiffre{
+  max-width: 85%;
 }
