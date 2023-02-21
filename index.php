@@ -1,6 +1,6 @@
 <?php
-$path = "graphes/".$_GET['id']."/drm";
-$filtres = array_diff(scandir($path), array('.', '..',$_GET['id'].".json"));
+$path = "graphes/".$_GET['id'];
+$filtres = array_diff(scandir($path."/drm"), array('.', '..',$_GET['id'].".json"));
 
 function replace_TOUT($filtre){
   return str_replace("-TOUT",'-1',$filtre);
@@ -14,6 +14,8 @@ $touttout = $filtres[$index];
 unset($filtres[$index]);
 array_unshift($filtres, $touttout);
 
+$json = file_get_contents($path."/".$_GET['id'].".json");
+$data = json_decode($json);
 ?>
 
 <html>
@@ -35,14 +37,14 @@ array_unshift($filtres, $touttout);
     <div class="container mt-5">
       <div class="content">
           <div>
-              <h2>Statistiques et graphiques pour : <?php echo "XXXXXXXXXXX" ?> </h2>
+              <h2>Statistiques et graphiques pour : <?php echo ($data->name);?> </h2>
           </div>
           <hr class="border border-danger border-2 opacity-50">
           <div>
             <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
           </div>
           <div class="mt-5">
-            <p class="mt-3">Dernière mise à jour : XX/XX/XXXX</p>
+            <p class="mt-3">Dernière mise à jour : <?php echo ($data->date);?></p>
             <div class="row">
               <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
                 <div class="col-md-3">
