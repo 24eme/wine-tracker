@@ -46,12 +46,24 @@ def get_json(id_operateur,csv):
 
     csv['filtre_produits'] = csv['appellations'] + "-" + csv['lieux'] + "-" +csv['certifications']+ "-" +csv['genres']+ "-" +csv['mentions']+ "-" +csv['couleurs'].str.upper()
 
-    produits = csv[["filtre_produits","libelle produit"]] #,"couleurs"
-    produits = produits.drop_duplicates()
-    #produits.groupby(['filtre_produits','couleurs'])
+    ### CREATION DU TABLEAU ASSOCIATIF APPELLATION-LIBELLE ###
 
-    produits = produits.set_index(['filtre_produits']).T.to_dict('records') #,"couleurs"
-    produits = produits[0]
+    produits = csv[["filtre_produits","libelle produit"]]
+    produits = produits.drop_duplicates()
+    produits = produits.to_dict('records')
+
+    d = {}
+    for p in produits:
+        if p["filtre_produits"] in d.keys():
+            nb_caractere_ancien = len(d[p["filtre_produits"]])
+            nb_caractere_nouveau = len(p["libelle produit"])
+            if(nb_caractere_nouveau < nb_caractere_ancien):
+                d[p["filtre_produits"]]=p["libelle produit"]
+        else:
+            d[p["filtre_produits"]]=p["libelle produit"]
+
+
+    produits = d
 
     appellations = csv['appellations'] + "-" + csv['lieux'] + "-" +csv['certifications']+ "-" +csv['genres']+ "-" +csv['mentions']
     appellations = appellations.unique()
@@ -67,9 +79,25 @@ def get_json(id_operateur,csv):
                     produits[element+"-TOUT"] = appellation
                     break
 
-    produits["TOUT-TOUT"] = "TOUT"
+    produits["TOUT-TOUT"] = "Toutes les appellations"
 
-    # Data to be written
+    final = {}
+    for prod in produits:
+        appellation = re.findall(r'(.+)-(.+)',prod)[0][0]
+        couleur = re.findall(r'(.+)-(.+)',prod)[0][1]
+
+        if appellation not in final.keys():
+            final[appellation] = {}
+
+        if (couleur == "TOUT" and len(final[appellation].keys()) == 1):
+            continue
+
+        final[appellation][appellation+"-"+couleur] = produits[prod]
+
+    produits = final
+
+    ### FIN CREATION DU TABLEAU ###
+
     dictionary ={
         "name" : nom,
         "date" : date,

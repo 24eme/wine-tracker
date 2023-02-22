@@ -16,6 +16,7 @@ array_unshift($filtres, $touttout);
 
 $json = file_get_contents($path."/".$_GET['id'].".json");
 $data = json_decode($json, true);
+
 ?>
 
 <html>
@@ -91,13 +92,14 @@ $data = json_decode($json, true);
             <div class="mt-3 d-flex align-items-end flex-column">
               <div class="col-md-5 shadow bg-white rounded">
                 <select id="filtre" name="filtre" class="form-select form-control" onchange="changeFilter(this)">
-                  <?php foreach($filtres as $f): ?>
-                    <?php $tout = preg_match('/-1/',$f,$test);?>
-                    <?php if($tout):?>
-                    <optgroup label="<?php echo $data['produits'][str_replace("-1","-TOUT",$f)];?>">
+                  <?php foreach($filtres as $f):
+                    $f = str_replace("-1","-TOUT",$f);
+                    preg_match("/(.+)-(.+)/",$f,$splitappellation);
+                    $appellation = $splitappellation[1]; ?>
+                    <?php if(array_key_exists($f,$data['produits'][$appellation])):?>
+                      <option value="<?php echo str_replace("-1","-TOUT",$f);?>"><?php echo $data['produits'][$appellation][$f];?></option>
                     <?php endif;?>
-                    <option value="<?php echo str_replace("-1","-TOUT",$f);?>"><?php echo $data['produits'][str_replace("-1","-TOUT",$f)];?></option>
-                  <?php  endforeach; ?>
+                  <?php endforeach; ?>
                 </select>
               </div>
             </div>
