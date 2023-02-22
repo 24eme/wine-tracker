@@ -15,7 +15,7 @@ unset($filtres[$index]);
 array_unshift($filtres, $touttout);
 
 $json = file_get_contents($path."/".$_GET['id'].".json");
-$data = json_decode($json);
+$data = json_decode($json, true);
 ?>
 
 <html>
@@ -37,14 +37,14 @@ $data = json_decode($json);
     <div class="container mt-5">
       <div class="content">
           <div>
-              <h2>Statistiques et graphiques pour : <?php echo ($data->name);?> </h2>
+              <h2>Statistiques et graphiques pour : <?php echo $data["name"];?> </h2>
           </div>
           <hr class="border border-danger border-2 opacity-50">
           <div>
             <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
           </div>
           <div class="mt-5">
-            <p class="mt-3">Dernière mise à jour : <?php echo ($data->date);?></p>
+            <p class="mt-3">Dernière mise à jour : <?php echo $data["date"];?></p>
             <div class="row">
               <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
                 <div class="col-md-3">
@@ -94,9 +94,9 @@ $data = json_decode($json);
                   <?php foreach($filtres as $f): ?>
                     <?php $tout = preg_match('/-1/',$f,$test);?>
                     <?php if($tout):?>
-                    <optgroup label="<?php echo str_replace("-1","",$f);?>">
+                    <optgroup label="<?php echo $data['produits'][str_replace("-1","-TOUT",$f)];?>">
                     <?php endif;?>
-                    <option value="<?php echo str_replace("-1","-TOUT",$f);?>"><?php echo str_replace("-1","-TOUT",$f);?></option>
+                    <option value="<?php echo str_replace("-1","-TOUT",$f);?>"><?php echo $data['produits'][str_replace("-1","-TOUT",$f)];?></option>
                   <?php  endforeach; ?>
                 </select>
               </div>

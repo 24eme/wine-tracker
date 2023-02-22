@@ -10,6 +10,7 @@ import pathlib
 from pathlib import Path
 from datetime import datetime
 import json
+import re
 
 path = pathlib.Path().absolute()
 path = str(path).replace("src/drm","")
@@ -42,20 +43,43 @@ def get_json(id_operateur,csv):
     csv= csv.query("identifiant == @id_operateur").reset_index()
     nom = csv.nom.unique()[0]
     date = datetime.today().strftime('%d/%m/%Y')
-    
-    import json
-    
+
+    csv['filtre_produits'] = csv['appellations'] + "-" + csv['lieux'] + "-" +csv['certifications']+ "-" +csv['genres']+ "-" +csv['mentions']+ "-" +csv['couleurs'].str.upper()
+
+    produits = csv[["filtre_produits","libelle produit"]] #,"couleurs"
+    produits = produits.drop_duplicates()
+    #produits.groupby(['filtre_produits','couleurs'])
+
+    produits = produits.set_index(['filtre_produits']).T.to_dict('records') #,"couleurs"
+    produits = produits[0]
+
+    appellations = csv['appellations'] + "-" + csv['lieux'] + "-" +csv['certifications']+ "-" +csv['genres']+ "-" +csv['mentions']
+    appellations = appellations.unique()
+
+    couleurs = csv['couleurs'].str.upper().unique()
+
+    for element in appellations :
+        if not element+"-TOUT" in produits.keys():
+            for couleur in couleurs :
+                if(element+"-"+couleur in produits.keys()):
+                    pattern = re.compile(couleur, re.IGNORECASE)
+                    appellation = pattern.sub("",produits[element+"-"+couleur])
+                    produits[element+"-TOUT"] = appellation
+                    break
+
+    produits["TOUT-TOUT"] = "TOUT"
+
     # Data to be written
     dictionary ={
         "name" : nom,
-        "date" : date
+        "date" : date,
+        "produits": produits
     }
-    
+
     with open(dossier_graphes+id_operateur+"/"+id_operateur+".json", "w") as outfile:
         json.dump(dictionary, outfile)
 
     return
-
 
 if(id_operateur):
     get_json(id_operateur,drm)
