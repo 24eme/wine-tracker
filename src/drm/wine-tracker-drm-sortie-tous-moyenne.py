@@ -73,7 +73,7 @@ def create_graphe(final,appellation,couleur):
     # CREATION DU GRAPHE
     fig = px.bar(final, x="campagne", y="volume", color="type_de_mouvement",
                  text_auto=True,
-                 title="Evolution de MES sorties de Chais Vrac/Conditionné <br>(en hl, Sources "+source+")")
+                 title="Evolution des sorties de Chais Vrac/Conditionné <br>(en hl, Sources "+source+")")
     fig.update_layout(title_font_size=14,
                       title_font_color="black",
                       xaxis_title=None,
