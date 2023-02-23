@@ -183,10 +183,11 @@ def create_graphique(final,appellation,couleur):
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False
                      )
+
     fig.for_each_xaxis(lambda x: x.update(showgrid=False))
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
-    fig.update_xaxes(fixedrange=True)
-    fig.update_yaxes(fixedrange=True)
+    fig.update_xaxes(fixedrange=True,showline=True, linewidth=1, linecolor='Lightgrey')
+    fig.update_yaxes(fixedrange=True,rangemode="tozero")
     #fig.show()
 
     dossier = dossier_graphes+"/1-REFERENCE/drm/"+appellation+"-"+couleur
