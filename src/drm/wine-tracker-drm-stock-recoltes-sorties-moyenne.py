@@ -168,7 +168,7 @@ df_final = df_final.sort_values(by=['filtre_produit','couleurs'])
 def create_graphique(final,appellation,couleur):
 
     # CREATION DU GRAPHE
-    fig = px.line(final, x="campagne", y="value", color='variable', markers=True, symbol="variable",color_discrete_sequence=["#477be5", "#24b724", "#e75047"],
+    fig = px.line(final, x="campagne", y="value", color='variable', markers=True, symbol="variable",color_discrete_sequence=["#e74e62", "#d1342f", "#961d50"],
                   title="Evolution des stocks, récoltes et sorties<br>(en hl. Sorties hors replis, hors déclassements, Sources "+source+")")
     fig.update_traces(mode="markers+lines", hovertemplate=None)
     fig.update_layout(hovermode="x")

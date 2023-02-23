@@ -111,7 +111,7 @@ $data = json_decode($json, true);
                     </div>
                   </div>
                   <div class="col-md-6 mt-4" style="height: 650px;">
-                    <p class="entete text-center fw-bold">LE VIGNOBLE</p>
+                    <p class="entete-vignoble text-center fw-bold">LE VIGNOBLE</p>
                     <div class="shadow bg-white rounded">
                       <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe1.html";?>
                     </div>
@@ -133,7 +133,7 @@ $data = json_decode($json, true);
                     <?php endif; ?>
                   </div>
                   <div class="col-md-6 mt-4" style="height: 650px;">
-                    <p class="entete text-center fw-bold">LE VIGNOBLE</p>
+                    <p class="entete-vignoble text-center fw-bold">LE VIGNOBLE</p>
                     <?php if( ! $_GET['bis']):?>
                       <div class="shadow bg-white rounded">
                         <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe2.html";?>
@@ -155,8 +155,9 @@ $data = json_decode($json, true);
                     </div>
                   </div>
                   <div class="col-md-6 mt-4" style="height: 650px;">
-                    <p class="entete text-center fw-bold">LE VIGNOBLE</p>
+                    <p class="entete-vignoble text-center fw-bold">LE VIGNOBLE</p>
                     <div class="shadow bg-white rounded">
+                      <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe4.html";?>
                     </div>
                   </div>
                 </div>
