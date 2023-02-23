@@ -83,9 +83,6 @@ $data = json_decode($json, true);
               <li class="nav-item">
                 <a class="nav-link" href="#nav-bar" data-show="contrats" >CONTRATS</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#nav-bar" data-show="autres" >AUTRES</a>
-              </li>
             </ul>
           </div>
           <div id="drm" class="onglets d-block">
@@ -148,8 +145,8 @@ $data = json_decode($json, true);
                   </div>
                 </div>
               </div>
-              <div>
-                <div class="row mt-3">
+              <div class="row mt-3">
+                <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
                   <div class="col-md-12" style="height: 500px;">
                     <div class="shadow bg-white rounded">
                       <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe3.html";?>
@@ -164,12 +161,6 @@ $data = json_decode($json, true);
           <p>POUR LES CONTRATS</p>
           <div class="shadow bg-white rounded">
             <p> GRAPHES CONTRATS</p>
-          </div>
-        </div>
-        <div id="autres" class="onglets mt-5 d-none">
-          <p>POUR LES AUTRES GRAPHES</p>
-          <div class="shadow bg-white rounded">
-            <p>GRAPHES AUTRES</p>
           </div>
         </div>
         </div>
@@ -226,6 +217,9 @@ $data = json_decode($json, true);
 
   var onglets = document.getElementById("nav-bar");
   onglets.addEventListener("click",function(e){
+     if(e.target.tagName != "A"){
+       return;
+     }
      active = onglets.querySelector(".active");
      active.classList.remove("active");
      document.getElementById(active.dataset.show).classList.remove("d-block");
