@@ -147,6 +147,21 @@ $data = json_decode($json, true);
                 </div>
               </div>
               <div class="row mt-3">
+                <div class="row shadow bg-white rounded" style="height: 750px;">
+                  <div class="col-md-6 mt-4" style="height: 650px;">
+                    <p class="entete text-center fw-bold">MA CAVE</p>
+                    <div class="shadow bg-white rounded">
+                      <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe4.html";?>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mt-4" style="height: 650px;">
+                    <p class="entete text-center fw-bold">LE VIGNOBLE</p>
+                    <div class="shadow bg-white rounded">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3">
                 <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
                   <div class="col-md-12" style="height: 500px;">
                     <div class="shadow bg-white rounded">
