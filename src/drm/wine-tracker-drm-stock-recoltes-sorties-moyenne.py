@@ -177,8 +177,8 @@ def create_graphique(final,appellation,couleur):
                       xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,
-                      paper_bgcolor="white",
-                      plot_bgcolor = "white",
+                      paper_bgcolor="#F7F7F7",
+                      plot_bgcolor = "#F7F7F7",
                       yaxis=dict(tickformat=".0f"),
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False

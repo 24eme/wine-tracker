@@ -127,7 +127,7 @@ def create_graphe(final,appellation,couleur):
     fig = px.histogram(final, x="campagne", y="volume",
                  color='trimestre', barmode='group',
                  color_discrete_sequence=["#e74e62", "#d1342f", "#ac1c25","#961d50","#961d50","#8F1665","#753452","#8A321A"],
-                 title="Evolution de MES sorties de Chais par trimestres <br>(en hl, Sources "+source+"-Cumul depuis le début de la campagne)")
+                 title="Evolution des sorties de Chais par trimestres <br>(en hl, Sources "+source+"-Cumul depuis le début de la campagne)")
     fig.update_layout(title_font_size=14,
                       title_font_color="black",
                       xaxis_title=None,
