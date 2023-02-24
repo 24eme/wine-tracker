@@ -1,14 +1,52 @@
 //option selectionné est le filtre qui est dans l'url
+
 document.addEventListener("DOMContentLoaded", function(event) {
-  var href = new URL(window.location.href);
-  if(!href.searchParams.get('filtre')){
-    document.getElementById('filtre').value = "TOUT-TOUT";
-    document.getElementById('filtre-contrats').value = "TOUT-TOUT"
-  }
-  else{
-    document.getElementById('filtre').value = href.searchParams.get('filtre');
+  var url = window.location.href;
+  var onglet = url.split('#').pop();
+  var href = new URL(url);
+  if(onglet == "drm" || onglet == "contrats"){
+    document.getElementById("nav-"+onglet+"-tab").click()
   }
 
+  if(!href.searchParams.get('filtre')){ //si pas de filtre dans l'url par defaut "TOUT-TOUT"
+    document.getElementById('filtre').value = "TOUT-TOUT";
+    document.getElementById('filtre-contrats').value = "TOUT-TOUT";
+  }
+  else{
+
+    let drmOptionNames = [...document.getElementById('filtre').options].map(o => o.value);
+
+    if(drmOptionNames.includes(href.searchParams.get('filtre'))){
+      document.getElementById('filtre').value = href.searchParams.get('filtre');
+    }
+    else{
+      var onglets = document.getElementsByClassName("nav-link");
+      for (var i = 0; i < onglets.length; i++) {
+          onglets[i].addEventListener('click',function() {
+            href.searchParams.set('filtre',"TOUT-TOUT");
+            href.hash = "#"+this.dataset.onglet;
+            window.location = href;
+          });
+      }
+    }
+
+    let contratsOptionNames = [...document.getElementById('filtre-contrat').options].map(o => o.value);
+
+    if(contratsOptionNames.includes(href.searchParams.get('filtre'))){
+      document.getElementById('filtre-contrat').value = href.searchParams.get('filtre');
+    }
+
+    else{
+      var onglets = document.getElementsByClassName("nav-link");
+      for (var i = 0; i < onglets.length; i++) {
+          onglets[i].addEventListener('click',function() {
+            href.searchParams.set('filtre',"TOUT-TOUT");
+            href.hash = "#"+this.dataset.onglet;
+            window.location = href;
+          });
+      }
+    }
+  }
 });
 
 // quand on change de filtre l'url est mis à jour et la page est rechargée.
@@ -33,6 +71,3 @@ document.addEventListener('click', function(e) {
       }
     }
 });
-
-
-

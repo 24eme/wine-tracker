@@ -16,7 +16,6 @@ $list_produits_contrats = $data['produits']['contrats'];
     <link href="web/main.css" rel="stylesheet">
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="web/plotly-2.18.0.min.js"></script>
-    <script src="web/main.js"></script>
   </head>
   <body>
     <nav class="navbar">
@@ -69,8 +68,8 @@ $list_produits_contrats = $data['produits']['contrats'];
           </div>
           <nav class="mt-5">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <button class="nav-link active" id="nav-drm-tab" data-bs-toggle="tab" data-bs-target="#nav-drm" type="button" role="tab" aria-controls="nav-drm" aria-selected="true">DRM</button>
-              <button class="nav-link" id="nav-contrats-tab" data-bs-toggle="tab" data-bs-target="#nav-contrats" type="button" role="tab" aria-controls="nav-contrats" aria-selected="false">Contrats</button>
+              <a href="#drm"><button class="nav-link active" id="nav-drm-tab" data-onglet="drm" data-bs-toggle="tab" data-bs-target="#nav-drm" type="button" role="tab" aria-controls="nav-drm" aria-selected="true">DRM</button></a>
+              <a href="#contrats"><button class="nav-link" id="nav-contrats-tab" data-onglet="contrats" data-bs-toggle="tab" data-bs-target="#nav-contrats" type="button" role="tab" aria-controls="nav-contrats" aria-selected="false">CONTRATS</button></a>
             </div>
           </nav>
           <div class="tab-content" id="nav-tabContent">
@@ -195,3 +194,4 @@ $list_produits_contrats = $data['produits']['contrats'];
     </footer>
   </body>
 </html>
+<script src="web/main.js"></script>

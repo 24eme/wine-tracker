@@ -28,3 +28,7 @@ body{
 .chiffre{
   max-width: 85%;
 }
+
+nav a{
+  text-decoration: none;
+}
