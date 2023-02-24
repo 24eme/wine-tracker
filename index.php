@@ -1,22 +1,13 @@
 <?php
 $path = "graphes/".$_GET['id'];
-$filtres = array_diff(scandir($path."/drm"), array('.', '..',$_GET['id'].".json"));
-
-function replace_TOUT($filtre){
-  return str_replace("-TOUT",'-1',$filtre);
-}
-$filtres = array_map('replace_TOUT', $filtres);
-sort($filtres);
-
-#choix TOUT au tout début.
-$index = array_search("TOUT-1",$filtres);
-$touttout = $filtres[$index];
-unset($filtres[$index]);
-array_unshift($filtres, $touttout);
+$ls_dossier_drm = array_diff(scandir($path."/drm"), array('.', '..'));
+$ls_dossier_contrats = array_diff(scandir($path."/contrat"), array('.', '..'));
 
 $json = file_get_contents($path."/".$_GET['id'].".json");
 $data = json_decode($json, true);
 
+$list_produits_drm = $data['produits']['drm'];
+$list_produits_contrats = $data['produits']['contrats'];
 ?>
 
 <html>
@@ -90,14 +81,13 @@ $data = json_decode($json, true);
             <div class="mt-3 d-flex align-items-end flex-column">
               <div class="col-md-5 shadow bg-white rounded">
                 <select id="filtre" name="filtre" class="form-select form-control" onchange="changeFilter(this)">
-                  <?php foreach($filtres as $f):
-                    $f = str_replace("-1","-TOUT",$f);
-                    preg_match("/(.+)-(.+)/",$f,$splitappellation);
-                    $appellation = $splitappellation[1]; ?>
-                    <?php if(array_key_exists($f,$data['produits'][$appellation])):?>
-                      <option value="<?php echo str_replace("-1","-TOUT",$f);?>"><?php echo $data['produits'][$appellation][$f];?></option>
-                    <?php endif;?>
-                  <?php endforeach; ?>
+                  <?php 
+                  foreach($list_produits_drm as $filtre => $libelle):
+                    if(in_array($filtre,$ls_dossier_drm))://si le dossier existe on l'affiche ?>
+                      <option value="<?php echo $filtre;?>"><?php echo $libelle;?></option>
+                  <?php endif;
+                  endforeach;
+                  ?>
                 </select>
               </div>
             </div>
@@ -175,13 +165,24 @@ $data = json_decode($json, true);
           </div>
         </div>
         <div id="contrats" class="onglets mt-5 d-none">
-          <p>POUR LES CONTRATS</p>
+          <div class="mt-3 d-flex align-items-end flex-column">
+            <div class="col-md-5 shadow bg-white rounded">
+              <select id="filtre-contrat" name="filtre-contrat" class="form-select form-control" onchange="changeFilter(this)">
+                <?php 
+                foreach($list_produits_contrats as $filtre => $libelle):
+                  if(in_array($filtre,$ls_dossier_contrats))://si le dossier existe on l'affiche ?>
+                    <option value="<?php echo $filtre;?>"><?php echo $libelle;?></option>
+                <?php endif;
+                endforeach;
+                ?>
+              </select>
+            </div>
+          </div>
           <div class="shadow bg-white rounded">
-            <p> GRAPHES CONTRATS</p>
+            <?php include "graphes/".$_GET['id']."/contrat/".$_GET['filtre']."/graphe1.html";?>
           </div>
         </div>
         </div>
-
     <footer>
       <div class="container">
         <div class="row">
