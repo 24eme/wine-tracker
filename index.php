@@ -67,122 +67,120 @@ $list_produits_contrats = $data['produits']['contrats'];
               </div>
             </div>
           </div>
-          <div class="mt-5">
-            <ul id="nav-bar" class="nav nav-tabs">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#nav-bar" data-show="drm">DRM</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#nav-bar" data-show="contrats" >CONTRATS</a>
-              </li>
-            </ul>
-          </div>
-          <div id="drm" class="onglets d-block">
-            <div class="mt-3 d-flex align-items-end flex-column">
-              <div class="col-md-5 shadow bg-white rounded">
-                <select id="filtre" name="filtre" class="form-select form-control" onchange="changeFilter(this)">
-                  <?php 
-                  foreach($list_produits_drm as $filtre => $libelle):
-                    if(in_array($filtre,$ls_dossier_drm))://si le dossier existe on l'affiche ?>
-                      <option value="<?php echo $filtre;?>"><?php echo $libelle;?></option>
-                  <?php endif;
-                  endforeach;
-                  ?>
-                </select>
-              </div>
+          <nav class="mt-5">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link active" id="nav-drm-tab" data-bs-toggle="tab" data-bs-target="#nav-drm" type="button" role="tab" aria-controls="nav-drm" aria-selected="true">DRM</button>
+              <button class="nav-link" id="nav-contrats-tab" data-bs-toggle="tab" data-bs-target="#nav-contrats" type="button" role="tab" aria-controls="nav-contrats" aria-selected="false">Contrats</button>
             </div>
-            <div class="mt-5">
-              <div class="row">
-                <div class="row shadow bg-white rounded" style="height: 750px;">
-                  <div class="col-md-6 mt-4" style="height: 650px;">
-                    <p class="entete text-center fw-bold">MA CAVE</p>
-                    <div class="shadow bg-white rounded">
-                      <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe1.html";?>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+              <div class="tab-pane fade show active" id="nav-drm" role="tabpanel" aria-labelledby="nav-drm-tab" tabindex="0" id="drm" class="onglets d-block">
+                <div class="mt-3 d-flex align-items-end flex-column">
+                  <div class="col-md-5 shadow bg-white rounded">
+                    <select id="filtre" name="filtre" class="form-select form-control" onchange="changeFilter(this)">
+                      <?php
+                      foreach($list_produits_drm as $filtre => $libelle):
+                        if(in_array($filtre,$ls_dossier_drm))://si le dossier existe on l'affiche ?>
+                          <option value="<?php echo $filtre;?>"><?php echo $libelle;?></option>
+                      <?php endif;
+                      endforeach;
+                      ?>
+                    </select>
+                  </div>
+                </div>
+                <div class="mt-5">
+                  <div class="row">
+                    <div class="row shadow bg-white rounded" style="height: 750px;">
+                      <div class="col-md-6 mt-4" style="height: 650px;">
+                        <p class="entete text-center fw-bold">MA CAVE</p>
+                        <div class="shadow bg-white rounded">
+                          <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe1.html";?>
+                        </div>
+                      </div>
+                      <div class="col-md-6 mt-4" style="height: 650px;">
+                        <p class="entete-vignoble text-center fw-bold">LE VIGNOBLE</p>
+                        <div class="shadow bg-white rounded">
+                          <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe1.html";?>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-md-6 mt-4" style="height: 650px;">
-                    <p class="entete-vignoble text-center fw-bold">LE VIGNOBLE</p>
-                    <div class="shadow bg-white rounded">
-                      <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe1.html";?>
+                  <div class="row mt-3" >
+                    <div class="row shadow bg-white rounded" style="height: 750px;">
+                      <div class="col-md-6 mt-4" style="height: 650px;">
+                        <p class="entete text-center fw-bold">MA CAVE</p>
+                        <?php if( ! $_GET['bis']):?>
+                          <div class="shadow bg-white rounded">
+                            <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe2.html";?>
+                          </div>
+                        <?php else :?>
+                          <div class="shadow bg-white rounded">
+                            <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe2-bis.html";?>
+                          </div>
+                        <?php endif; ?>
+                      </div>
+                      <div class="col-md-6 mt-4" style="height: 650px;">
+                        <p class="entete-vignoble text-center fw-bold">LE VIGNOBLE</p>
+                        <?php if( ! $_GET['bis']):?>
+                          <div class="shadow bg-white rounded">
+                            <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe2.html";?>
+                          </div>
+                        <?php else :?>
+                          <div class="shadow bg-white rounded">
+                            <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe2-bis.html";?>
+                          </div>
+                        <?php endif; ?>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="row shadow bg-white rounded" style="height: 750px;">
+                      <div class="col-md-6 mt-4" style="height: 650px;">
+                        <p class="entete text-center fw-bold">MA CAVE</p>
+                        <div class="shadow bg-white rounded">
+                          <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe4.html";?>
+                        </div>
+                      </div>
+                      <div class="col-md-6 mt-4" style="height: 650px;">
+                        <p class="entete-vignoble text-center fw-bold">LE VIGNOBLE</p>
+                        <div class="shadow bg-white rounded">
+                          <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe4.html";?>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
+                      <div class="col-md-12" style="height: 500px;">
+                        <div class="shadow bg-white rounded">
+                          <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe3.html";?>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row mt-3" >
-                <div class="row shadow bg-white rounded" style="height: 750px;">
-                  <div class="col-md-6 mt-4" style="height: 650px;">
-                    <p class="entete text-center fw-bold">MA CAVE</p>
-                    <?php if( ! $_GET['bis']):?>
-                      <div class="shadow bg-white rounded">
-                        <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe2.html";?>
-                      </div>
-                    <?php else :?>
-                      <div class="shadow bg-white rounded">
-                        <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe2-bis.html";?>
-                      </div>
-                    <?php endif; ?>
-                  </div>
-                  <div class="col-md-6 mt-4" style="height: 650px;">
-                    <p class="entete-vignoble text-center fw-bold">LE VIGNOBLE</p>
-                    <?php if( ! $_GET['bis']):?>
-                      <div class="shadow bg-white rounded">
-                        <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe2.html";?>
-                      </div>
-                    <?php else :?>
-                      <div class="shadow bg-white rounded">
-                        <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe2-bis.html";?>
-                      </div>
-                    <?php endif; ?>
+            <div class="tab-pane fade" id="nav-contrats" role="tabpanel" aria-labelledby="nav-contrats-tab" tabindex="0" id="contrats" class="onglets mt-5 d-none">
+                <div class="mt-3 d-flex align-items-end flex-column">
+                  <div class="col-md-5 shadow bg-white rounded">
+                    <select id="filtre-contrat" name="filtre-contrat" class="form-select form-control" onchange="changeFilter(this)">
+                      <?php
+                      foreach($list_produits_contrats as $filtre => $libelle):
+                        if(in_array($filtre,$ls_dossier_contrats))://si le dossier existe on l'affiche ?>
+                          <option value="<?php echo $filtre;?>"><?php echo $libelle;?></option>
+                      <?php endif;
+                      endforeach;
+                      ?>
+                    </select>
                   </div>
                 </div>
-              </div>
-              <div class="row mt-3">
-                <div class="row shadow bg-white rounded" style="height: 750px;">
-                  <div class="col-md-6 mt-4" style="height: 650px;">
-                    <p class="entete text-center fw-bold">MA CAVE</p>
-                    <div class="shadow bg-white rounded">
-                      <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe4.html";?>
-                    </div>
-                  </div>
-                  <div class="col-md-6 mt-4" style="height: 650px;">
-                    <p class="entete-vignoble text-center fw-bold">LE VIGNOBLE</p>
-                    <div class="shadow bg-white rounded">
-                      <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe4.html";?>
-                    </div>
-                  </div>
+                <div class="shadow bg-white rounded">
+                  <?php include "graphes/".$_GET['id']."/contrat/".$_GET['filtre']."/graphe1.html";?>
                 </div>
               </div>
-              <div class="row mt-3">
-                <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
-                  <div class="col-md-12" style="height: 500px;">
-                    <div class="shadow bg-white rounded">
-                      <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe3.html";?>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-        <div id="contrats" class="onglets mt-5 d-none">
-          <div class="mt-3 d-flex align-items-end flex-column">
-            <div class="col-md-5 shadow bg-white rounded">
-              <select id="filtre-contrat" name="filtre-contrat" class="form-select form-control" onchange="changeFilter(this)">
-                <?php 
-                foreach($list_produits_contrats as $filtre => $libelle):
-                  if(in_array($filtre,$ls_dossier_contrats))://si le dossier existe on l'affiche ?>
-                    <option value="<?php echo $filtre;?>"><?php echo $libelle;?></option>
-                <?php endif;
-                endforeach;
-                ?>
-              </select>
-            </div>
-          </div>
-          <div class="shadow bg-white rounded">
-            <?php include "graphes/".$_GET['id']."/contrat/".$_GET['filtre']."/graphe1.html";?>
-          </div>
-        </div>
-        </div>
+    </div>
     <footer>
       <div class="container">
         <div class="row">
