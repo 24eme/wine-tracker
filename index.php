@@ -79,8 +79,8 @@ $list_produits_contrats = $data['produits']['contrats'];
                     <select id="filtre" name="filtre" class="form-select form-control" onchange="changeFilter(this)">
                       <?php
                       foreach($list_produits_drm as $filtre => $libelle):
-                        if(in_array($filtre,$ls_dossier_drm))://si le dossier existe on l'affiche ?>
-                          <option value="<?php echo $filtre;?>"><?php echo $libelle;?></option>
+                        if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_drm))://si le dossier existe on l'affiche ?>
+                          <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"><?php echo $libelle;?></option>
                       <?php endif;
                       endforeach;
                       ?>
@@ -165,8 +165,8 @@ $list_produits_contrats = $data['produits']['contrats'];
                     <select id="filtre-contrat" name="filtre-contrat" class="form-select form-control" onchange="changeFilter(this)">
                       <?php
                       foreach($list_produits_contrats as $filtre => $libelle):
-                        if(in_array($filtre,$ls_dossier_contrats))://si le dossier existe on l'affiche ?>
-                          <option value="<?php echo $filtre;?>"><?php echo $libelle;?></option>
+                        if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_contrats))://si le dossier existe on l'affiche ?>
+                          <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"><?php echo $libelle;?></option>
                       <?php endif;
                       endforeach;
                       ?>

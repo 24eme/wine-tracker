@@ -11,6 +11,8 @@ from pathlib import Path
 from datetime import datetime
 import json
 import re
+import collections
+
 
 path = pathlib.Path().absolute()
 path = str(path).replace("src/drm","")
@@ -38,12 +40,20 @@ except:
 
 
 #creation d'un fichier json par operateur
-drm = pd.read_csv(csv, sep=";",encoding="utf-8")
-contrats = pd.read_csv(csv_contrats,sep=";",encoding="utf-8")
+drm = pd.read_csv(csv, sep=";",encoding="iso-8859-1")
+contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1")
+
+drm['libelle produit'] = drm['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
+contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
+
+
+# In[ ]:
+
 
 def get_json(id_operateur,csv_drm, csv_contrats):
     csv= csv_drm.query("identifiant == @id_operateur").reset_index()
     nom = csv.nom.unique()[0]
+
     date = datetime.today().strftime('%d/%m/%Y')
 
     csv['filtre_produits'] = csv['appellations'] + "-" + csv['lieux'] + "-" +csv['certifications']+ "-" +csv['genres']+ "-" +csv['mentions']+ "-" +csv['couleurs'].str.upper()
@@ -73,14 +83,19 @@ def get_json(id_operateur,csv_drm, csv_contrats):
     couleurs = csv['couleurs'].str.upper().unique()
 
     for element in appellations :
-        if not element+"-TOUT" in produits.keys():
+        if not element+"-1" in produits.keys():
+            countNbColorForOneAppellation = 0;
             for couleur in couleurs :
                 if(element+"-"+couleur in produits.keys()):
-                    pattern = re.compile(couleur, re.IGNORECASE)
-                    appellation = pattern.sub("",produits[element+"-"+couleur])
-                    produits[element+"-TOUT"] = appellation
-                    break
+                    countNbColorForOneAppellation +=1
+                    if(countNbColorForOneAppellation >= 2):
+                        produitLibelle = produits[element+"-"+couleur].replace('é','e')
+                        pattern = re.compile(couleur, re.IGNORECASE)
+                        appellation = pattern.sub("",produitLibelle)
+                        produits[element+"-1"] = appellation
+                        break
 
+    produits = collections.OrderedDict(sorted(produits.items()))
 
     update_produits = {"TOUT-TOUT": "Toutes les appellations"}
     update_produits.update(produits)
@@ -117,14 +132,22 @@ def get_json(id_operateur,csv_drm, csv_contrats):
 
     couleurs = csv['couleur'].str.upper().unique()
 
+
     for element in appellations :
-        if not element+"-TOUT" in produits_contrat.keys():
+        if not element+"-1" in produits_contrat.keys():
+            countNbColorForOneAppellation = 0;
             for couleur in couleurs :
-                if(element+"-"+couleur in produits_contrat.keys()):
-                    pattern = re.compile(couleur, re.IGNORECASE)
-                    appellation = pattern.sub("",produits_contrat[element+"-"+couleur])
-                    produits_contrat[element+"-TOUT"] = appellation
-                    break
+                if (element+"-"+couleur in produits_contrat.keys()):
+                    countNbColorForOneAppellation +=1
+                    if(countNbColorForOneAppellation >= 2):
+                        produitLibelle = produits_contrat[element+"-"+couleur].replace('é','e')
+                        pattern = re.compile(couleur, re.IGNORECASE)
+                        appellation = pattern.sub("",produitLibelle)
+                        produits_contrat[element+"-1"] = appellation
+                        break
+
+    produits_contrat = collections.OrderedDict(sorted(produits_contrat.items()))
+    produits_contrat = json.loads(json.dumps(produits_contrat))
 
     update_produits = {"TOUT-TOUT": "Toutes les appellations"}
     update_produits.update(produits_contrat)
