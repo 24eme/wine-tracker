@@ -7,6 +7,8 @@ if test "$1" ; then
 	python3 src/drm/wine-tracker-drm-sorties-par-mois.py $cvi
 	python3 src/drm/wine-tracker-informations-operateur.py $cvi
 	python3 src/drm/wine-tracker-drm-sorties-par-trimestre.py $cvi
+	python3 src/drm/wine-tracker-contrats-contractualisation-mes-clients.py $cvi
+	python3 src/drm/wine-tracker-informations-operateur.py $cvi
 else
 	echo "TOUS"
 	python3 src/drm/wine-tracker-drm-stock-recoltes-sorties.py
@@ -14,4 +16,6 @@ else
 	python3 src/drm/wine-tracker-drm-sorties-par-mois.py
 	python3 src/drm/wine-tracker-informations-operateur.py
 	python3 src/drm/wine-tracker-drm-sorties-par-trimestre.py
+	python3 src/drm/wine-tracker-contrats-contractualisation-mes-clients.py
+	python3 src/drm/wine-tracker-informations-operateur.py
 fi
