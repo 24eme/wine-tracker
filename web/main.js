@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   if(!href.searchParams.get('filtre')){ //si pas de filtre dans l'url par defaut "TOUT-TOUT"
-    document.getElementById('filtre').value = "TOUT-TOUT";
-    document.getElementById('filtre-contrats').value = "TOUT-TOUT";
+    href.searchParams.set('filtre',filtre.value);
+    window.location = href;
   }
   else{
 
