@@ -139,7 +139,7 @@ def create_graphe(final,identifiant,appellation,couleur):
     fig = px.histogram(final, x="mois", y="volume",
                  color='campagne', barmode='group',
                  height=500,
-                 color_discrete_sequence=["#e74e62", "#d1342f", "#ac1c25","#961d50","#961d50","#8F1665","#753452","#8A321A"],
+                 color_discrete_sequence=["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#E75047"],
                  title="Evolution de MES sorties de Chais par mois<br>(en hl, Sources "+source+"-Cumul depuis le début de la campagne)")
     fig.update_layout(title_font_size=14,
                       title_font_color="black",
