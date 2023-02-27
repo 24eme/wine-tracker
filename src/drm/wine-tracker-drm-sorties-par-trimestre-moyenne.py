@@ -71,7 +71,7 @@ sorties['couleur'] = sorties['couleur'].str.upper()
 
 sorties.set_index(['filtre_produit','couleur'], inplace = True)
 
-sorties_spe_spe = sorties.sort_values(by=['filtre_produit','couleur',"trimestre","campagne"])
+sorties_spe_spe = sorties.sort_values(by=['filtre_produit','couleur',"campagne","trimestre"])
 
 #sorties_spe_spe
 
@@ -112,9 +112,32 @@ df_final = pd.concat([sorties_spe_spe, sorties_spe_all])
 df_final = pd.concat([df_final, sorties_all_all])
 
 df_final = df_final.sort_values(by=['filtre_produit','couleur'])
-df_final['trimestre'] = df_final['trimestre'].map(trimestre_string,na_action=None)
+#df_final['trimestre'] = df_final['trimestre'].map(trimestre_string,na_action=None)
 
 df_final.rename(columns = {'volume mouvement':'volume'}, inplace = True)
+
+
+#### AJOUT X VALUES FOR THE GRAPH ###
+
+xaxis_start_tab = { 1: "08" , 2: "11" ,3: "02" ,4: "05"  }
+xaxis_finish_tab = { 1: "10" , 2: "01" ,3: "04" ,4: "07"  }
+
+df_final['trimestre-start'] = df_final['trimestre'].map(xaxis_start_tab,na_action=None)
+df_final['trimestre-finish'] = df_final['trimestre'].map(xaxis_finish_tab,na_action=None)
+
+def f(row,column):
+    annee = row['campagne'].split("-")
+    liste = ["08","09","10","11","12"]
+    if row['trimestre-start'] in liste:
+        val = row[column]+"-"+annee[0]
+    else:
+        val = row[column]+"-"+annee[1]
+    return val
+
+df_final['trimestre-start'] = df_final.apply(f, axis=1,column='trimestre-start')
+df_final['trimestre-finish'] = df_final.apply(f, axis=1,column='trimestre-finish')
+
+df_final['trimestre'] = df_final['trimestre-start']+" ➙ "+df_final['trimestre-finish']
 
 #df_final
 
@@ -124,10 +147,7 @@ df_final.rename(columns = {'volume mouvement':'volume'}, inplace = True)
 
 def create_graphe(final,appellation,couleur):
     # CREATION DU GRAPHE
-    fig = px.histogram(final, x="campagne", y="volume",
-                 color='trimestre', barmode='group',
-                 color_discrete_sequence=["#e74e62", "#d1342f", "#ac1c25","#961d50","#961d50","#8F1665","#753452","#8A321A"],
-                 title="Evolution des sorties de Chais par trimestres <br>(en hl, Sources "+source+"-Cumul depuis le début de la campagne)")
+    fig = px.line(final, x='trimestre', y="volume", markers=True,color_discrete_sequence=["#d1342f"])
     fig.update_layout(title_font_size=14,
                       title_font_color="black",
                       xaxis_title=None,
@@ -141,8 +161,8 @@ def create_graphe(final,appellation,couleur):
                      )
     fig.for_each_xaxis(lambda x: x.update(showgrid=False))
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
-    fig.update_xaxes(fixedrange=True)
-    fig.update_yaxes(fixedrange=True)
+    fig.update_xaxes(fixedrange=True,showline=True, linewidth=1, linecolor='Lightgrey')
+    fig.update_yaxes(fixedrange=True,rangemode="tozero")
     #fig.show()
     
     dossier = dossier_graphes+"/1-REFERENCE/drm/"+appellation+"-"+couleur
