@@ -68,11 +68,12 @@ $list_produits_contrats = $data['produits']['contrats'];
           </div>
           <nav class="mt-5">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a href="#drm"><button class="nav-link active" id="nav-drm-tab" data-onglet="drm" data-bs-toggle="tab" data-bs-target="#nav-drm" type="button" role="tab" aria-controls="nav-drm" aria-selected="true">DRM</button></a>
-              <a href="#contrats"><button class="nav-link" id="nav-contrats-tab" data-onglet="contrats" data-bs-toggle="tab" data-bs-target="#nav-contrats" type="button" role="tab" aria-controls="nav-contrats" aria-selected="false">CONTRATS</button></a>
+              <?php if (count($ls_dossier_drm)): ?><a href="#drm"><button class="nav-link active" id="nav-drm-tab" data-onglet="drm" data-bs-toggle="tab" data-bs-target="#nav-drm" type="button" role="tab" aria-controls="nav-drm" aria-selected="true">DRM</button></a><?php endif; ?>
+              <?php if (count($ls_dossier_contrats)): ?><a href="#contrats"><button class="nav-link" id="nav-contrats-tab" data-onglet="contrats" data-bs-toggle="tab" data-bs-target="#nav-contrats" type="button" role="tab" aria-controls="nav-contrats" aria-selected="false">CONTRATS</button></a><?php endif; ?>
             </div>
           </nav>
           <div class="tab-content" id="nav-tabContent">
+            <?php if (count($ls_dossier_drm)): ?>
               <div class="tab-pane fade show active" id="nav-drm" role="tabpanel" aria-labelledby="nav-drm-tab" tabindex="0" id="drm" class="onglets d-block">
                 <div class="mt-3 d-flex align-items-end flex-column">
                   <div class="col-md-5 shadow bg-white rounded">
@@ -159,6 +160,8 @@ $list_produits_contrats = $data['produits']['contrats'];
                   </div>
                 </div>
               </div>
+            <?php endif; ?>
+            <?php if (count($ls_dossier_contrats)): ?>
             <div class="tab-pane fade" id="nav-contrats" role="tabpanel" aria-labelledby="nav-contrats-tab" tabindex="0" id="contrats" class="onglets mt-5 d-none">
                 <div class="mt-3 d-flex align-items-end flex-column">
                   <div class="col-md-5 shadow bg-white rounded">
@@ -173,10 +176,11 @@ $list_produits_contrats = $data['produits']['contrats'];
                     </select>
                   </div>
                 </div>
-                <div class="shadow bg-white rounded">
+                <div class="row shadow bg-white rounded align-items-center mt-5" style="height: 600px;">
                   <?php include "graphes/".$_GET['id']."/contrat/".$_GET['filtre']."/graphe1.html";?>
                 </div>
               </div>
+            <?php endif; ?>
           </div>
         </div>
     </div>
