@@ -100,7 +100,7 @@ df_final.rename(columns = {'volume enleve':'volume','nom_acheteur':"Client"}, in
 
 def create_graphe(df,identifiant,appellation,couleur):
 
-    fig = px.pie(df, values='volume', names='Client', color_discrete_sequence=["#e74e62", "#d1342f", "#ac1c25","#961d50","#961d50","#8F1665","#753452","#8A321A"],title="Contractualisation "+lastcampagnes[0], width = 1200, height = 500)
+    fig = px.pie(df, values='volume', names='Client',  color_discrete_sequence = px.colors.sequential.Agsunset ,title="Contractualisation "+lastcampagnes[0], width = 1200, height = 500)
     fig.update_traces(textposition='inside', textinfo='value+label')
     #fig.show()
 
