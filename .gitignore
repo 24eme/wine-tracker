@@ -1,2 +1,6 @@
 src/drm/.ipynb_checkpoints/
 graphes/*
+data/contrats/*
+!data/contrats/.gitignore
+data/drm/*
+!data/drm/.gitignore
