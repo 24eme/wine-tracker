@@ -41,7 +41,7 @@ except:
 
 
 #préparations des données de l'opérateur sans filtres
-drm = pd.read_csv(csv, sep=";",encoding="iso8859_15")
+drm = pd.read_csv(csv, sep=";",encoding="latin1")
 if(id_operateur):
     drm = drm.query("identifiant == @id_operateur").reset_index()
 
@@ -57,7 +57,7 @@ drm = drm.query('campagne in @lastcampagnes')
 #pour les volumes récoltés :
 
 csv_mouvements = path+"/data/drm/export_bi_mouvements.csv"  #il manque un ; à la fin du header.
-mouvements = pd.read_csv(csv_mouvements, sep=";",encoding="iso8859_15")
+mouvements = pd.read_csv(csv_mouvements, sep=";",encoding="latin1")
 
 mouvements.rename(columns = {'identifiant declarant':'identifiant','type de mouvement':'type_de_mouvement','certification':'certifications','genre':'genres','appellation':'appellations','mention':'mentions','lieu':'lieux','couleur':'couleurs'}, inplace = True)
 mouvements = mouvements.query("type_de_mouvement == 'entrees/recolte'")
@@ -168,6 +168,8 @@ df_final.drop(['identifiant','filtre_produit',"couleurs"], axis=1, inplace=True)
 
 df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleurs'])
 
+df_final = df_final.fillna(0)
+
 #df_final
 
 
@@ -213,6 +215,20 @@ def create_graphique(final,identifiant,appellation,couleur):
 for bloc in df_final.index.unique():
     df = df_final.loc[[bloc]]
     df = df.reset_index()
+
+    for campagne in lastcampagnes:
+        if campagne not in df.campagne.unique()[::-1] :
+            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, 0, 0, 0]
+    
+    df = df.sort_values(by=['campagne'])
+    df = df.reset_index(drop=True)
+    
     df = pd.melt(df, id_vars=['identifiant','filtre_produit','couleurs','campagne'], value_vars=['Stock physique en début de camp production (hl)','Production (hl)','Sorties de chais (hl)'])
     create_graphique(df,bloc[0],bloc[1],bloc[2])
+
+
+# In[ ]:
+
+
+
 
