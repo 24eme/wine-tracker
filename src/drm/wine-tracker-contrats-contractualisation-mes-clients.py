@@ -100,7 +100,7 @@ df_final.rename(columns = {'volume enleve':'volume','nom_acheteur':"Client"}, in
 
 def create_graphe(df, identifiant, appellation, couleur):
 
-    fig = px.pie(df, values='volume', names='Client', color_discrete_sequence=px.colors.sequential.Agsunset, title="Contractualisation "+lastcampagnes[0], width=1200, height=500)
+    fig = px.pie(df, values='volume', names='Client', color_discrete_sequence=px.colors.sequential.Agsunset, title="Contractualisation "+lastcampagnes[0], width=632, height=650)
     fig.update_traces(textposition='inside', textinfo='label+text', text=df['volume'].map("{:,} hl".format))
     #fig.show()
 
