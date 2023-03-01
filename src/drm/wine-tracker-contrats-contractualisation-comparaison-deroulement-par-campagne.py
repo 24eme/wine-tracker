@@ -64,10 +64,9 @@ contrats_spe_spe = contrats.groupby(["identifiant_vendeur","filtre_produit", "co
 contrats_spe_spe.reset_index(level=['semaine'], inplace=True)
 contrats_spe_spe['semaine-sort'] = (contrats_spe_spe['semaine']-31)%53
 contrats_spe_spe = contrats_spe_spe.sort_values(by=["identifiant_vendeur","filtre_produit", "couleur","campagne",'semaine-sort'])
-contrats_spe_spe['volume'] = contrats_spe_spe.groupby(["identifiant_vendeur","filtre_produit", "couleur","campagne"])['volume enleve'].cumsum()
+#contrats_spe_spe['volume'] = contrats_spe_spe.groupby(["identifiant_vendeur","filtre_produit", "couleur","campagne"])['volume enleve'].cumsum()
 contrats_spe_spe = contrats_spe_spe.reset_index()
 contrats_spe_spe.set_index(['identifiant_vendeur','filtre_produit','couleur'], inplace = True)
-
 #contrats_spe_spe
 
 
@@ -77,7 +76,7 @@ contrats_spe_all = contrats.groupby(["identifiant_vendeur","filtre_produit", "ca
 contrats_spe_all.reset_index(level=['semaine'], inplace=True)
 contrats_spe_all['semaine-sort'] = (contrats_spe_all['semaine']-31)%53
 contrats_spe_all = contrats_spe_all.sort_values(by=["identifiant_vendeur","filtre_produit","campagne",'semaine-sort'])
-contrats_spe_all['volume'] = contrats_spe_all.groupby(["identifiant_vendeur","filtre_produit","campagne"])['volume enleve'].cumsum()
+#contrats_spe_all['volume'] = contrats_spe_all.groupby(["identifiant_vendeur","filtre_produit","campagne"])['volume enleve'].cumsum()
 contrats_spe_all["couleur"] = "TOUT"
 contrats_spe_all = contrats_spe_all.reset_index()
 contrats_spe_all.set_index(['identifiant_vendeur','filtre_produit','couleur'], inplace = True)
@@ -90,12 +89,12 @@ contrats_all_all = contrats.groupby(["identifiant_vendeur","campagne","semaine"]
 contrats_all_all.reset_index(level=['semaine'], inplace=True)
 contrats_all_all['semaine-sort'] = (contrats_all_all['semaine']-31)%53
 contrats_all_all = contrats_all_all.sort_values(by=["identifiant_vendeur","campagne",'semaine-sort'])
-contrats_all_all['volume'] = contrats_all_all.groupby(["identifiant_vendeur","campagne"])['volume enleve'].cumsum()
+#contrats_all_all['volume'] = contrats_all_all.groupby(["identifiant_vendeur","campagne"])['volume enleve'].cumsum()
 contrats_all_all["couleur"] = "TOUT"
 contrats_all_all["filtre_produit"] = "TOUT"
 contrats_all_all = contrats_all_all.reset_index()
 contrats_all_all.set_index(['identifiant_vendeur','filtre_produit','couleur'], inplace = True)
-contrats_all_all
+#contrats_all_all
 
 
 #CONCATENATION DES 3 TABLEAUX :
@@ -103,7 +102,9 @@ df_final = pd.concat([contrats_spe_spe, contrats_spe_all])
 df_final = pd.concat([df_final, contrats_all_all])
 df_final = df_final.sort_values(by=['identifiant_vendeur', 'filtre_produit','couleur'])
 
-df_final
+
+df_final['campagne-semaine'] = df_final['campagne']+"-"+df_final['semaine'].apply(str)
+#df_final
 
 
 # In[ ]:
@@ -128,5 +129,22 @@ def create_graphe(df,identifiant,appellation,couleur):
 
 for bloc in df_final.index.unique():
     df = df_final.loc[[bloc]]
+    df = df.reset_index()
+    for campagne in lastcampagnes:
+        if campagne+'-31' not in df['campagne-semaine'].unique():
+            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, 31,0,0,campagne+'-31']
+
+        if campagne+'-29' not in df['campagne-semaine'].unique() and campagne != lastcampagnes[-1:][0]:
+            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, 29,0,53,campagne+'-29']
+
+        currentweek = datetime.today().isocalendar()[1]
+        if campagne+'-'+str(currentweek) not in df['campagne-semaine'].unique() and campagne == lastcampagnes[-1:][0]:
+            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, currentweek,0,(currentweek-31)%53,campagne+'-29']
+
+    df = df.sort_values(by=['campagne'])
+    df = df.reset_index(drop=True)
+    df = df.sort_values(by=['identifiant_vendeur', 'filtre_produit','couleur','campagne','semaine-sort'])
+    df['volume'] = df.groupby(["identifiant_vendeur","filtre_produit", "couleur","campagne"])['volume enleve'].cumsum()
+
     create_graphe(df,bloc[0],bloc[1],bloc[2])
 
