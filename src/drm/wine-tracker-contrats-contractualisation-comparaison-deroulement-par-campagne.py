@@ -134,12 +134,12 @@ for bloc in df_final.index.unique():
         if campagne+'-31' not in df['campagne-semaine'].unique():
             df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, 31,0,0,campagne+'-31']
 
-        if campagne+'-29' not in df['campagne-semaine'].unique() and campagne != lastcampagnes[-1:][0]:
-            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, 29,0,53,campagne+'-29']
+        if campagne+'-30' not in df['campagne-semaine'].unique() and campagne != lastcampagnes[-1:][0]:
+            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, 30,0,53,campagne+'-30']
 
         currentweek = datetime.today().isocalendar()[1]
         if campagne+'-'+str(currentweek) not in df['campagne-semaine'].unique() and campagne == lastcampagnes[-1:][0]:
-            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, currentweek,0,(currentweek-31)%53,campagne+'-29']
+            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, currentweek,0,(currentweek-31)%53,campagne+'-'+str(currentweek)]
 
     df = df.sort_values(by=['campagne'])
     df = df.reset_index(drop=True)

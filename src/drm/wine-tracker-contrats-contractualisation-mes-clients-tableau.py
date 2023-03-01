@@ -173,8 +173,8 @@ def create_graphe(df,identifiant,appellation,couleur):
                            align='left',fill_color=['white'],line_color='black')
             )
     ])
-    config = {'staticPlot': True}
-    fig.show(config=config)
+    #config = {'staticPlot': True}
+    #fig.show(config=config)
 
     fig.update_layout(title_text = 'Résumé')    #fig.show()
 
