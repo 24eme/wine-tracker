@@ -9,6 +9,7 @@ import plotly.express as px
 import argparse
 import pathlib
 import plotly.graph_objects as go
+import numpy as np
 
 path = pathlib.Path().absolute()
 path = str(path).replace("src/drm","")
@@ -83,7 +84,7 @@ df_merge_spe_spe = contrats_annee_courante.merge(contrats_annee_n_1,how = 'left'
 df_merge_spe_spe = df_merge_spe_spe.reset_index()
 df_merge_spe_spe.set_index(['identifiant_vendeur','filtre_produit','couleur'], inplace = True)
 
-df_merge_spe_spe
+#df_merge_spe_spe
 
 
 # In[ ]:
@@ -155,8 +156,9 @@ df_final = pd.concat([df_final, df_merge_all_all])
 
 df_final["5 DA"] = df_final["5 DA"]/5
 df_final = df_final.fillna(0)
-
-#df_final
+df_final.rename(columns = {'nom_acheteur':'Acheteur','n': lastcampagnes[-1:][0] , 'n-1': lastcampagnes[-2:][0], '5 DA':'5 dernières campagnes' }, inplace = True)
+df_final = df_final.round(1)
+#print(df_final)
 
 
 # In[ ]:
@@ -171,11 +173,15 @@ def create_graphe(df,identifiant,appellation,couleur):
                            align='left',fill_color=['white'],line_color='black')
             )
     ])
-    #fig.show()
+    config = {'staticPlot': True}
+    fig.show(config=config)
+
+    fig.update_layout(title_text = 'Résumé')    #fig.show()
 
     dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
 
+    #fig.show()
     fig.write_html(dossier+"/graphe2.html",include_plotlyjs=False)
 
     return
@@ -186,5 +192,6 @@ def create_graphe(df,identifiant,appellation,couleur):
 
 for bloc in df_final.index.unique():
     df = df_final.loc[bloc]
+    df = df.loc[:, 'Acheteur':'5 dernières campagnes']
     create_graphe(df,bloc[0],bloc[1],bloc[2])
 

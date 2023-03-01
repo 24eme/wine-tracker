@@ -190,10 +190,27 @@ $list_produits_contrats = $data['produits']['contrats'];
                     </select>
                   </div>
                 </div>
-                <div class="row shadow bg-white rounded align-items-center mt-5" style="height: 600px;">
-                  <?php include $contrat_graph_path."/graphe1.html";?>
+                <?php if(file_exists($contrat_graph_path."/graphe1.html")): ?>
+                <div class="mt-3 row shadow bg-white rounded p-1">
+                  <h3 class="col-xs-12 p-4 text-center fw-bold">Contractualisation</h3>
+                    <div class="col-md-6 mt-4" style="height: 650px;">
+                        <?php include $contrat_graph_path."/graphe1.html";?>
+                    </div>
+                    <div class="col-md-6 mt-4" style="height: 650px;">
+                      <?php include $contrat_graph_path."/graphe2.html";?>
+                    </div>
+                    <div class="col-xs-12">
+                      <p class="text-muted text-end fs-6">
+                        En hl. Sources: DRM Inter-Rhône
+                      </p>
+                    </div>
                 </div>
-                  <?php include $contrat_graph_path."/graphe2.html";?>
+                <?php endif;?>
+                <?php if(file_exists($contrat_graph_path."/graphe3.html")): ?>
+                  <div class="mt-3 row shadow bg-white rounded p-1">
+                  <?php include $contrat_graph_path."/graphe3.html";?>
+                  </div>
+                <?php endif;?>
               </div>
             <?php endif; ?>
           </div>
