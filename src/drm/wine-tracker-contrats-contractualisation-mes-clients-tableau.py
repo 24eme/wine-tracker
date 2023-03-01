@@ -80,7 +80,10 @@ contrats_annee_n_1.rename(columns = {'volume enleve':'n-1'}, inplace = True)
 
 
 df_merge_spe_spe = contrats_annee_courante.merge(contrats_annee_n_1,how = 'left',on=['identifiant_vendeur','filtre_produit','couleur','identifiant acheteur','nom_acheteur']).merge(contrats_all,on=['identifiant_vendeur','filtre_produit','couleur','identifiant acheteur','nom_acheteur'])
-#df_merge_spe_spe
+df_merge_spe_spe = df_merge_spe_spe.reset_index()
+df_merge_spe_spe.set_index(['identifiant_vendeur','filtre_produit','couleur'], inplace = True)
+
+df_merge_spe_spe
 
 
 # In[ ]:
@@ -149,10 +152,11 @@ df_merge_all_all.set_index(['identifiant_vendeur','filtre_produit','couleur'], i
 #CONCATENATION DES 3 TABLEAUX :
 df_final = pd.concat([df_merge_spe_spe, df_merge_spe_all])
 df_final = pd.concat([df_final, df_merge_all_all])
-df_merge_spe_spe
-df_merge_spe_all
-df_merge_all_all["5 DA"] = df_merge_all_all["5 DA"]/5
-df_merge_all_all = df_merge_all_all.fillna(0)
+
+df_final["5 DA"] = df_final["5 DA"]/5
+df_final = df_final.fillna(0)
+
+#df_final
 
 
 # In[ ]:
@@ -180,8 +184,7 @@ def create_graphe(df,identifiant,appellation,couleur):
 # In[ ]:
 
 
-for bloc in df_merge_all_all.index.unique():
-    df = df_merge_all_all.loc[bloc]
-    #print(df)
+for bloc in df_final.index.unique():
+    df = df_final.loc[bloc]
     create_graphe(df,bloc[0],bloc[1],bloc[2])
 
