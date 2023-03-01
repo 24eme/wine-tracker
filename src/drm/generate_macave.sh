@@ -1,21 +1,15 @@
-if test "$1" ; then
-	cvi=$1
-	echo "$cvi"
-	python3 src/drm/wine-tracker-drm-stock-recoltes-sorties.py $cvi
-	python3 src/drm/wine-tracker-drm-sortie-vrac-condionne.py $cvi
-	python3 src/drm/wine-tracker-drm-sortie-tous.py $cvi
-	python3 src/drm/wine-tracker-drm-sorties-par-mois.py $cvi
-	python3 src/drm/wine-tracker-informations-operateur.py $cvi
-	python3 src/drm/wine-tracker-drm-sorties-par-trimestre.py $cvi
-	python3 src/drm/wine-tracker-contrats-contractualisation-mes-clients.py $cvi
-	python3 src/drm/wine-tracker-informations-operateur.py $cvi
-else
-	echo "TOUS"
-	python3 src/drm/wine-tracker-drm-stock-recoltes-sorties.py
-	python3 src/drm/wine-tracker-drm-sortie-vrac-condionne.py
-	python3 src/drm/wine-tracker-drm-sorties-par-mois.py
-	python3 src/drm/wine-tracker-informations-operateur.py
-	python3 src/drm/wine-tracker-drm-sorties-par-trimestre.py
-	python3 src/drm/wine-tracker-contrats-contractualisation-mes-clients.py
-	python3 src/drm/wine-tracker-informations-operateur.py
-fi
+#!/bin/bash
+
+CVI=
+[ $# -eq 1 ] && CVI=$1
+
+if [ -n "$CVI" ]; then echo "$CVI"; else echo "TOUS"; fi
+
+python3 src/drm/wine-tracker-drm-stock-recoltes-sorties.py "$CVI"
+python3 src/drm/wine-tracker-drm-sortie-vrac-condionne.py "$CVI"
+python3 src/drm/wine-tracker-drm-sortie-tous.py "$CVI"
+python3 src/drm/wine-tracker-drm-sorties-par-mois.py "$CVI"
+python3 src/drm/wine-tracker-informations-operateur.py "$CVI"
+python3 src/drm/wine-tracker-drm-sorties-par-trimestre.py "$CVI"
+python3 src/drm/wine-tracker-contrats-contractualisation-mes-clients.py "$CVI"
+python3 src/drm/wine-tracker-informations-operateur.py "$CVI"
