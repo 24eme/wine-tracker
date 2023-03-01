@@ -170,11 +170,17 @@ def create_graphique(final,appellation,couleur):
 
     # CREATION DU GRAPHE
     fig = px.line(final, x="campagne", y="value", color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue","green","#d1342f"],
-                  title="Evolution des stocks, récoltes et sorties<br>(en hl. Sorties hors replis, hors déclassements, Sources "+source+")")
+                  title="Le vignoble")
     fig.update_traces(mode="markers+lines", hovertemplate=None)
     fig.update_layout(hovermode="x")
-    fig.update_layout(title_font_size=14,
-                      title_font_color="black",
+    fig.update_layout(title={
+                        'text': "<b>LE VIGNOBLE</b>",
+                        'y':0.9,
+                        'x':0.5,
+                        'xanchor': 'center',
+                        'yanchor': 'top'},
+                      title_font_size=24,
+                      title_font_color="grey",
                       xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,

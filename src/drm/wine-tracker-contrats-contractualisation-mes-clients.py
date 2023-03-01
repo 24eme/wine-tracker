@@ -98,10 +98,10 @@ df_final.rename(columns = {'volume enleve':'volume','nom_acheteur':"Client"}, in
 # In[ ]:
 
 
-def create_graphe(df,identifiant,appellation,couleur):
+def create_graphe(df, identifiant, appellation, couleur):
 
-    fig = px.pie(df, values='volume', names='Client',  color_discrete_sequence = px.colors.sequential.Agsunset ,title="Contractualisation "+lastcampagnes[0], width = 1200, height = 500)
-    fig.update_traces(textposition='inside', textinfo='value+label')
+    fig = px.pie(df, values='volume', names='Client', color_discrete_sequence=px.colors.sequential.Agsunset, title="Contractualisation "+lastcampagnes[0], width=1200, height=500)
+    fig.update_traces(textposition='inside', textinfo='label+text', text=df['volume'].map("{:,} hl".format))
     #fig.show()
 
     dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur
@@ -117,7 +117,7 @@ def create_graphe(df,identifiant,appellation,couleur):
 
 for bloc in df_final.index.unique():
     df = df_final.loc[bloc]
-    create_graphe(df,bloc[0],bloc[1],bloc[2])
+    create_graphe(df, bloc[0], bloc[1], bloc[2])
 
 
 # In[ ]:
