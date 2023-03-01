@@ -159,6 +159,7 @@ drm_merge_all_all.rename(columns = {'stock debut': 'Stock physique en début de 
 df_final = pd.concat([df_final_spe_spe, drm_merge_spe_all])
 df_final = pd.concat([df_final, drm_merge_all_all])
 df_final = df_final.sort_values(by=['filtre_produit','couleurs'])
+df_final = df_final.fillna(0)
 #df_final
 
 
@@ -204,6 +205,16 @@ def create_graphique(final,appellation,couleur):
 for bloc in df_final.index.unique():
     df = df_final.loc[[bloc]]
     df = df.reset_index()
+
+    for campagne in lastcampagnes:
+        if campagne not in df.campagne.unique()[::-1] :
+            df.loc[len(df)] = [bloc[0], bloc[1],campagne, 0, 0, 0]
+
+    df = df.sort_values(by=['campagne'])
+    df = df.reset_index(drop=True)
+
+
     df = pd.melt(df, id_vars=['filtre_produit','couleurs','campagne'], value_vars=['Stock physique en début de camp production (hl)','Production (hl)','Sorties de chais (hl)'])
     create_graphique(df,bloc[0],bloc[1])
+    i+=1
 

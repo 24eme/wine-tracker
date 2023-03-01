@@ -88,7 +88,7 @@ sorties.set_index(['identifiant','filtre_produit','couleur'], inplace = True)
 
 sorties_spe_spe = sorties.sort_values(by=["identifiant",'filtre_produit','couleur',"campagne",'trimestre'])
 
-sorties_spe_spe
+#sorties_spe_spe
 
 
 # In[ ]:
@@ -128,9 +128,30 @@ df_final = pd.concat([df_final, sorties_all_all])
 
 df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleur'])
 
+df_final['campagne-trimestre'] = df_final['campagne']+"-"+df_final['trimestre'].apply(str)
 df_final.rename(columns = {'volume mouvement':'volume'}, inplace = True)
 
+#df_final
 
+
+# In[ ]:
+
+
+#TOUS LES TRIMESTRES
+for bloc in df_final.index.unique():
+    df = df_final.loc[[bloc]]
+    for campagne in lastcampagnes:
+        for trimestre in list((range(1,4+1))):
+            if campagne+'-'+str(trimestre) not in df['campagne-trimestre'].unique():
+                df = df.reset_index()
+                new = [bloc[0],bloc[1],bloc[2],campagne,trimestre,0,campagne+'-'+str(trimestre)]
+                df = df.append(pd.Series(new, index=df.columns[:len(new)]), ignore_index=True)
+                df.set_index(['identifiant','filtre_produit','couleur'], inplace = True)
+                df = df.sort_values(by=["identifiant",'filtre_produit','couleur',"campagne",'trimestre'])
+
+    new = df_final.loc[[bloc]].merge(df,on = ["identifiant",'filtre_produit','couleur',"campagne",'trimestre','campagne-trimestre','volume'], how = "right")
+    df_final = df_final.drop([bloc])
+    df_final = pd.concat([df_final, new])
 
 #### AJOUT X VALUES FOR THE GRAPH ###
 
@@ -154,8 +175,8 @@ df_final['trimestre-finish'] = df_final.apply(f, axis=1,column='trimestre-finish
 
 df_final['trimestre'] = df_final['trimestre-start']+" ➙ "+df_final['trimestre-finish']
 
-
-df_final
+df_final = df_final.fillna(0)
+#df_final
 
 
 # In[ ]:
@@ -179,7 +200,8 @@ def create_graphe(final,identifiant,appellation,couleur):
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True,showline=True, linewidth=1, linecolor='Lightgrey')
     fig.update_yaxes(fixedrange=True,rangemode="tozero")
-    fig.show()
+
+    #fig.show()
     
     dossier = dossier_graphes+"/"+identifiant+"/drm/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)

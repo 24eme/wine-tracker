@@ -116,6 +116,23 @@ df_final = df_final.sort_values(by=['filtre_produit','couleur'])
 
 df_final.rename(columns = {'volume mouvement':'volume'}, inplace = True)
 
+df_final['campagne-trimestre'] = df_final['campagne']+"-"+df_final['trimestre'].apply(str)
+
+#TOUS LES TRIMESTRES
+for bloc in df_final.index.unique():
+    df = df_final.loc[[bloc]]
+    for campagne in lastcampagnes:
+        for trimestre in list((range(1,4+1))):
+            if campagne+'-'+str(trimestre) not in df['campagne-trimestre'].unique():
+                df = df.reset_index()
+                new = [bloc[0],bloc[1],campagne,trimestre,0,campagne+'-'+str(trimestre)]
+                df = df.append(pd.Series(new, index=df.columns[:len(new)]), ignore_index=True)
+                df.set_index(['filtre_produit','couleur'], inplace = True)
+                df = df.sort_values(by=['filtre_produit','couleur',"campagne",'trimestre'])
+
+    new = df_final.loc[[bloc]].merge(df,on = ['filtre_produit','couleur',"campagne",'trimestre','campagne-trimestre','volume'], how = "right")
+    df_final = df_final.drop([bloc])
+    df_final = pd.concat([df_final, new])
 
 #### AJOUT X VALUES FOR THE GRAPH ###
 

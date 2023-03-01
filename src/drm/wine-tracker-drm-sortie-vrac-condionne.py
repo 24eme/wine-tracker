@@ -156,7 +156,7 @@ df_final_all_all.set_index(['identifiant','filtre_produit','couleur'], inplace =
 df_final = pd.concat([df_final_spe_spe, df_final_spe_all])
 df_final = pd.concat([df_final, df_final_all_all])
 df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleur','campagne'])
-
+df_final = df_final.fillna(0)
 #df_final
 
 
@@ -197,9 +197,17 @@ def create_graphe(final,identifiant,appellation,couleur):
 
 
 for bloc in df_final.index.unique():
-        df = df_final.loc[[bloc]]
-        df = df.reset_index()
-        df = pd.melt(df, id_vars=['identifiant','filtre_produit','couleur','campagne'], value_vars=['Vrac','Conditionné','Autres'])
-        df.rename(columns = {'value':'volume'}, inplace = True)
-        create_graphe(df,bloc[0],bloc[1],bloc[2])
+    df = df_final.loc[[bloc]]
+    df = df.reset_index()
+
+    for campagne in lastcampagnes:
+        if campagne not in df.campagne.unique()[::-1] :
+            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, 0, 0, 0]
+
+    df = df.sort_values(by=['campagne'])
+    df = df.reset_index(drop=True)
+
+    df = pd.melt(df, id_vars=['identifiant','filtre_produit','couleur','campagne'], value_vars=['Vrac','Conditionné','Autres'])
+    df.rename(columns = {'value':'volume'}, inplace = True)
+    create_graphe(df,bloc[0],bloc[1],bloc[2])
 
