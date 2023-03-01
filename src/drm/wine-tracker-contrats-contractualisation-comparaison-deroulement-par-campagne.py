@@ -111,7 +111,7 @@ df_final['campagne-semaine'] = df_final['campagne']+"-"+df_final['semaine'].appl
 
 
 def create_graphe(df,identifiant,appellation,couleur):
-    fig = px.line(df, x="semaine", y="volume", color='campagne')
+    fig = px.line(df, x="semaine", y="volume", color='campagne', width=1200, height=500)
     fig.update_layout(xaxis_type = 'category')
     fig.update_xaxes(categoryorder='array', categoryarray= sort_week)
     #fig.show()
