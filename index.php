@@ -1,10 +1,32 @@
 <?php
-$path = "graphes/".$_GET['id'];
+
+$args = [
+    'id' => FILTER_SANITIZE_STRING,
+    'filtre' => FILTER_SANITIZE_STRING,
+    'bis' => FILTER_SANITIZE_STRING
+];
+
+$GET = filter_input_array(INPUT_GET, $args, true);
+
+if (! $GET['id']) {
+    die('Paramètre requis manquant : id');
+}
+
+$path = "graphes/".$GET['id'];
 $ls_dossier_drm = array_diff(scandir($path."/drm"), array('.', '..'));
 $ls_dossier_contrats = array_diff(scandir($path."/contrat"), array('.', '..'));
 
-$json = file_get_contents($path."/".$_GET['id'].".json");
+$drm_graph_path               = $path."/drm/".$GET['filtre'];
+$drm_graph_reference_path     = "graphes/1-REFERENCE/drm/".$GET['filtre'];
+$contrat_graph_path           = $path."/contrat/".$GET['filtre'];
+$contrat_reference_graph_path = "graphes/1-REFERENCE/contrat/".$GET['filtre'];
+
+$json = file_get_contents($path."/".$GET['id'].".json");
 $data = json_decode($json, true);
+
+if (json_last_error() !== JSON_ERROR_NONE) {
+    die('Erreur dans la lecture des données : '.json_last_error_msg());
+}
 
 $list_produits_drm = $data['produits']['drm'];
 $list_produits_contrats = $data['produits']['contrats'];
@@ -94,13 +116,13 @@ $list_produits_contrats = $data['produits']['contrats'];
                       <div class="col-md-6 mt-4" style="height: 650px;">
                         <p class="entete text-center fw-bold">MA CAVE</p>
                         <div class="shadow bg-white rounded">
-                          <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe1.html";?>
+                          <?php include $drm_graph_path."/graphe1.html";?>
                         </div>
                       </div>
                       <div class="col-md-6 mt-4" style="height: 650px;">
                         <p class="entete-vignoble text-center fw-bold">LE VIGNOBLE</p>
                         <div class="shadow bg-white rounded">
-                          <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe1.html";?>
+                          <?php include $drm_graph_reference_path."/graphe1.html";?>
                         </div>
                       </div>
                     </div>
@@ -109,27 +131,23 @@ $list_produits_contrats = $data['produits']['contrats'];
                     <div class="row shadow bg-white rounded" style="height: 750px;">
                       <div class="col-md-6 mt-4" style="height: 650px;">
                         <p class="entete text-center fw-bold">MA CAVE</p>
-                        <?php if( ! $_GET['bis']):?>
                           <div class="shadow bg-white rounded">
-                            <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe2.html";?>
+                            <?php if( ! $GET['bis']):?>
+                                <?php include $drm_graph_path."/graphe2.html";?>
+                            <?php else :?>
+                                <?php include $drm_graph_path."/graphe2-bis.html";?>
+                            <?php endif; ?>
                           </div>
-                        <?php else :?>
-                          <div class="shadow bg-white rounded">
-                            <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe2-bis.html";?>
-                          </div>
-                        <?php endif; ?>
                       </div>
                       <div class="col-md-6 mt-4" style="height: 650px;">
                         <p class="entete-vignoble text-center fw-bold">LE VIGNOBLE</p>
-                        <?php if( ! $_GET['bis']):?>
                           <div class="shadow bg-white rounded">
-                            <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe2.html";?>
+                            <?php if( ! $GET['bis']):?>
+                                <?php include $drm_graph_reference_path."/graphe2.html";?>
+                            <?php else :?>
+                                <?php include $drm_graph_reference_path."/graphe2-bis.html";?>
+                            <?php endif; ?>
                           </div>
-                        <?php else :?>
-                          <div class="shadow bg-white rounded">
-                            <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe2-bis.html";?>
-                          </div>
-                        <?php endif; ?>
                       </div>
                     </div>
                   </div>
@@ -138,13 +156,13 @@ $list_produits_contrats = $data['produits']['contrats'];
                       <div class="col-md-6 mt-4" style="height: 650px;">
                         <p class="entete text-center fw-bold">MA CAVE</p>
                         <div class="shadow bg-white rounded">
-                          <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe4.html";?>
+                          <?php include $drm_graph_path."/graphe4.html";?>
                         </div>
                       </div>
                       <div class="col-md-6 mt-4" style="height: 650px;">
                         <p class="entete-vignoble text-center fw-bold">LE VIGNOBLE</p>
                         <div class="shadow bg-white rounded">
-                          <?php include "graphes/1-REFERENCE/drm/".$_GET['filtre']."/graphe4.html";?>
+                          <?php include $drm_graph_reference_path."/graphe4.html";?>
                         </div>
                       </div>
                     </div>
@@ -153,7 +171,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                     <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
                       <div class="col-md-12" style="height: 500px;">
                         <div class="shadow bg-white rounded">
-                          <?php include "graphes/".$_GET['id']."/drm/".$_GET['filtre']."/graphe3.html";?>
+                          <?php include $drm_graph_path."/graphe3.html";?>
                         </div>
                       </div>
                     </div>
@@ -177,8 +195,9 @@ $list_produits_contrats = $data['produits']['contrats'];
                   </div>
                 </div>
                 <div class="row shadow bg-white rounded align-items-center mt-5" style="height: 600px;">
-                  <?php include "graphes/".$_GET['id']."/contrat/".$_GET['filtre']."/graphe1.html";?>
+                  <?php include $contrat_graph_path."/graphe1.html";?>
                 </div>
+                  <?php include $contrat_graph_path."/graphe2.html";?>
               </div>
             <?php endif; ?>
           </div>
@@ -196,6 +215,6 @@ $list_produits_contrats = $data['produits']['contrats'];
         </div>
       </div>
     </footer>
+    <script src="web/main.js"></script>
   </body>
 </html>
-<script src="web/main.js"></script>
