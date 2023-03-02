@@ -184,9 +184,15 @@ df_final = df_final.fillna(0)
 
 def create_graphe(final,identifiant,appellation,couleur):
     # CREATION DU GRAPHE
-    fig = px.line(final, x='trimestre', y="volume", markers=True,color_discrete_sequence=["#d1342f"])
-    fig.update_layout(title_font_size=14,
-                      title_font_color="black",
+    fig = px.line(final, x='trimestre', y="volume", markers=True,color_discrete_sequence=["#d1342f"], title="Ma cave")
+    fig.update_layout(title={
+                        'text': "<b>MA CAVE</b>",
+                        'y':0.9,
+                        'x':0.5,
+                        'xanchor': 'center',
+                        'yanchor': 'top'},
+                      title_font_size=24,
+                      title_font_color="rgb(231, 80, 71)",
                       xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,

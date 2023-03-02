@@ -166,9 +166,15 @@ df_final = df_final.fillna(0)
 def create_graphe(final,identifiant,appellation,couleur):
     fig = px.bar(final, x="campagne", y="volume", color="variable",color_discrete_sequence=["#e74e62", "#d1342f", "#961d50"],
                  text_auto=True,
-                 title="Evolution de MES sorties de Chais Vrac/Conditionné <br>(en hl, Sources "+source+")")
-    fig.update_layout(title_font_size=14,
-                      title_font_color="black",
+                 title="Ma cave")
+    fig.update_layout(title={
+                        'text': "<b>MA CAVE</b>",
+                        'y':0.9,
+                        'x':0.5,
+                        'xanchor': 'center',
+                        'yanchor': 'top'},
+                      title_font_size=24,
+                      title_font_color="rgb(231, 80, 71)",
                       xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,

@@ -171,6 +171,12 @@ $list_produits_contrats = $data['produits']['contrats'];
                       <div class="col-md-12" style="height: 500px;">
                           <?php include $drm_graph_path."/graphe3.html";?>
                       </div>
+                      <div class="col-xs-12">
+                        <p class="text-muted text-end fs-6">
+                          En hl, Cumul depuis le début de la campagne).
+                          Sources: DRM Inter-Rhône
+                        </p>
+                      </div>
                   </div>
                 </div>
               </div>
@@ -208,7 +214,13 @@ $list_produits_contrats = $data['produits']['contrats'];
                 <?php endif;?>
                 <?php if(file_exists($contrat_graph_path."/graphe3.html")): ?>
                   <div class="mt-3 row shadow bg-white rounded p-1">
-                  <?php include $contrat_graph_path."/graphe3.html";?>
+                    <h3 class="col-xs-12 p-4 text-center fw-bold">Comparaison du déroulement de la campagne</h3>
+                    <?php include $contrat_graph_path."/graphe3.html";?>
+                    <div class="col-xs-12">
+                      <p class="text-muted text-end fs-6">
+                          Cumul courant des Volumes Hebdomadaires contractualisés
+                      </p>
+                    </div>
                   </div>
                 <?php endif;?>
               </div>
