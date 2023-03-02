@@ -171,6 +171,12 @@ $list_produits_contrats = $data['produits']['contrats'];
                       <div class="col-md-12" style="height: 500px;">
                           <?php include $drm_graph_path."/graphe3.html";?>
                       </div>
+                      <div class="col-xs-12">
+                        <p class="text-muted text-end fs-6">
+                          En hl, Cumul depuis le début de la campagne).
+                          Sources: DRM Inter-Rhône
+                        </p>
+                      </div>
                   </div>
                 </div>
               </div>

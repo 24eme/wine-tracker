@@ -140,9 +140,15 @@ def create_graphe(final,identifiant,appellation,couleur):
                  color='campagne', barmode='group',
                  height=500,
                  color_discrete_sequence=["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#E75047"],
-                 title="Evolution de MES sorties de Chais par mois<br>(en hl, Sources "+source+"-Cumul depuis le début de la campagne)")
-    fig.update_layout(title_font_size=14,
-                      title_font_color="black",
+                 title="Ma cave")
+    fig.update_layout(title={
+                        'text': "<b>MA CAVE</b>",
+                        'y':0.9,
+                        'x':0.5,
+                        'xanchor': 'left',
+                        'yanchor': 'top'},
+                      title_font_size=24,
+                      title_font_color="rgb(231, 80, 71)",
                       xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,
