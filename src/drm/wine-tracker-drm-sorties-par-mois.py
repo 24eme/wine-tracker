@@ -128,6 +128,8 @@ df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleur'])
 df_final.rename(columns = {'volume mouvement':'volume'}, inplace = True)
 
 #df_final
+tabcouleur = ["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#E75047"]
+couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
 
 
 # In[ ]:
@@ -139,7 +141,7 @@ def create_graphe(final,identifiant,appellation,couleur):
     fig = px.histogram(final, x="mois", y="volume",
                  color='campagne', barmode='group',
                  height=500,
-                 color_discrete_sequence=["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#E75047"],
+                 color_discrete_sequence=couleurs,
                  title="Ma cave")
     fig.update_layout(title={
                         'text': "<b>MA CAVE</b>",

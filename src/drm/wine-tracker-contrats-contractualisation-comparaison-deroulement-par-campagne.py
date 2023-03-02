@@ -119,12 +119,18 @@ df_final = df_final.sort_values(by=['identifiant_vendeur', 'filtre_produit','cou
 
 df_final['campagne-semaine'] = df_final['campagne']+"-"+df_final['semaine'].apply(str)
 
+tabcouleur = ["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#E75047"]
+couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
+
 
 # In[ ]:
 
 
 def create_graphe(df,identifiant,appellation,couleur):
-    fig = px.line(df, x="semaine", y="volume", color='campagne', width=1200, height=500,color_discrete_sequence=["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#E75047"])
+    fig = px.line(df, x="semaine", y="volume", color='campagne', width=1200, height=500,color_discrete_sequence=couleurs,
+                 labels={
+                     "semaine": "Numéro de la semaine - Début de camapgne : Semaine 31",
+                     "volume": "Volume contractualis hebdomadaire (en hl)"})
     fig.update_layout(xaxis_type = 'category')
     fig.update_xaxes(categoryorder='array', categoryarray= sort_week)
     #fig.show()
