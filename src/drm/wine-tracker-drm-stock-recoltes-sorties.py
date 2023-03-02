@@ -42,12 +42,14 @@ except:
 
 #préparations des données de l'opérateur sans filtres
 drm = pd.read_csv(csv, sep=";",encoding="latin1")
-if(id_operateur):
-    drm = drm.query("identifiant == @id_operateur").reset_index()
 
 lastcampagnes = drm['campagne'].unique()
 lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-10:]
+
+if(id_operateur):
+    drm = drm.query("identifiant == @id_operateur").reset_index()
+
 drm = drm.query('campagne in @lastcampagnes')
 
 
