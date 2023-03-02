@@ -44,14 +44,27 @@ lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-5:]
 
 
-contrats = contrats.query('campagne in @lastcampagnes')
-contrats['couleur'] = contrats['couleur'].str.upper()
+contrats_csv = contrats.query('campagne in @lastcampagnes')
+contrats_csv['couleur'] = contrats_csv['couleur'].str.upper()
 
-contrats.rename(columns = {'identifiant vendeur':'identifiant_vendeur','nom acheteur': 'nom_acheteur','volume enleve (en hl)':'volume enleve'}, inplace = True)
+contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','nom acheteur': 'nom_acheteur','volume enleve (en hl)':'volume enleve'}, inplace = True)
 
 if(id_operateur):
-    contrats = contrats.query("identifiant_vendeur == @id_operateur").reset_index()
-#contrats
+    contrats = contrats_csv.query("identifiant_vendeur == @id_operateur").reset_index()
+    negociant = False
+    if not (len(contrats.index)): ##si c'est un négociant
+        negociant = True
+        contrats_csv.rename(columns = {'identifiant acheteur':'identifiant_acheteur'}, inplace = True)
+        contrats = contrats_csv.query("identifiant_acheteur == @id_operateur").reset_index()
+        contrats.rename(columns = { 'identifiant_acheteur' : 'identifiant_a', #temp
+                                    'identifiant_vendeur' : 'identifiant_v',
+                                    'nom_acheteur' : 'nom_a',
+                                    ' nom vendeur' : 'nom_v'}, inplace = True)
+
+        contrats.rename(columns = { 'identifiant_a' : 'identifiant_vendeur',
+                                    'identifiant_v' : 'identifiant acheteur',
+                                    'nom_a' : 'nom_vendeur',
+                                    'nom_v' : 'nom_acheteur'}, inplace = True)
 
 
 # In[ ]:
@@ -156,9 +169,16 @@ df_final = pd.concat([df_final, df_merge_all_all])
 
 df_final["5 DA"] = df_final["5 DA"]/5
 df_final = df_final.fillna(0)
-df_final.rename(columns = {'nom_acheteur':'Acheteur','n': lastcampagnes[-1:][0] , 'n-1': lastcampagnes[-2:][0], '5 DA':'5 dernières campagnes' }, inplace = True)
+
+df_final.rename(columns = {'n': lastcampagnes[-1:][0] , 'n-1': lastcampagnes[-2:][0], '5 DA':'5 dernières campagnes' }, inplace = True)
+
+if(negociant):
+    df_final.rename(columns = {'nom_acheteur':'Fournisseur'}, inplace = True)
+else :
+    df_final.rename(columns = {'nom_acheteur':'Acheteur'}, inplace = True)
+
+
 df_final = df_final.round(1)
-#print(df_final)
 
 
 # In[ ]:
@@ -192,6 +212,9 @@ def create_graphe(df,identifiant,appellation,couleur):
 
 for bloc in df_final.index.unique():
     df = df_final.loc[bloc]
-    df = df.loc[:, 'Acheteur':'5 dernières campagnes']
+    if(negociant):
+        df = df.loc[:, 'Fournisseur':'5 dernières campagnes']
+    else :
+        df = df.loc[:, 'Acheteur':'5 dernières campagnes']
     create_graphe(df,bloc[0],bloc[1],bloc[2])
 
