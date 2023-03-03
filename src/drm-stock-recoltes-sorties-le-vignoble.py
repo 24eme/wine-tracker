@@ -220,6 +220,6 @@ for bloc in df_final.index.unique():
     df = df.reset_index(drop=True)
 
 
-    df = pd.melt(df, id_vars=['filtre_produit','couleurs','campagne'], value_vars=['Stock physique en début de camp production (hl)','Production (hl)','Sorties de chais (hl)'])
+    df = pd.melt(df, id_vars=['filtre_produit','couleurs','campagne'], value_vars=['Stock physique en début de camp production (hl)','Récoltes (hl)','Sorties de chais (hl)'])
     create_graphique(df,bloc[0],bloc[1])
 
