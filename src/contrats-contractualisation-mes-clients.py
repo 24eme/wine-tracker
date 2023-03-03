@@ -37,6 +37,10 @@ except:
 
 contrats = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False)
 
+contrats = contrats.query("statut == 'SOLDE' or statut == 'NONSOLDE'")
+contrats.rename(columns = {'type de vente':'type_de_vente'}, inplace = True)
+contrats = contrats.query("type_de_vente == 'vrac'")
+
 lastcampagnes = contrats['campagne'].unique()
 lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-1:]
