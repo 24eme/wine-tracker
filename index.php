@@ -166,7 +166,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                       </div>
                   </div>
                   <div class="row mt-3 shadow bg-white rounded p-1">
-                    <h3 class="col-xs-12 p-4 text-center fw-bold">Évolution des sorties de chais par mois</h3>
+                    <h3 class="col-xs-12 p-4 text-center fw-bold">Cumul de l'évolution des sorties de chais par mois</h3>
                     <h3 class="col-xs-12 text-center fw-bold">MA CAVE</h3>
                       <div class="col-md-12" style="height: 500px;">
                           <?php include $drm_graph_path."/drm-sorties-par-mois.html";?>

@@ -89,8 +89,6 @@ sorties['ordre_mois']= sorties['mois'].map(mois_sort,na_action=None)
 
 sorties_spe_spe = sorties.sort_values(by=["identifiant",'filtre_produit','couleur',"ordre_mois","campagne"])
 
-#sorties
-
 
 # In[ ]:
 
@@ -131,9 +129,12 @@ df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleur'])
 
 df_final.rename(columns = {'volume mouvement':'volume'}, inplace = True)
 
-#df_final
 tabcouleur = ["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#E75047"]
 couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
+
+df_final['volume cumule'] = df_final.groupby(["identifiant","filtre_produit", "couleur","campagne"])['volume'].cumsum()
+
+#df_final
 
 
 # In[ ]:
@@ -142,7 +143,7 @@ couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
 def create_graphe(final,identifiant,appellation,couleur):
 
     # CREATION DU GRAPHE
-    fig = px.histogram(final, x="mois", y="volume",
+    fig = px.histogram(final, x="mois", y="volume cumule",
                  color='campagne', barmode='group',
                  height=500,
                  color_discrete_sequence=couleurs)
