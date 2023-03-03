@@ -154,10 +154,10 @@ $list_produits_contrats = $data['produits']['contrats'];
                   <div class="row mt-3 shadow bg-white rounded p-1">
                     <h3 class="col-xs-12 p-4 text-center fw-bold">Évolution des sorties par trimestre</h3>
                       <div class="col-md-6 mt-4" style="height: 650px;">
-                          <?php include $drm_graph_path."/drm-sorties-par-trimestre.html";?>
+                          <?php include $drm_graph_path."/drm-sorties-par-campagne-et-mois.html";?>
                       </div>
                       <div class="col-md-6 mt-4" style="height: 650px;">
-                          <?php include $drm_graph_le_vignoble_path."/drm-sorties-par-trimestre.html";?>
+                          <?php include $drm_graph_le_vignoble_path."/drm-sorties-par-campagne-et-mois.html";?>
                       </div>
                       <div class="col-xs-12">
                         <p class="text-muted text-end fs-6">
@@ -169,7 +169,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                     <h3 class="col-xs-12 p-4 text-center fw-bold">Cumul de l'évolution des sorties de chais par mois</h3>
                     <h3 class="col-xs-12 text-center fw-bold">MA CAVE</h3>
                       <div class="col-md-12" style="height: 500px;">
-                          <?php include $drm_graph_path."/drm-sorties-par-mois.html";?>
+                          <?php include $drm_graph_path."/drm-sorties-cumul-par-mois.html";?>
                       </div>
                   </div>
                 </div>

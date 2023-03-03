@@ -167,7 +167,7 @@ def create_graphe(final,identifiant,appellation,couleur):
     dossier = dossier_graphes+"/"+identifiant+"/drm/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
 
-    fig.write_html(dossier+"/drm-sorties-par-mois.html",include_plotlyjs=False)
+    fig.write_html(dossier+"/drm-sorties-cumul-par-mois.html",include_plotlyjs=False)
 
     return
 
