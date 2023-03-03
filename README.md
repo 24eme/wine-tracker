@@ -2,7 +2,7 @@
 
 ## Dépendances
 
-Pour éviter tout conflit avec les librairies systèmes, il est recommandé d'utilisé un virtualenv :
+Pour éviter tout conflit avec les librairies systèmes, il est recommandé d'utiliser un virtualenv :
 
 ```
 python3 -m venv dir/
@@ -27,9 +27,10 @@ pip3 install nbconvert
 ## Préparation des données
 
 Mettre les CSV d'entrées issus de Déclarvins dans le dossier data/
-* data/drm/stock.csv
-* data/drm/mouvements.csv
-* data/contrats/contrats.csv
+* data/drm/export_bi_drm_stock.csv
+* data/drm/export_bi_mouvements.csv
+* data/drm/export_bi_etablissements.csv
+* data/contrats/export_bi_contrats.csv
 
 ## Génération des données
 
@@ -41,4 +42,4 @@ Pour générer tous les graphes du "vignoble" : `bash src/generate_levignoble.sh
 
 Pour générer tous les graphes de "ma cave" pour tous les opérateurs : `bash src/generate_macave.sh`
 
-Pour générer tous les graphes de "ma cave" pour tous 1 opérateur : `bash src/generate_macave.sh $id_compte`
+Pour générer tous les graphes de "ma cave" pour 1 opérateur : `bash src/generate_macave.sh $id_compte`
