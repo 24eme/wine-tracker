@@ -18,6 +18,7 @@ path = pathlib.Path().absolute()
 path = str(path).replace("src","")
 dossier_graphes=path+"/graphes/"
 csv = path+"/data/drm/export_bi_drm_stock.csv"  #il manque un ; à la fin du header.
+csv_etablissements = path+"/data/drm/export_bi_etablissements.csv"
 source = "DRM Inter-Rhône"
 
 
@@ -39,7 +40,15 @@ drm = drm.query('campagne in @lastcampagnes')
 # In[ ]:
 
 
-#drm
+#SEULEMENT DONNEES SUR LES DRM PRODUCTEURS
+
+etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15")
+familleproducteurs = ['producteur cave_cooperative','producteur cave_particuliere','producteur vendeur_raisin']
+etablissements = etablissements.query("famille in @familleproducteurs")
+
+identifiantsproducteurs = etablissements['identifiant'].unique()
+
+drm = drm.query('identifiant in @identifiantsproducteurs')
 
 
 # In[ ]:
@@ -49,10 +58,10 @@ drm = drm.query('campagne in @lastcampagnes')
 csv_mouvements = path+"/data/drm/export_bi_mouvements.csv"  #il manque un ; à la fin du header.
 mouvements = pd.read_csv(csv_mouvements, sep=";",encoding="iso8859_15")
 mouvements.rename(columns = {'identifiant declarant':'identifiant','type de mouvement':'type_de_mouvement','certification':'certifications','genre':'genres','appellation':'appellations','mention':'mentions','lieu':'lieux','couleur':'couleurs'}, inplace = True)
+mouvements = mouvements.query('identifiant in @identifiantsproducteurs')
 mouvements = mouvements.query("type_de_mouvement == 'entrees/recolte'")
 mouvements = mouvements.query('campagne in @lastcampagnes')
 mouvements.rename(columns = {'volume mouvement':'entree'}, inplace = True)
-
 #mouvements
 
 
