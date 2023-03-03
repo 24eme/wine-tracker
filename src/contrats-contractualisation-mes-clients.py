@@ -43,13 +43,17 @@ contrats = contrats.query("type_de_vente == 'vrac'")
 
 lastcampagnes = contrats['campagne'].unique()
 lastcampagnes.sort()
-lastcampagnes = lastcampagnes[-1:]
+lastcampagnes = lastcampagnes[:-1][-5:]
+
+
+# In[ ]:
+
 
 contrats_csv = contrats.query('campagne in @lastcampagnes')
 
 contrats_csv['couleur'] = contrats_csv['couleur'].str.upper()
 
-contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','nom acheteur': 'nom_acheteur','volume enleve (en hl)':'volume enleve'}, inplace = True)
+contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','nom acheteur': 'nom_acheteur','volume propose (en hl)':'volume propose'}, inplace = True)
 
 
 if(id_operateur):
@@ -79,7 +83,7 @@ if(id_operateur):
 
 contrats['filtre_produit'] = contrats['appellation'] + "-" + contrats['lieu'] + "-" +contrats['certification']+ "-" +contrats['genre']+ "-" +contrats['mention']
 
-contrats_spe_spe = contrats.groupby(["identifiant_vendeur","filtre_produit", "couleur","identifiant acheteur","nom_acheteur"]).sum(["volume enleve"])[["volume enleve"]]
+contrats_spe_spe = contrats.groupby(["identifiant_vendeur","filtre_produit", "couleur","identifiant acheteur","nom_acheteur"]).sum(["volume propose"])[["volume propose"]]
 
 contrats_spe_spe = contrats_spe_spe.reset_index(level='identifiant acheteur')
 contrats_spe_spe = contrats_spe_spe.reset_index(level='nom_acheteur')
@@ -89,7 +93,7 @@ contrats_spe_spe = contrats_spe_spe.reset_index(level='nom_acheteur')
 # PAR APPELLATIONS
 
 
-contrats_spe_all = contrats_spe_spe.groupby(["identifiant_vendeur","filtre_produit",'identifiant acheteur',"nom_acheteur"]).sum(["volume enleve"])[["volume enleve"]]
+contrats_spe_all = contrats_spe_spe.groupby(["identifiant_vendeur","filtre_produit",'identifiant acheteur',"nom_acheteur"]).sum(["volume propose"])[["volume propose"]]
 contrats_spe_all["couleur"] = "TOUT"
 contrats_spe_all = contrats_spe_all.reset_index()
 contrats_spe_all.set_index(['identifiant_vendeur','filtre_produit','couleur'], inplace = True)
@@ -99,7 +103,7 @@ contrats_spe_all.set_index(['identifiant_vendeur','filtre_produit','couleur'], i
 #AUCUN FILTRE TOUTES LES APPELLATIONS ET TOUTES LES COULEURS
 
 
-contrats_all_all = contrats_spe_spe.groupby(["identifiant_vendeur",'identifiant acheteur',"nom_acheteur"]).sum(["volume enleve"])[["volume enleve"]]
+contrats_all_all = contrats_spe_spe.groupby(["identifiant_vendeur",'identifiant acheteur',"nom_acheteur"]).sum(["volume propose"])[["volume propose"]]
 contrats_all_all["couleur"] = "TOUT"
 contrats_all_all["filtre_produit"] = "TOUT"
 contrats_all_all = contrats_all_all.reset_index()
@@ -115,7 +119,7 @@ df_final = pd.concat([df_final, contrats_all_all])
 
 df_final = df_final.sort_values(by=['identifiant_vendeur','filtre_produit','couleur'])
 
-df_final.rename(columns = {'volume enleve':'volume'}, inplace = True)
+df_final.rename(columns = {'volume propose':'volume'}, inplace = True)
 df_final.rename(columns = {'nom_acheteur':"Client"}, inplace = True)
 
 #df_final
@@ -126,8 +130,9 @@ df_final.rename(columns = {'nom_acheteur':"Client"}, inplace = True)
 
 def create_graphe(df, identifiant, appellation, couleur):
 
-    fig = px.pie(df, values='volume', names='Client', color_discrete_sequence=px.colors.sequential.Agsunset, title="Contractualisation "+lastcampagnes[0], width=632, height=650)
-    fig.update_traces(textposition='inside', textinfo='label+text', text=df['volume'].map("{:,} hl".format))
+    fig = px.pie(df, values='volume', names='Client', color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
+    fig.update_traces(textposition='inside', textinfo='label+text', text=df['volume'].map("{:} hl".format))
+
     #fig.show()
 
     dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur

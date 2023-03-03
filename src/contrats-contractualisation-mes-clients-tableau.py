@@ -51,7 +51,7 @@ lastcampagnes = lastcampagnes[-5:]
 contrats_csv = contrats.query('campagne in @lastcampagnes')
 contrats_csv['couleur'] = contrats_csv['couleur'].str.upper()
 
-contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','nom acheteur': 'nom_acheteur','volume enleve (en hl)':'volume enleve'}, inplace = True)
+contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','nom acheteur': 'nom_acheteur','volume propose (en hl)':'volume propose'}, inplace = True)
 
 if(id_operateur):
     contrats = contrats_csv.query("identifiant_vendeur == @id_operateur").reset_index()
@@ -79,22 +79,22 @@ if(id_operateur):
 contrats['filtre_produit'] = contrats['appellation'] + "-" + contrats['lieu'] + "-" +contrats['certification']+ "-" +contrats['genre']+ "-" +contrats['mention']
 
 #LES CONTRATS 5 DERNIERES CAMPAGNES 
-contrats_all = contrats.groupby(["identifiant_vendeur","filtre_produit", "couleur","identifiant acheteur","nom_acheteur"]).sum(["volume enleve"])[["volume enleve"]]
-contrats_all.rename(columns = {'volume enleve':'5 DA'}, inplace = True)
+contrats_all = contrats.groupby(["identifiant_vendeur","filtre_produit", "couleur","identifiant acheteur","nom_acheteur"]).sum(["volume propose"])[["volume propose"]]
+contrats_all.rename(columns = {'volume propose':'5 DA'}, inplace = True)
 
 
 #LES CONTRATS DE LA CAMPAGNE COURANTE
 campagne_courante = lastcampagnes[-1:]
 contrats_annee_courante = contrats.query('campagne in @campagne_courante')
-contrats_annee_courante = contrats_annee_courante.groupby(["identifiant_vendeur","filtre_produit", "couleur","identifiant acheteur","nom_acheteur"]).sum(["volume enleve"])[["volume enleve"]]
-contrats_annee_courante.rename(columns = {'volume enleve':'n'}, inplace = True)
+contrats_annee_courante = contrats_annee_courante.groupby(["identifiant_vendeur","filtre_produit", "couleur","identifiant acheteur","nom_acheteur"]).sum(["volume propose"])[["volume propose"]]
+contrats_annee_courante.rename(columns = {'volume propose':'n'}, inplace = True)
 contrats_annee_courante = contrats_annee_courante.sort_values(by=['n'], ascending=False)
 
 #LES CONTRATS DE LA CAMPAGNE_PRECEDENTE n-1
 campagne_n_1 = lastcampagnes[-2:][0]
 contrats_annee_n_1 = contrats.query('campagne in @campagne_n_1')
-contrats_annee_n_1 = contrats_annee_n_1.groupby(["identifiant_vendeur","filtre_produit", "couleur","identifiant acheteur","nom_acheteur"]).sum(["volume enleve"])[["volume enleve"]]
-contrats_annee_n_1.rename(columns = {'volume enleve':'n-1'}, inplace = True)
+contrats_annee_n_1 = contrats_annee_n_1.groupby(["identifiant_vendeur","filtre_produit", "couleur","identifiant acheteur","nom_acheteur"]).sum(["volume propose"])[["volume propose"]]
+contrats_annee_n_1.rename(columns = {'volume propose':'n-1'}, inplace = True)
 
 
 df_merge_spe_spe = contrats_annee_courante.merge(contrats_annee_n_1,how = 'left',on=['identifiant_vendeur','filtre_produit','couleur','identifiant acheteur','nom_acheteur']).merge(contrats_all,on=['identifiant_vendeur','filtre_produit','couleur','identifiant acheteur','nom_acheteur'])
@@ -110,21 +110,21 @@ df_merge_spe_spe.set_index(['identifiant_vendeur','filtre_produit','couleur'], i
 # PAR APPELLATIONS
 
 #LES CONTRATS 5 DERNIERES CAMPAGNES 
-contrats_all_spe_all= contrats.groupby(["identifiant_vendeur","filtre_produit","identifiant acheteur","nom_acheteur"]).sum(["volume enleve"])[["volume enleve"]]
-contrats_all_spe_all.rename(columns = {'volume enleve':'5 DA'}, inplace = True)
+contrats_all_spe_all= contrats.groupby(["identifiant_vendeur","filtre_produit","identifiant acheteur","nom_acheteur"]).sum(["volume propose"])[["volume propose"]]
+contrats_all_spe_all.rename(columns = {'volume propose':'5 DA'}, inplace = True)
 
 
 #LES CONTRATS DE LA CAMPAGNE COURANTE
 contrats_annee_courante_spe_all = contrats.query('campagne in @campagne_courante')
-contrats_annee_courante_spe_all = contrats_annee_courante_spe_all.groupby(["identifiant_vendeur","filtre_produit","identifiant acheteur","nom_acheteur"]).sum(["volume enleve"])[["volume enleve"]]
-contrats_annee_courante_spe_all.rename(columns = {'volume enleve':'n'}, inplace = True)
+contrats_annee_courante_spe_all = contrats_annee_courante_spe_all.groupby(["identifiant_vendeur","filtre_produit","identifiant acheteur","nom_acheteur"]).sum(["volume propose"])[["volume propose"]]
+contrats_annee_courante_spe_all.rename(columns = {'volume propose':'n'}, inplace = True)
 contrats_annee_courante_spe_all = contrats_annee_courante_spe_all.sort_values(by=['n'], ascending=False)
 
 
 #LES CONTRATS DE LA CAMPAGNE_PRECEDENTE n-1
 contrats_annee_n_1_spe_all = contrats.query('campagne in @campagne_n_1')
-contrats_annee_n_1_spe_all = contrats_annee_n_1_spe_all.groupby(["identifiant_vendeur","filtre_produit","identifiant acheteur","nom_acheteur"]).sum(["volume enleve"])[["volume enleve"]]
-contrats_annee_n_1_spe_all.rename(columns = {'volume enleve':'n-1'}, inplace = True)
+contrats_annee_n_1_spe_all = contrats_annee_n_1_spe_all.groupby(["identifiant_vendeur","filtre_produit","identifiant acheteur","nom_acheteur"]).sum(["volume propose"])[["volume propose"]]
+contrats_annee_n_1_spe_all.rename(columns = {'volume propose':'n-1'}, inplace = True)
 
 
 df_merge_spe_all = contrats_annee_courante_spe_all.merge(contrats_annee_n_1_spe_all,how = 'left',on=['identifiant_vendeur','filtre_produit','identifiant acheteur','nom_acheteur']).merge(contrats_all_spe_all,on=['identifiant_vendeur','filtre_produit','identifiant acheteur','nom_acheteur'])
@@ -141,20 +141,20 @@ df_merge_spe_all.set_index(['identifiant_vendeur','filtre_produit','couleur'], i
 #AUCUN FILTRE TOUTES LES APPELLATIONS ET TOUTES LES COULEURS
 
 #LES CONTRATS 5 DERNIERES CAMPAGNES 
-contrats_all_all_all= contrats.groupby(["identifiant_vendeur","identifiant acheteur","nom_acheteur"]).sum(["volume enleve"])[["volume enleve"]]
-contrats_all_all_all.rename(columns = {'volume enleve':'5 DA'}, inplace = True)
+contrats_all_all_all= contrats.groupby(["identifiant_vendeur","identifiant acheteur","nom_acheteur"]).sum(["volume propose"])[["volume propose"]]
+contrats_all_all_all.rename(columns = {'volume propose':'5 DA'}, inplace = True)
 
 #LES CONTRATS DE LA CAMPAGNE COURANTE
 contrats_annee_courante_all_all = contrats.query('campagne in @campagne_courante')
-contrats_annee_courante_all_all = contrats_annee_courante_all_all.groupby(["identifiant_vendeur","identifiant acheteur","nom_acheteur"]).sum(["volume enleve"])[["volume enleve"]]
-contrats_annee_courante_all_all.rename(columns = {'volume enleve':'n'}, inplace = True)
+contrats_annee_courante_all_all = contrats_annee_courante_all_all.groupby(["identifiant_vendeur","identifiant acheteur","nom_acheteur"]).sum(["volume propose"])[["volume propose"]]
+contrats_annee_courante_all_all.rename(columns = {'volume propose':'n'}, inplace = True)
 contrats_annee_courante_all_all = contrats_annee_courante_all_all.sort_values(by=['n'], ascending=False)
 
 
 #LES CONTRATS DE LA CAMPAGNE_PRECEDENTE n-1
 contrats_annee_n_1_all_all = contrats.query('campagne in @campagne_n_1')
-contrats_annee_n_1_all_all = contrats_annee_n_1_all_all.groupby(["identifiant_vendeur","identifiant acheteur","nom_acheteur"]).sum(["volume enleve"])[["volume enleve"]]
-contrats_annee_n_1_all_all.rename(columns = {'volume enleve':'n-1'}, inplace = True)
+contrats_annee_n_1_all_all = contrats_annee_n_1_all_all.groupby(["identifiant_vendeur","identifiant acheteur","nom_acheteur"]).sum(["volume propose"])[["volume propose"]]
+contrats_annee_n_1_all_all.rename(columns = {'volume propose':'n-1'}, inplace = True)
 
 df_merge_all_all = contrats_annee_courante_all_all.merge(contrats_annee_n_1_all_all,how = 'left',on=['identifiant_vendeur','identifiant acheteur','nom_acheteur']).merge(contrats_all_all_all,on=['identifiant_vendeur','identifiant acheteur','nom_acheteur'])
 df_merge_all_all["couleur"] = "TOUT"

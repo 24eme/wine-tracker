@@ -166,7 +166,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                       </div>
                   </div>
                   <div class="row mt-3 shadow bg-white rounded p-1">
-                    <h3 class="col-xs-12 p-4 text-center fw-bold">Cumul de l'évolution des sorties de chais par mois</h3>
+                    <h3 class="col-xs-12 p-4 text-center fw-bold entete">Cumul de l'évolution des sorties de chais par mois</h3>
                     <h3 class="col-xs-12 text-center fw-bold">MA CAVE</h3>
                       <div class="col-md-12" style="height: 500px;">
                           <?php include $drm_graph_path."/drm-sorties-cumul-par-mois.html";?>
@@ -190,20 +190,25 @@ $list_produits_contrats = $data['produits']['contrats'];
                     </select>
                   </div>
                 </div>
+                <div class="mt-5 row">
                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients.html")): ?>
                 <div class="mt-3 row shadow bg-white rounded p-1">
-                  <h3 class="col-xs-12 p-4 text-center fw-bold">Contractualisation</h3>
-                    <div class="col-md-6 mt-4" style="height: 650px;">
-                        <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients.html";?>
-                    </div>
-                    <div class="col-md-6 mt-4" style="height: 650px;">
-                      <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients-tableau.html";?>
-                    </div>
-                    <div class="col-xs-12">
-                      <p class="text-muted text-end fs-6">
-                        En hl. Sources: Contrats Inter-Rhône
-                      </p>
-                    </div>
+                  <h3 class="col-xs-12 p-4 text-center fw-bold entete">Contractualisation sur les 5 dernières campagnes</h3>
+                  <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients.html";?>
+                  <div class="col-xs-12">
+                    <p class="text-muted text-end fs-6">
+                      En hl. Sources: Contrats Inter-Rhône
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-3 row shadow bg-white rounded p-1">
+                  <h3 class="col-xs-12 p-4 text-center fw-bold entete">Contractualisation</h3>
+                    <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients-tableau.html";?>
+                  <div class="col-xs-12">
+                    <p class="text-muted text-end fs-6">
+                      En hl. Sources: Contrats Inter-Rhône
+                    </p>
+                  </div>
                 </div>
                 <?php endif;?>
                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html")): ?>
@@ -211,6 +216,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                   <?php include $contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html";?>
                   </div>
                 <?php endif;?>
+              </div>
               </div>
             <?php endif; ?>
           </div>

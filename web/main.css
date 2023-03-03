@@ -14,17 +14,6 @@ body{
   color : #e75047 !important;
 }
 
-.entete{
-  color : #e75047;
-  font-size: 1.5em;
-  /* text-shadow: grey 0.1em 0.1em 0.1em; */
-}
-
-.entete-vignoble{
-  font-size: 1.5em;
-  color : grey;
-}
-
 .chiffre{
   max-width: 85%;
 }
