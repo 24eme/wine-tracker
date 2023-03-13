@@ -193,13 +193,30 @@ $list_produits_contrats = $data['produits']['contrats'];
                 <div class="mt-5 row">
                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients.html")): ?>
                 <div class="mt-3 row shadow bg-white rounded p-1">
-                  <h3 class="col-xs-12 p-4 text-center fw-bold entete">Contractualisation sur les 5 dernières campagnes</h3>
-                  <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients.html";?>
-                  <div class="col-xs-12">
-                    <p class="text-muted text-end fs-6">
-                      En hl. Sources: Contrats Inter-Rhône
-                    </p>
+                  <h3 class="col-xs-12 p-4 text-center fw-bold entete">Moyenne contractualisation sur les 5 dernières campagnes</h3>
+                  <div class="col-2 btn-group" role="group">
+                    <input type="radio" class="radio-btn-contrats btn-check" name="btnradio" id="btn-radio-volume" autocomplete="off" checked onclick="changeRadioValue(this)" data-toshow="pie-volume" data-tohide="pie-prix">
+                    <label class="btn btn-light" for="btn-radio-volume">en hl</label>
+                    <input type="radio" class="radio-btn-contrats btn-check" name="btnradio" id="btn-radio-prix" autocomplete="off" onclick="changeRadioValue(this)" data-toshow="pie-prix" data-tohide="pie-volume">
+                    <label class="btn btn-light" for="btn-radio-prix">en €</label>
                   </div>
+                  <div id="pie-volume" class="d-block">
+                    <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html";?>
+                    <div class="col-xs-12">
+                      <p class="text-muted text-end fs-6">
+                        En hl. Sources: Contrats Inter-Rhône
+                      </p>
+                    </div>
+                  </div>
+                  <div id="pie-prix" class="d-none">
+                    <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients-en-euros.html";?>
+                    <div class="col-xs-12">
+                      <p class="text-muted text-end fs-6">
+                        En €. Sources: Contrats Inter-Rhône
+                      </p>
+                    </div>
+                  </div>
+
                 </div>
                 <div class="mt-3 row shadow bg-white rounded p-1">
                   <h3 class="col-xs-12 p-4 text-center fw-bold entete">Contractualisation</h3>

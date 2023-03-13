@@ -71,3 +71,11 @@ document.addEventListener('click', function(e) {
       }
     }
 });
+
+function changeRadioValue(choix){
+  document.getElementById(choix.dataset.toshow).classList.remove("d-none");
+  document.getElementById(choix.dataset.toshow).classList.add("d-block");
+
+  document.getElementById(choix.dataset.tohide).classList.remove("d-block");
+  document.getElementById(choix.dataset.tohide).classList.add("d-none");
+}
