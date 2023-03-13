@@ -122,6 +122,9 @@ df_final = df_final.sort_values(by=['identifiant_vendeur','filtre_produit','coul
 df_final.rename(columns = {'volume propose':'volume'}, inplace = True)
 df_final.rename(columns = {'nom_acheteur':"Client"}, inplace = True)
 
+
+df_final['volume'] = df_final['volume']/len(lastcampagnes)
+
 #df_final
 
 
