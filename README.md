@@ -29,7 +29,7 @@ pip3 install nbconvert
 Mettre les CSV d'entrées issus de Déclarvins dans le dossier data/
 * data/drm/export_bi_drm_stock.csv
 * data/drm/export_bi_mouvements.csv
-* data/drm/export_bi_etablissements.csv
+* data/contrats/export_bi_etablissements.csv
 * data/contrats/export_bi_contrats.csv
 
 ## Génération des données
