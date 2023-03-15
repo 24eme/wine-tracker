@@ -10,8 +10,18 @@ python3 src/drm-sortie-vrac-condionne.py "$CVI"
 python3 src/drm-sortie-tous.py "$CVI"
 python3 src/drm-sorties-cumul-par-mois.py "$CVI"
 python3 src/drm-sorties-par-campagne-et-mois.py "$CVI"
-python3 src/contrats-contractualisation-mes-clients.py "$CVI"
-python3 src/contrats-contractualisation-mes-clients-tableau.py "$CVI"
-python3 src/contrats-contractualisation-comparaison-deroulement-par-campagne.py "$CVI"
-python3 src/contrats-contractualisation-mes-clients-tableau-a-date.py "$CVI"
-python3 src/informations-operateur.py "$CVI"
+
+if [ -n "$CVI" ];then
+  python3 src/contrats-contractualisation-mes-clients.py "$CVI"
+  python3 src/contrats-contractualisation-mes-clients-tableau-a-date.py "$CVI"
+  python3 src/contrats-contractualisation-comparaison-deroulement-par-campagne.py "$CVI"
+  python3 src/informations-operateur.py "$CVI"
+else
+  cut -d ';' -f7 < data/contrats/export_bi_etablissements.csv | while read ID;
+  do
+    python3 src/contrats-contractualisation-mes-clients.py "$ID"
+    python3 src/contrats-contractualisation-mes-clients-tableau-a-date.py "$ID"
+    python3 src/contrats-contractualisation-comparaison-deroulement-par-campagne.py "$ID"
+    python3 src/informations-operateur.py "$ID"
+  done
+fi

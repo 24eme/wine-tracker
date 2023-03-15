@@ -48,11 +48,11 @@ etablissement = etablissements.query("identifiant == @id_operateur")
 famille = etablissement['famille'].unique()[0]
 
 
-drm = pd.read_csv(csv, sep=";",encoding="iso-8859-1")
-contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1")
+drm = pd.read_csv(csv, sep=";",encoding="iso-8859-1", low_memory=False)
+contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False)
 
 
-contrats_csv = contrats
+contrats_csv = contrats.copy()
 contrats_csv['couleur'] = contrats_csv['couleur'].str.upper()
 
 contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','volume propose (en hl)':'volume propose'}, inplace = True)

@@ -65,6 +65,7 @@ lastcampagnes = lastcampagnes[-5:]
 
 
 contrats_csv = contrats.query('campagne in @lastcampagnes')
+contrats_csv = contrats_csv.copy()
 contrats_csv['couleur'] = contrats_csv['couleur'].str.upper()
 
 contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','volume propose (en hl)':'volume propose'}, inplace = True)
@@ -86,8 +87,6 @@ if 'negociant' in famille:
                                 'identifiant_v' : 'identifiant acheteur',
                                 'nom_a' : 'nom_vendeur',
                                 'nom_v' : 'nom_acheteur'}, inplace = True)
-
-print(negociant)
 
 # PAR APPELLATION ET COULEUR
 

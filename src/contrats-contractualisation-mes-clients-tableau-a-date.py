@@ -75,6 +75,7 @@ campagne_courante = lastcampagnes[-1:]
 campagne_n_1 = lastcampagnes[-2:][0]
 
 contrats_csv = contrats.query('campagne in @lastcampagnes')
+contrats_csv = contrats_csv.copy()
 contrats_csv['couleur'] = contrats_csv['couleur'].str.upper()
 contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','nom acheteur': 'nom_acheteur','volume propose (en hl)':'volume propose'}, inplace = True)
 contrats = contrats_csv.query("identifiant_vendeur == @id_operateur").reset_index()
