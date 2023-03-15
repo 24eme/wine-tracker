@@ -30,6 +30,7 @@ Mettre les CSV d'entrées issus de Déclarvins dans le dossier data/
 * data/drm/stock.csv
 * data/drm/mouvements.csv
 * data/contrats/contrats.csv
+* data/contrats/etablissements.csv
 
 ## Génération des données
 

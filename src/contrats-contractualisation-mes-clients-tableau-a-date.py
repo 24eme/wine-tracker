@@ -15,7 +15,7 @@ path = pathlib.Path().absolute()
 path = str(path).replace("src","")
 dossier_graphes=path+"/graphes/"
 csv = path+"/data/contrats/export_bi_contrats.csv"  #il manque un ; à la fin du header.
-
+csv_etablissements = path+"/data/contrats/export_bi_etablissements.csv" #il manque un ; à la fin du header.
 tab_mois = { 1 : "Janvier",
              2 : "Février",
              3 : "Mars",
@@ -41,10 +41,21 @@ parser = argparse.ArgumentParser()
 parser.add_argument("id_operateur", help="Identifiant opérateur", default=id_operateur, nargs='?')
 
 try:
-   args = parser.parse_args()
-   id_operateur = args.id_operateur
+    args = parser.parse_args()
+    id_operateur = args.id_operateur
 except:
-   print("Arguments pas défaut")
+    print("Arguments pas défaut")
+
+if not id_operateur:
+    raise Exception("manque id_operateur")
+
+
+# In[ ]:
+
+
+etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15", low_memory=False)
+etablissement = etablissements.query("identifiant == @id_operateur")
+famille = etablissement['famille'].unique()[0]
 
 
 # In[ ]:
@@ -63,29 +74,27 @@ campagne_5_completes = lastcampagnes[:-1]
 campagne_courante = lastcampagnes[-1:]
 campagne_n_1 = lastcampagnes[-2:][0]
 
-contrats = contrats.query('campagne in @lastcampagnes')
-contrats['couleur'] = contrats['couleur'].str.upper()
-
-contrats.rename(columns = {'identifiant vendeur':'identifiant_vendeur','nom acheteur': 'nom_acheteur','volume propose (en hl)':'volume propose'}, inplace = True)
+contrats_csv = contrats.query('campagne in @lastcampagnes')
+contrats_csv['couleur'] = contrats_csv['couleur'].str.upper()
+contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','nom acheteur': 'nom_acheteur','volume propose (en hl)':'volume propose'}, inplace = True)
+contrats = contrats_csv.query("identifiant_vendeur == @id_operateur").reset_index()
 
 negociant = False
-if(id_operateur):
-    contrats = contrats.query("identifiant_vendeur == @id_operateur").reset_index()
-    negociant = False
-    if not (len(contrats.index)): ##si c'est un négociant
-        negociant = True
-        contrats.rename(columns = {'identifiant acheteur':'identifiant_acheteur'}, inplace = True)
-        contrats = contrats.query("identifiant_acheteur == @id_operateur").reset_index()
-        contrats.rename(columns = { 'identifiant_acheteur' : 'identifiant_a', #temp
-                                    'identifiant_vendeur' : 'identifiant_v',
-                                    'nom_acheteur' : 'nom_a',
-                                    ' nom vendeur' : 'nom_v'}, inplace = True)
 
-        contrats.rename(columns = { 'identifiant_a' : 'identifiant_vendeur',
-                                    'identifiant_v' : 'identifiant acheteur',
-                                    'nom_a' : 'nom_vendeur',
-                                    'nom_v' : 'nom_acheteur'}, inplace = True)
+if 'negociant' in famille:
+    negociant = True
+    contrats_csv.rename(columns = {'identifiant acheteur':'identifiant_acheteur'}, inplace = True)
+    contrats = contrats_csv.query("identifiant_acheteur == @id_operateur").reset_index()
+    contrats.rename(columns = { 'identifiant_acheteur' : 'identifiant_a', #temp
+                                'identifiant_vendeur' : 'identifiant_v',
+                                'nom_acheteur' : 'nom_a',
+                                ' nom vendeur' : 'nom_v'
 
+                                }, inplace = True)
+    contrats.rename(columns = { 'identifiant_a' : 'identifiant_vendeur',
+                                'identifiant_v' : 'identifiant acheteur',
+                                'nom_a' : 'nom_vendeur',
+                                'nom_v' : 'nom_acheteur'}, inplace = True)
 
 contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
 contrats['mois_de_validation'] = contrats['date de validation'].dt.month

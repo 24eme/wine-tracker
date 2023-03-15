@@ -14,6 +14,7 @@ path = pathlib.Path().absolute()
 path = str(path).replace("src","")
 dossier_graphes=path+"/graphes/"
 csv = path+"/data/contrats/export_bi_contrats.csv"  #il manque un ; à la fin du header.
+csv_etablissements = path+"/data/contrats/export_bi_etablissements.csv" #il manque un ; à la fin du header.
 source = "DRM Inter-Rhône"
 
 sort_week = [31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
@@ -29,10 +30,21 @@ parser = argparse.ArgumentParser()
 parser.add_argument("id_operateur", help="Identifiant opérateur", default=id_operateur, nargs='?')
 
 try:
-   args = parser.parse_args()
-   id_operateur = args.id_operateur
+    args = parser.parse_args()
+    id_operateur = args.id_operateur
 except:
-   print("Arguments pas défaut")
+    print("Arguments pas défaut")
+
+if not id_operateur:
+    raise Exception("manque id_operateur")
+
+
+# In[ ]:
+
+
+etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15", low_memory=False)
+etablissement = etablissements.query("identifiant == @id_operateur")
+famille = etablissement['famille'].unique()[0]
 
 
 # In[ ]:
@@ -57,23 +69,26 @@ contrats_csv['couleur'] = contrats_csv['couleur'].str.upper()
 
 contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','volume propose (en hl)':'volume propose'}, inplace = True)
 
-if(id_operateur):
-    contrats = contrats_csv.query("identifiant_vendeur == @id_operateur").reset_index()
-    negociant = False
-    if not (len(contrats.index)): ##si c'est un négociant
-        negociant = True
-        contrats_csv.rename(columns = {'identifiant acheteur':'identifiant_acheteur'}, inplace = True)
-        contrats = contrats_csv.query("identifiant_acheteur == @id_operateur").reset_index()
-        contrats.rename(columns = { 'identifiant_acheteur' : 'identifiant_a', #temp
-                                    'identifiant_vendeur' : 'identifiant_v',
-                                    'nom_acheteur' : 'nom_a',
-                                    ' nom vendeur' : 'nom_v'
-                                    }, inplace = True)
+contrats = contrats_csv.query("identifiant_vendeur == @id_operateur").reset_index()
 
-        contrats.rename(columns = { 'identifiant_a' : 'identifiant_vendeur',
-                                    'identifiant_v' : 'identifiant acheteur',
-                                    'nom_a' : 'nom_vendeur',
-                                    'nom_v' : 'nom_acheteur'}, inplace = True)
+negociant = False
+if 'negociant' in famille:
+    negociant = True
+    contrats_csv.rename(columns = {'identifiant acheteur':'identifiant_acheteur'}, inplace = True)
+    contrats = contrats_csv.query("identifiant_acheteur == @id_operateur").reset_index()
+    contrats.rename(columns = { 'identifiant_acheteur' : 'identifiant_a', #temp
+                                'identifiant_vendeur' : 'identifiant_v',
+                                'nom_acheteur' : 'nom_a',
+                                ' nom vendeur' : 'nom_v'
+                                }, inplace = True)
+
+    contrats.rename(columns = { 'identifiant_a' : 'identifiant_vendeur',
+                                'identifiant_v' : 'identifiant acheteur',
+                                'nom_a' : 'nom_vendeur',
+                                'nom_v' : 'nom_acheteur'}, inplace = True)
+
+print(negociant)
+
 # PAR APPELLATION ET COULEUR
 
 contrats['filtre_produit'] = contrats['appellation'] + "-" + contrats['lieu'] + "-" +contrats['certification']+ "-" +contrats['genre']+ "-" +contrats['mention']
