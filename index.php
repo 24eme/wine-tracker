@@ -219,13 +219,13 @@ $list_produits_contrats = $data['produits']['contrats'];
 
                 </div>
                 <div class="mt-3 row shadow bg-white rounded p-1">
-                  <h3 class="col-xs-12 p-4 text-center fw-bold entete">Contractualisation</h3>
-                    <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients-tableau.html";?>
-                  <div class="col-xs-12">
-                    <p class="text-muted text-end fs-6">
-                      En hl. Sources: Contrats Inter-Rhône
-                    </p>
+                  <h3 class="col-xs-8 p-4 text-center fw-bold entete">Contractualisation comparaison à date</h3>
+                  <div class="col-xs-10">
+                    <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html";?>
                   </div>
+                  <p class="text-muted text-end fs-6">
+                    En hl. Sources: Contrats Inter-Rhône
+                  </p>
                 </div>
                 <?php endif;?>
                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html")): ?>

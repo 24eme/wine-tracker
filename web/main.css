@@ -21,3 +21,35 @@ body{
 nav a{
   text-decoration: none;
 }
+
+.table td:first-child {
+    text-align: left;
+}​
+
+.table th{
+  width:500px;
+}
+.table td{
+  width:500px;
+}
+
+.icone-info {
+  position: relative;
+  display: inline-block;
+}
+
+.icone-info .icone-info-text {
+  visibility: hidden;
+  width: 100px;
+  background-color: #E75047;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.icone-info:hover .icone-info-text {
+  visibility: visible;
+}
