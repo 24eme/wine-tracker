@@ -152,7 +152,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                   </div>
 
                   <div class="row mt-3 shadow bg-white rounded p-1">
-                    <h3 class="col-xs-12 p-4 text-center fw-bold">Évolution des sorties par trimestre</h3>
+                    <h3 class="col-xs-12 p-4 text-center fw-bold">Évolution des sorties par mois - campagne</h3>
                       <div class="col-md-6 mt-4" style="height: 650px;">
                           <?php include $drm_graph_path."/drm-sorties-par-campagne-et-mois.html";?>
                       </div>
