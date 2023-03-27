@@ -6,6 +6,7 @@ Pour éviter tout conflit avec les librairies systèmes, il est recommandé d'ut
 
 ```
 python3 -m venv dir/
+source dir/bin/activate
 ```
 
 Pour la génération des graphes, jupyter notebook est utilisé :
