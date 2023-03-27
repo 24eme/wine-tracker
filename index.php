@@ -13,8 +13,13 @@ if (! $GET['id']) {
 }
 
 $path = "graphes/".$GET['id'];
-$ls_dossier_drm = array_diff(scandir($path."/drm"), array('.', '..'));
-$ls_dossier_contrats = array_diff(scandir($path."/contrat"), array('.', '..'));
+
+if (! is_dir($path."/drm") || ! is_dir($path."/contrat")) {
+    die('Il manque au moins un dossier de données. La génération a été lancée ?');
+}
+
+$ls_dossier_drm = array_diff((scandir($path."/drm")) ?: [], array('.', '..'));
+$ls_dossier_contrats = array_diff((scandir($path."/contrat")) ?: [], array('.', '..'));
 
 $drm_graph_path               = $path."/drm/".$GET['filtre'];
 $drm_graph_le_vignoble_path     = "graphes/LE_VIGNOBLE/drm/".$GET['filtre'];
