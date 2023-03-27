@@ -141,7 +141,7 @@ def create_graphe(df, identifiant, appellation, couleur):
 
     fig = px.pie(df, values='volume', names='Client', color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
     fig.update_traces(textposition='inside', textinfo='label+text', text=df['volume'].map("{:} hl".format))
-
+    fig.update_layout(legend_itemdoubleclick=False)
     #fig.show()
 
     dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur
