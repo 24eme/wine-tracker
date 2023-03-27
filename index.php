@@ -12,6 +12,10 @@ if (! $GET['id']) {
     die('Paramètre requis manquant : id');
 }
 
+if (! $GET['filtre']) {
+    header('Location: /?'.http_build_query(['id' => $GET['id'], 'filtre' => 'TOUT-TOUT']));
+}
+
 $path = "graphes/".$GET['id'];
 
 if (! is_dir($path."/drm") || ! is_dir($path."/contrat")) {
@@ -104,12 +108,14 @@ $list_produits_contrats = $data['produits']['contrats'];
               <div class="tab-pane fade show active" id="nav-drm" role="tabpanel" aria-labelledby="nav-drm-tab" tabindex="0" id="drm" class="onglets d-block">
                 <div class="mt-3 d-flex align-items-end flex-column">
                   <div class="col-md-5 shadow bg-white rounded">
-                    <select id="filtre" name="filtre" class="form-select form-control" onchange="changeFilter(this)">
+                    <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)">
                         <?php
                         foreach($list_produits_drm as $filtre => $libelle):
                             if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_drm))://si le dossier existe on l'affiche ?>
-                                                  <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"><?php echo $libelle;?></option>
-                        <?php endif;
+                              <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"
+                                  <?php if (str_replace('-1', '-TOUT', $filtre) === $GET['filtre']) { echo "selected"; } ?>
+                              ><?php echo $libelle;?></option>
+                            <?php endif;
                         endforeach;
                         ?>
                     </select>
@@ -185,11 +191,13 @@ $list_produits_contrats = $data['produits']['contrats'];
             <div class="tab-pane fade" id="nav-contrats" role="tabpanel" aria-labelledby="nav-contrats-tab" tabindex="0" id="contrats" class="onglets mt-5 d-none">
                 <div class="mt-3 d-flex align-items-end flex-column">
                   <div class="col-md-5 shadow bg-white rounded">
-                    <select id="filtre-contrat" name="filtre-contrat" class="form-select form-control" onchange="changeFilter(this)">
+                    <select id="filtre-contrats" name="filtre-contrats" class="form-select form-control" onchange="changeFilter(this)">
                         <?php
                         foreach($list_produits_contrats as $filtre => $libelle):
                             if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_contrats))://si le dossier existe on l'affiche ?>
-                              <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"><?php echo $libelle;?></option>
+                              <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"
+                                  <?php if (str_replace('-1', '-TOUT', $filtre) === $GET['filtre']) { echo "selected"; } ?>
+                              ><?php echo $libelle;?></option>
                             <?php endif;
                         endforeach; ?>
                     </select>

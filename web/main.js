@@ -1,52 +1,32 @@
 //option selectionné est le filtre qui est dans l'url
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  var url = window.location.href;
-  var onglet = url.split('#').pop();
-  var href = new URL(url);
-  if(onglet == "drm" || onglet == "contrats"){
-    document.getElementById("nav-"+onglet+"-tab").click()
+  var url = new URL(window.location.href);
+  var onglet = url.hash;
+  var href = new URL(url.href);
+
+  if(onglet == "#drm" || onglet == "#contrats"){
+    document.getElementById("nav-"+onglet.replace('#', '')+"-tab").click()
   }
 
-  if(!href.searchParams.get('filtre')){ //si pas de filtre dans l'url par defaut "TOUT-TOUT"
-    href.searchParams.set('filtre',filtre.value);
-    window.location = href;
-  }
-  else{
+  (document.querySelectorAll('#nav-tab .nav-link') || []).forEach(function (nav) {
+    const trigger = new bootstrap.Tab(nav)
+    nav.addEventListener('click', function (e) {
+      e.preventDefault()
+      trigger.show()
+      window.location.hash = nav.dataset.onglet
 
-    let drmOptionNames = [...document.getElementById('filtre').options].map(o => o.value);
+      const currentFilter = href.searchParams.get('filtre') || 'TOUT-TOUT'
+      const select = document.getElementById('filtre-'+nav.dataset.onglet)
 
-    if(drmOptionNames.includes(href.searchParams.get('filtre'))){
-      document.getElementById('filtre').value = href.searchParams.get('filtre');
-    }
-    else{
-      var onglets = document.getElementsByClassName("nav-link");
-      for (var i = 0; i < onglets.length; i++) {
-          onglets[i].addEventListener('click',function() {
-            href.searchParams.set('filtre',"TOUT-TOUT");
-            href.hash = "#"+this.dataset.onglet;
-            window.location = href;
-          });
+      if ([...select.options].map(o => o.value).includes(currentFilter) === false) {
+        const redirectTo = new URL(window.location.href);
+        redirectTo.searchParams.set('filtre', 'TOUT-TOUT')
+        window.location = redirectTo
+        return false;
       }
-    }
-
-    let contratsOptionNames = [...document.getElementById('filtre-contrat').options].map(o => o.value);
-
-    if(contratsOptionNames.includes(href.searchParams.get('filtre'))){
-      document.getElementById('filtre-contrat').value = href.searchParams.get('filtre');
-    }
-
-    else{
-      var onglets = document.getElementsByClassName("nav-link");
-      for (var i = 0; i < onglets.length; i++) {
-          onglets[i].addEventListener('click',function() {
-            href.searchParams.set('filtre',"TOUT-TOUT");
-            href.hash = "#"+this.dataset.onglet;
-            window.location = href;
-          });
-      }
-    }
-  }
+    })
+  });
 });
 
 // quand on change de filtre l'url est mis à jour et la page est rechargée.
