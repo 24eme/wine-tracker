@@ -213,8 +213,8 @@ df_final = df_final.fillna(0)
 
 df_final = df_final.round(1)
 
-nom_col_n_1 = 'vs Août - '+tab_mois[current_month]+' '+lastcampagnes[-2:][0]
-nom_col_5_DA = 'vs Août - '+tab_mois[current_month]+' Moy 5 dernières campagnes complètes'
+nom_col_n_1 = 'Campagne '+lastcampagnes[-2:][0]
+nom_col_5_DA = 'Moy 5 dernières campagnes complètes'
 
 df_final[nom_col_n_1] = ((df_final["n"] - df_final['n-1']) / df_final['n-1'])*100
 df_final[nom_col_5_DA] = ((df_final["n"] - df_final['5 DA']) / df_final['5 DA'])*100
@@ -237,7 +237,7 @@ df_final[nom_col_5_DA] = df_final[nom_col_5_DA].astype(str)+' <div class="icone-
 
 df_final['n'] = df_final['n'].astype(str)+' hl'
 
-df_final.rename(columns = {'n': 'Août - '+tab_mois[current_month]+' '+lastcampagnes[-1:][0] }, inplace = True)
+df_final.rename(columns = {'n': 'Campagne courante' }, inplace = True)
 
 if(negociant):
     df_final.rename(columns = {'nom_acheteur':'Fournisseur'}, inplace = True)

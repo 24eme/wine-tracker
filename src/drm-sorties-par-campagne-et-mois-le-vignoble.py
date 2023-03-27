@@ -150,7 +150,7 @@ couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
 
 def create_graphe(final,appellation,couleur):
     # CREATION DU GRAPHE
-    fig = px.line(final, x='periode', y="volume",color="campagne", markers=True, color_discrete_sequence=couleurs, title="Le vignoble")
+    fig = px.line(final, x='periode', y="volume", markers=True, color_discrete_sequence=couleurs, title="Le vignoble")
     fig.update_layout(title={
                         'text': "<b>LE VIGNOBLE</b>",
                         'y':0.9,
@@ -172,6 +172,11 @@ def create_graphe(final,appellation,couleur):
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True,showline=True, linewidth=1, linecolor='Lightgrey',showticklabels=False)
     fig.update_yaxes(fixedrange=True,rangemode="tozero")
+    
+    for tick in range(len(final)):
+        if tick % 12 == 0:
+            fig.add_vline(tick, annotation_text="Campagne "+final['campagne'][tick])
+            
     #fig.show()
     
     dossier = dossier_graphes+"/LE_VIGNOBLE/drm/"+appellation+"-"+couleur

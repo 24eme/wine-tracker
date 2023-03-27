@@ -13,8 +13,13 @@ if (! $GET['id']) {
 }
 
 $path = "graphes/".$GET['id'];
-$ls_dossier_drm = array_diff(scandir($path."/drm"), array('.', '..'));
-$ls_dossier_contrats = array_diff(scandir($path."/contrat"), array('.', '..'));
+
+if (! is_dir($path."/drm") || ! is_dir($path."/contrat")) {
+    die('Il manque au moins un dossier de données. La génération a été lancée ?');
+}
+
+$ls_dossier_drm = array_diff((scandir($path."/drm")) ?: [], array('.', '..'));
+$ls_dossier_contrats = array_diff((scandir($path."/contrat")) ?: [], array('.', '..'));
 
 $drm_graph_path               = $path."/drm/".$GET['filtre'];
 $drm_graph_le_vignoble_path     = "graphes/LE_VIGNOBLE/drm/".$GET['filtre'];
@@ -219,7 +224,8 @@ $list_produits_contrats = $data['produits']['contrats'];
 
                 </div>
                 <div class="mt-3 row shadow bg-white rounded p-1">
-                  <h3 class="col-xs-8 p-4 text-center fw-bold entete">Contractualisation comparaison à date</h3>
+                  <h3 class="col-xs-8 pt-4 text-center fw-bold entete">Comparaison à date des contractualisations</h3>
+                  <h5 class="col-xs-8 p-1 pb-4 text-center fw-bold entete">Variation de volume contractualisé comparée à la campagne courante</h5>
                   <div class="col-xs-10">
                     <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html";?>
                   </div>
