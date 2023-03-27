@@ -141,16 +141,13 @@ for bloc in df_final.index.unique():
 df_final = df_final.sort_values(by=['filtre_produit','couleur',"campagne",'ordre-mois'])
 df_final.rename(columns = {'volume mouvement':'volume',"mois-campagne":'periode'}, inplace = True)
 
-tabcouleur = ["#CFCFCF","#5D5D5D","#E75047"]
-couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
-
 
 # In[ ]:
 
 
 def create_graphe(final,appellation,couleur):
     # CREATION DU GRAPHE
-    fig = px.line(final, x='periode', y="volume", markers=True, color_discrete_sequence=couleurs, title="Le vignoble")
+    fig = px.line(final, x='periode', y="volume", markers=True, color_discrete_sequence=["#D1342F"], title="Le vignoble")
     fig.update_layout(title={
                         'text': "<b>LE VIGNOBLE</b>",
                         'y':0.9,

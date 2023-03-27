@@ -32,7 +32,7 @@ mois_sort = { "Août" : "01" , "Septembre" : "02", "Octobre" : "03", "Novembre" 
 
 
 #arguments
-id_operateur= None
+id_operateur=None
 
 parser = argparse.ArgumentParser()
 parser.add_argument("id_operateur", help="Identifiant opérateur", default=id_operateur, nargs='?')
@@ -174,8 +174,7 @@ df_final.rename(columns = {'volume mouvement':'volume',"mois-campagne":'periode'
 
 df_final = df_final.fillna(0)
 
-tabcouleur = ["#CFCFCF","#5D5D5D","#E75047"]
-couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
+
 
 #df_final
 
@@ -185,7 +184,7 @@ couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
 
 def create_graphe(final,identifiant,appellation,couleur):
     # CREATION DU GRAPHE
-    fig = px.line(final, x='periode', y="volume", markers=True, color_discrete_sequence=couleurs, title="Ma cave")
+    fig = px.line(final, x='periode', y="volume", markers=True, color_discrete_sequence=["#D1342F"], title="Ma cave")
     fig.update_layout(title={
                         'text': "<b>MA CAVE</b>",
                         'y':0.9,
@@ -207,11 +206,11 @@ def create_graphe(final,identifiant,appellation,couleur):
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True, showline=True, linewidth=1, linecolor='Lightgrey', showticklabels=False)
     fig.update_yaxes(fixedrange=True, rangemode="tozero")
-
+    
     for tick in range(len(final)):
         if tick % 12 == 0:
             fig.add_vline(tick, annotation_text="Campagne "+final['campagne'][tick])
-
+    
     dossier = dossier_graphes+"/"+identifiant+"/drm/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
 
