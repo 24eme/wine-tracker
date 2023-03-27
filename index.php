@@ -245,7 +245,13 @@ $list_produits_contrats = $data['produits']['contrats'];
                 <?php endif;?>
                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html")): ?>
                   <div class="mt-3 row shadow bg-white rounded p-1">
-                  <?php include $contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html";?>
+                    <h3 class="col-xs-8 p-4 text-center fw-bold entete">Comparaison déroulement de la campagne sur les 5 dernières campagnes</h3>
+                    <div class="col-xs-10">
+                      <?php include $contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html";?>
+                    </div>
+                    <p class="text-muted text-end fs-6">
+                      En hl. Sources: Contrats Inter-Rhône
+                    </p>
                   </div>
                 <?php endif;?>
               </div>

@@ -145,12 +145,28 @@ couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
 
 
 def create_graphe(df,identifiant,appellation,couleur):
-    fig = px.line(df, x="semaine", y="volume", color='campagne', width=1200, height=500,color_discrete_sequence=couleurs,
+    fig = px.line(df, x="semaine", y="volume", color='campagne', width=1250, height=650,color_discrete_sequence=couleurs,
                  labels={
                      "semaine": "Numéro de la semaine - Début de campagne : Semaine 31",
                      "volume": "Volume contractualisé hebdomadaire (en hl)"})
     fig.update_layout(xaxis_type = 'category')
     fig.update_xaxes(categoryorder='array', categoryarray= sort_week)
+
+    fig.update_layout(    paper_bgcolor="white",
+                          plot_bgcolor = "white",
+                          yaxis=dict(tickformat=".0f"),
+                          legend=dict(orientation="h",xanchor = "center",x = 0.5, y= -0.3),
+                          legend_itemdoubleclick=False,
+                          legend_title=None
+                         )
+    fig.for_each_xaxis(lambda x: x.update(showgrid=False))
+    fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
+    fig.update_xaxes(fixedrange=True,showline=True, linewidth=1, linecolor='Lightgrey')
+    fig.update_yaxes(fixedrange=True,rangemode="tozero")
+
+    fig.add_vline(x=0)
+    fig.add_hline(y=0)
+    fig.show()
 
     dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
