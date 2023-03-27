@@ -59,9 +59,7 @@ csv_mouvements = path+"/data/drm/export_bi_mouvements.csv"  #il manque un ; à l
 mouvements = pd.read_csv(csv_mouvements, sep=";",encoding="iso8859_15")
 mouvements.rename(columns = {'identifiant declarant':'identifiant','type de mouvement':'type_de_mouvement','certification':'certifications','genre':'genres','appellation':'appellations','mention':'mentions','lieu':'lieux','couleur':'couleurs'}, inplace = True)
 mouvements = mouvements.query('identifiant in @identifiantsproducteurs')
-mouvements = mouvements.query("type_de_mouvement == 'entrees/recolte'")
 mouvements = mouvements.query('campagne in @lastcampagnes')
-mouvements.rename(columns = {'volume mouvement':'entree'}, inplace = True)
 #mouvements
 
 
@@ -78,12 +76,15 @@ mouvements['filtre_produit'] = mouvements['appellations'] + "-" + mouvements['li
 # PAR APPELLATION ET COULEUR
 
 #SOMME RECOLTES
-
-drm_recolte = mouvements.groupby(["campagne",'filtre_produit', "couleurs"]).sum(["entree"])[["entree"]]
+drm_recolte = mouvements.query("type_de_mouvement == 'entrees/recolte'")
+drm_recolte = drm_recolte.groupby(["campagne",'filtre_produit', "couleurs"]).sum(["volume mouvement"])[["volume mouvement"]]
 
 
 #SOMME SORTIES
-drm_sortie = drm.groupby(["campagne","filtre_produit", "couleurs"]).sum(["sortie"])[["sortie"]]
+typedemouvementssorties = ['sorties/vrac','sorties/vrac_contrat','sorties/vrac_export','sorties/crd', 'sorties/factures', 'sorties/export', 'sorties/crd_acquittes', 'sorties/acq_crd','sorties/consommation']
+drm_sortie = mouvements.query("type_de_mouvement in @typedemouvementssorties").reset_index()
+drm_sortie["volume mouvement"] = drm_sortie["volume mouvement"]*(-1)
+drm_sortie = drm_sortie.groupby(["campagne","filtre_produit", "couleurs"]).sum(["volume mouvement"])[["volume mouvement"]]
 
 
 #SOMME STOCK DEBUT DE CAMPAGNE
@@ -103,7 +104,7 @@ df_final_spe_spe['couleurs'] = df_final_spe_spe['couleurs'].str.upper()
 df_final_spe_spe.index = [df_final_spe_spe['filtre_produit'],df_final_spe_spe['couleurs']]
 df_final_spe_spe.drop(['filtre_produit','couleurs'], axis=1, inplace=True)
 
-df_final_spe_spe.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','entree' : 'Récoltes (hl)', 'sortie' : 'Sorties de chais (hl)'}, inplace = True)
+df_final_spe_spe.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Récoltes (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
 
 #df_final_spe_spe
 
@@ -113,8 +114,8 @@ df_final_spe_spe.rename(columns = {'stock debut': 'Stock physique en début de c
 
 # PAR APPELLATIONS
 
-drm_recolte_spe_all = drm_recolte.groupby(["campagne","filtre_produit"]).sum(["entree"])[["entree"]]
-drm_sortie_spe_all = drm_sortie.groupby(["campagne","filtre_produit"]).sum(["sortie"])[["sortie"]]
+drm_recolte_spe_all = drm_recolte.groupby(["campagne","filtre_produit"]).sum(["volume mouvement"])[["volume mouvement"]]
+drm_sortie_spe_all = drm_sortie.groupby(["campagne","filtre_produit"]).sum(["volume mouvement"])[["volume mouvement"]]
 drm_stock_debut_spe_all = drm_stock_debut.groupby(["campagne","filtre_produit"]).sum(["stock debut"])[["stock debut"]]
 
 
@@ -128,7 +129,7 @@ drm_merge_spe_all['couleurs'] = "TOUT"
 drm_merge_spe_all.index = [drm_merge_spe_all['filtre_produit'],drm_merge_spe_all['couleurs']]
 drm_merge_spe_all.drop(['filtre_produit','couleurs'], axis=1, inplace=True)
 
-drm_merge_spe_all.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','entree' : 'Récoltes (hl)', 'sortie' : 'Sorties de chais (hl)'}, inplace = True)
+drm_merge_spe_all.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Récoltes (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
 
 
 #drm_merge_spe_all
@@ -139,8 +140,8 @@ drm_merge_spe_all.rename(columns = {'stock debut': 'Stock physique en début de 
 
 #AUCUN FILTRE TOUTES LES APPELLATIONS ET TOUTES LES COULEURS
 
-drm_recolte_all_all = drm_recolte_spe_all.groupby(["campagne"]).sum(["entree"])[["entree"]]
-drm_sortie_all_all = drm_sortie_spe_all.groupby(["campagne"]).sum(["sortie"])[["sortie"]]
+drm_recolte_all_all = drm_recolte_spe_all.groupby(["campagne"]).sum(["volume mouvement"])[["volume mouvement"]]
+drm_sortie_all_all = drm_sortie_spe_all.groupby(["campagne"]).sum(["volume mouvement"])[["volume mouvement"]]
 drm_stock_debut_all_all = drm_stock_debut.groupby(["campagne"]).sum(["stock debut"])[["stock debut"]]
 
 
@@ -155,7 +156,7 @@ drm_merge_all_all['couleurs'] = "TOUT"
 drm_merge_all_all.index = [drm_merge_all_all['filtre_produit'],drm_merge_all_all['couleurs']]
 drm_merge_all_all.drop(['filtre_produit','couleurs'], axis=1, inplace=True)
 
-drm_merge_all_all.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','entree' : 'Récoltes (hl)', 'sortie' : 'Sorties de chais (hl)'}, inplace = True)
+drm_merge_all_all.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Récoltes (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
 
 
 #drm_merge_all_all
