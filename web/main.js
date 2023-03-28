@@ -37,9 +37,7 @@ function changeFilter(filtre){
 }
 
 document.addEventListener('click', function(e) {
-    if( e.target.className.baseVal != "legendtoggle"){
-      return;
-    }
+  if (e.target.closest('legendtoggle')) {
     var tab = document.getElementsByClassName('legendtext');
     var elementlegendtext = e.target.previousElementSibling.previousElementSibling;
 
@@ -50,6 +48,7 @@ document.addEventListener('click', function(e) {
         element.removeAttribute("id");
       }
     }
+  }
 });
 
 function changeRadioValue(choix){
