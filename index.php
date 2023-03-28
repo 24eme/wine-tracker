@@ -231,7 +231,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                         </p>
                       </div>
                   </div>
-                  <?php if(file_exists($drm_graph_path."/drm-sorties-cumul-par-mois")): ?>
+                  <?php if(file_exists($drm_graph_path."/drm-sorties-cumul-par-mois.html")): ?>
                   <div class="row mt-3 shadow bg-white rounded p-1 graphs-container">
                     <h3 class="col-xs-12 p-4 text-center fw-bold entete">Cumul de l'évolution des sorties de chais par mois</h3>
                     <h3 class="col-xs-12 text-center fw-bold">MA CAVE</h3>
