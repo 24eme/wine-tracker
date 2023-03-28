@@ -39,14 +39,14 @@ function changeFilter(filtre){
 document.addEventListener('click', function(e) {
   if (toggle = e.target.closest('.legendtoggle')) {
     const filter = [...toggle.parentNode.children].filter((child) => child.matches('.legendtext')).map(o => o.dataset.unformatted)
-    const block_parent = toggle.closest('.col-md-6.mt-4')
+    const block_parent = toggle.closest('.graph-container')
 
     if (filter === null || block_parent === null) {
       return false
     }
 
-    const row = block_parent.closest('.row.shadow.bg-white.rounded.p-1')
-    const graphs = [...row.children].filter((child) => (child !== block_parent && child.matches('.col-md-6')))
+    const row = block_parent.closest('.graphs-container')
+    const graphs = [...row.children].filter((child) => (child !== block_parent && child.matches('.graph-container')))
 
     for (const graph of graphs) {
       const toSwitch = graph.querySelector('.legendtext[data-unformatted="'+filter+'"] ~ .legendtoggle')

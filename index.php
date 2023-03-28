@@ -123,12 +123,12 @@ $list_produits_contrats = $data['produits']['contrats'];
                 </div>
 
                 <div class="mt-5 row">
-                  <div class="row shadow bg-white rounded p-1">
+                  <div class="row shadow bg-white rounded p-1 graphs-container">
                     <h3 class="col-xs-12 p-4 text-center fw-bold">Évolution des stocks, récoltes et sorties</h3>
-                    <div class="col-md-6 mt-4" style="height: 650px;">
+                    <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
                         <?php include $drm_graph_path."/drm-stock-recoltes-sorties.html";?>
                     </div>
-                    <div class="col-md-6 mt-4" style="height: 650px;">
+                    <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
                         <?php include $drm_graph_le_vignoble_path."/drm-stock-recoltes-sorties.html";?>
                     </div>
                     <div class="col-xs-12">
@@ -139,16 +139,16 @@ $list_produits_contrats = $data['produits']['contrats'];
                     </div>
                   </div>
 
-                  <div class="mt-3 row shadow bg-white rounded p-1">
+                  <div class="mt-3 row shadow bg-white rounded p-1 graphs-container">
                     <h3 class="col-xs-12 p-4 text-center fw-bold">Évolution des sorties de chais VRAC/Conditionné</h3>
-                      <div class="col-md-6 mt-4" style="height: 650px;">
+                      <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
                         <?php if( ! $GET['bis']):?>
                             <?php include $drm_graph_path."/drm-sortie-vrac-condionne.html";?>
                         <?php else :?>
                             <?php include $drm_graph_path."/drm-sortie-tous.html";?>
                         <?php endif; ?>
                       </div>
-                      <div class="col-md-6 mt-4" style="height: 650px;">
+                      <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
                         <?php if( ! $GET['bis']):?>
                             <?php include $drm_graph_le_vignoble_path."/drm-sortie-vrac-condionne.html";?>
                         <?php else :?>
@@ -162,12 +162,12 @@ $list_produits_contrats = $data['produits']['contrats'];
                       </div>
                   </div>
 
-                  <div class="row mt-3 shadow bg-white rounded p-1">
+                  <div class="row mt-3 shadow bg-white rounded p-1 graphs-container">
                     <h3 class="col-xs-12 p-4 text-center fw-bold">Évolution des sorties par mois - campagne</h3>
-                      <div class="col-md-6 mt-4" style="height: 650px;">
+                      <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
                           <?php include $drm_graph_path."/drm-sorties-par-campagne-et-mois.html";?>
                       </div>
-                      <div class="col-md-6 mt-4" style="height: 650px;">
+                      <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
                           <?php include $drm_graph_le_vignoble_path."/drm-sorties-par-campagne-et-mois.html";?>
                       </div>
                       <div class="col-xs-12">
@@ -176,10 +176,10 @@ $list_produits_contrats = $data['produits']['contrats'];
                         </p>
                       </div>
                   </div>
-                  <div class="row mt-3 shadow bg-white rounded p-1">
+                  <div class="row mt-3 shadow bg-white rounded p-1 graphs-container">
                     <h3 class="col-xs-12 p-4 text-center fw-bold entete">Cumul de l'évolution des sorties de chais par mois</h3>
                     <h3 class="col-xs-12 text-center fw-bold">MA CAVE</h3>
-                      <div class="col-md-12" style="height: 500px;">
+                      <div class="col-md-12 graph-container" style="height: 500px;">
                           <?php include $drm_graph_path."/drm-sorties-cumul-par-mois.html";?>
                       </div>
                   </div>
