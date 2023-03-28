@@ -37,16 +37,20 @@ function changeFilter(filtre){
 }
 
 document.addEventListener('click', function(e) {
-  if (e.target.closest('legendtoggle')) {
-    var tab = document.getElementsByClassName('legendtext');
-    var elementlegendtext = e.target.previousElementSibling.previousElementSibling;
+  if (toggle = e.target.closest('.legendtoggle')) {
+    const filter = [...toggle.parentNode.children].filter((child) => child.matches('.legendtext')).map(o => o.dataset.unformatted)
+    const block_parent = toggle.closest('.col-md-6.mt-4')
 
-    for( const element of tab){
-      if(element.dataset.unformatted == elementlegendtext.dataset.unformatted && element != elementlegendtext){
-        element.setAttribute("id","temp");
-        document.getElementById("temp").nextElementSibling.nextElementSibling.dispatchEvent(new Event('mouseup'));
-        element.removeAttribute("id");
-      }
+    if (filter === null || block_parent === null) {
+      return false
+    }
+
+    const row = block_parent.closest('.row.shadow.bg-white.rounded.p-1')
+    const graphs = [...row.children].filter((child) => (child !== block_parent && child.matches('.col-md-6')))
+
+    for (const graph of graphs) {
+      const toSwitch = graph.querySelector('.legendtext[data-unformatted="'+filter+'"] ~ .legendtoggle')
+      toSwitch.dispatchEvent(new Event('mouseup'));
     }
   }
 });
