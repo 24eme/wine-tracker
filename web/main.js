@@ -27,6 +27,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
       }
     })
   });
+
+  document.addEventListener('click', function(e) {
+    if (toggle = e.target.closest('.legendtoggle')) {
+      const filter = [...toggle.parentNode.children].filter((child) => child.matches('.legendtext')).map(o => o.dataset.unformatted)
+      const block_parent = toggle.closest('.graph-container')
+
+      if (filter === null || block_parent === null) {
+        return false
+      }
+
+      const row = block_parent.closest('.graphs-container')
+      const graphs = [...row.children].filter((child) => (child !== block_parent && child.matches('.graph-container')))
+
+      for (const graph of graphs) {
+        const toSwitch = graph.querySelector('.legendtext[data-unformatted="'+filter+'"] ~ .legendtoggle')
+        toSwitch.dispatchEvent(new Event('mouseup'));
+      }
+    }
+  });
+
 });
 
 // quand on change de filtre l'url est mis à jour et la page est rechargée.
@@ -35,25 +55,6 @@ function changeFilter(filtre){
   href.searchParams.set('filtre',filtre.value);
   window.location = href;
 }
-
-document.addEventListener('click', function(e) {
-  if (toggle = e.target.closest('.legendtoggle')) {
-    const filter = [...toggle.parentNode.children].filter((child) => child.matches('.legendtext')).map(o => o.dataset.unformatted)
-    const block_parent = toggle.closest('.graph-container')
-
-    if (filter === null || block_parent === null) {
-      return false
-    }
-
-    const row = block_parent.closest('.graphs-container')
-    const graphs = [...row.children].filter((child) => (child !== block_parent && child.matches('.graph-container')))
-
-    for (const graph of graphs) {
-      const toSwitch = graph.querySelector('.legendtext[data-unformatted="'+filter+'"] ~ .legendtoggle')
-      toSwitch.dispatchEvent(new Event('mouseup'));
-    }
-  }
-});
 
 function changeRadioValue(choix){
   document.getElementById(choix.dataset.toshow).classList.remove("d-none");
