@@ -17,6 +17,7 @@ if [ -n "$CVI" ];then
   python3 src/contrats-contractualisation-comparaison-deroulement-par-campagne.py "$CVI"
   python3 src/contrats-contractualisation-top10-5-dernieres-campagnes.py "$CVI"
   python3 src/informations-operateur.py "$CVI"
+  python3 src/chiffres-cles.py "$CVI"
 else
   cut -d ';' -f7 < data/contrats/export_bi_etablissements.csv | while read ID;
   do
@@ -25,5 +26,6 @@ else
     python3 src/contrats-contractualisation-comparaison-deroulement-par-campagne.py "$ID"
     python3 src/contrats-contractualisation-top10-5-dernieres-campagnes.py "$ID"
     python3 src/informations-operateur.py "$ID"
+    python3 src/chiffres-cles.py "$ID"
   done
 fi

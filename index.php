@@ -29,6 +29,10 @@ $contrat_le_vignoble_graph_path = "graphes/LE_VIGNOBLE/contrat/".$GET['filtre'];
 $json = file_get_contents($path."/".$GET['id'].".json");
 $data = json_decode($json, true);
 
+$json_chiffre = file_get_contents($path."/".$GET['id']."_chiffre.json");
+$chiffres = json_decode($json_chiffre, true);
+
+
 if (json_last_error() !== JSON_ERROR_NONE) {
     die('Erreur dans la lecture des données : '.json_last_error_msg());
 }
@@ -65,34 +69,61 @@ $list_produits_contrats = $data['produits']['contrats'];
           <div class="mt-5">
             <p class="mt-3">Dernière mise à jour : <?php echo $data["date"];?></p>
             <div class="row">
-              <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
+              <div class="row shadow bg-white rounded p-4 pb-3">
                 <div class="col-md-3">
                   <div class="chiffre">
-                    <h2>35%</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
+                    <h2><?php echo $chiffres["cumul_sortie_campagne_en_cours"]?> hl</h2>
+                    <p>Sorties du cumul campagne (peut être annualisé sur 12 mois)</p>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="chiffre">
-                    <h2>1000hl</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
+                    <h2><?php echo $chiffres["evolution_mois_par_rapport_a_n_1"]?> %</h2>
+                    <p>Évolution mois par rapport au mois à n-1</p>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="chiffre">
-                    <h2>60</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
+                    <h2><?php echo $chiffres["volume_de_sortie_vrac"]?> hl</h2>
+                    <p>Volume de sortie vrac hl du mois courant</p>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="chiffre">
-                    <h2>99%</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
+                    <h2><?php echo $chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"]?> %</h2>
+                    <p>Évolution sortie vrac du mois par rapport à A n-1</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row shadow bg-white rounded mt-2 p-4 pb-3">
+                <div class="col-md-3">
+                  <div class="chiffre">
+                    <h2><?php echo $chiffres["volume_sortie_conditionne_mois"]?> hl</h2>
+                    <p>Volume sortie conditionné mois</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="chiffre">
+                    <h2><?php echo $chiffres["evolution_sortie_conditionne_du_mois"]?> %</h2>
+                    <p>Évolution sortie conditionné du mois</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="chiffre">
+                    <h2><?php echo $chiffres["volume_contractualisation"]?> hl</h2>
+                    <p>Contractualisation</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="chiffre">
+                    <h2><?php echo $chiffres["evolution_par_rapport_a_n_1"]?> %</h2>
+                    <p>Évolution contractualisation n-1</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
           <nav class="mt-5">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
               <?php if (count($ls_dossier_drm)): ?><a href="#drm"><button class="nav-link active" id="nav-drm-tab" data-onglet="drm" data-bs-toggle="tab" data-bs-target="#nav-drm" type="button" role="tab" aria-controls="nav-drm" aria-selected="true">DRM</button></a><?php endif; ?>
@@ -225,7 +256,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                 </div>
                 <div class="mt-3 row shadow bg-white rounded p-1">
                   <h3 class="col-xs-8 pt-4 text-center fw-bold entete">Comparaison à date des contractualisations</h3>
-                  <h5 class="col-xs-8 p-1 pb-4 text-center fw-bold entete">Variation de volume contractualisé comparée à la campagne courante</h5>
+                  <h5 class="col-xs-8 p-1 pb-4 text-center fw-bold entete" style="color:black">Évolution de volume contractualisé comparée à la campagne précédente et à la moyenne des 5 dernières campagnes</h5>
                   <div class="col-xs-10">
                     <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html";?>
                   </div>

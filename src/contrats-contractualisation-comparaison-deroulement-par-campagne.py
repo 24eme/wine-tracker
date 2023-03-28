@@ -166,12 +166,12 @@ def create_graphe(df,identifiant,appellation,couleur):
 
     fig.add_vline(x=0)
     fig.add_hline(y=0)
-    fig.show()
+    #fig.show()
 
     dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
 
-    fig.write_html(dossier+"/contrats-contractualisation-comparaison-deroulement-par-campagne.html",include_plotlyjs=True)
+    fig.write_html(dossier+"/contrats-contractualisation-comparaison-deroulement-par-campagne.html",include_plotlyjs=False)
 
     return
 
