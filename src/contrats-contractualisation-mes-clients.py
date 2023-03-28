@@ -151,7 +151,7 @@ def create_graphe(df, identifiant, appellation, couleur):
 
     fig = px.pie(df, values='prix', names='Client', color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
     fig.update_traces(textposition='inside', textinfo='label+text', text=df['prix'].map("{:} €".format))
-
+    fig.update_layout(legend_itemdoubleclick=False)
     #fig.show()
 
     fig.write_html(dossier+"/contrats-contractualisation-mes-clients-en-euros.html",include_plotlyjs=False)
