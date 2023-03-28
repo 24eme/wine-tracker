@@ -72,62 +72,82 @@ $list_produits_contrats = $data['produits']['contrats'];
           </div>
           <div class="mt-5">
             <p class="mt-3">Dernière mise à jour : <?php echo $data["date"];?></p>
-            <div class="row">
-              <div class="row shadow bg-white rounded p-4 pb-3">
-                <div class="col-md-3">
-                  <div class="chiffre">
-                    <h2><?php echo $chiffres["cumul_sortie_campagne_en_cours"]?> hl</h2>
-                    <p>Sorties du cumul campagne (peut être annualisé sur 12 mois)</p>
-                  </div>
+            <h3 class="col-xs-12">Chiffres clés de la campagne courante</h3>
+            <div class="container-fluid pt-3">
+                <div class="row">
+                    <div class="col-lg-6 pe-5">
+                      <div class="row shadow bg-white rounded">
+                        <div class="col-md-6 p-5">
+                          <div class="chiffre">
+                            <h2><?php echo $chiffres["cumul_sortie_campagne_en_cours"]?> hl</h2>
+                            <p>Volume de sortie</p>
+                          </div>
+                        </div>
+                        <div class="col-md-6 p-5">
+                          <div class="chiffre">
+                            <h2><?php echo $chiffres["evolution_mois_par_rapport_a_n_1"]?> %</h2>
+                            <p>Évolution comparée à la campagne précédente</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="row shadow bg-white rounded">
+                        <div class="col-md-6 p-5">
+                          <div class="chiffre">
+                            <h2><?php echo $chiffres["volume_de_sortie_vrac"]?> hl</h2>
+                            <p>Volume de sortie VRAC</p>
+                          </div>
+                        </div>
+                        <div class="col-md-6 p-5">
+                          <div class="chiffre">
+                            <h2><?php echo $chiffres["evolution_par_rapport_a_n_1"]?> %</h2>
+                            <p>Évolution comparée à la campagne précédente</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                  <div class="chiffre">
-                    <h2><?php echo $chiffres["evolution_mois_par_rapport_a_n_1"]?> %</h2>
-                    <p>Évolution mois par rapport au mois à n-1</p>
-                  </div>
+            </div>
+            <div class="container-fluid pt-3">
+                <div class="row">
+                    <div class="col-lg-6 pe-5">
+                      <div class="row shadow bg-white rounded">
+                        <div class="col-md-6 p-5">
+                          <div class="chiffre">
+                            <h2><?php echo $chiffres["volume_sortie_conditionne_mois"]?> hl</h2>
+                            <p>Volume de sortie CONDITIONNÉ</p>
+                          </div>
+                        </div>
+                        <div class="col-md-6 p-5">
+                          <div class="chiffre">
+                            <h2><?php echo $chiffres["evolution_sortie_conditionne_du_mois"]?> %</h2>
+                            <p>Évolution comparée à la campagne précédente</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="row shadow bg-white rounded">
+                        <div class="col-md-6 p-5">
+                          <div class="chiffre">
+                            <h2><?php echo $chiffres["volume_contractualisation"]?> hl</h2>
+                            <p>Volume contractualisation</p>
+                          </div>
+                        </div>
+                        <div class="col-md-6 p-5">
+                          <div class="chiffre">
+                            <h2><?php echo $chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"]?> %</h2>
+                            <p>Évolution comparée à la campagne précédente</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                  <div class="chiffre">
-                    <h2><?php echo $chiffres["volume_de_sortie_vrac"]?> hl</h2>
-                    <p>Volume de sortie vrac hl du mois courant</p>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="chiffre">
-                    <h2><?php echo $chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"]?> %</h2>
-                    <p>Évolution sortie vrac du mois par rapport à A n-1</p>
-                  </div>
-                </div>
-              </div>
-              <div class="row shadow bg-white rounded mt-2 p-4 pb-3">
-                <div class="col-md-3">
-                  <div class="chiffre">
-                    <h2><?php echo $chiffres["volume_sortie_conditionne_mois"]?> hl</h2>
-                    <p>Volume sortie conditionné mois</p>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="chiffre">
-                    <h2><?php echo $chiffres["evolution_sortie_conditionne_du_mois"]?> %</h2>
-                    <p>Évolution sortie conditionné du mois</p>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="chiffre">
-                    <h2><?php echo $chiffres["volume_contractualisation"]?> hl</h2>
-                    <p>Contractualisation</p>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="chiffre">
-                    <h2><?php echo $chiffres["evolution_par_rapport_a_n_1"]?> %</h2>
-                    <p>Évolution contractualisation n-1</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
-
+          <span id="drm"></span>
+          <span id="contrats"></span>
           <nav class="mt-5">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
               <?php if (count($ls_dossier_drm)): ?><a href="#drm"><button class="nav-link active" id="nav-drm-tab" data-onglet="drm" data-bs-toggle="tab" data-bs-target="#nav-drm" type="button" role="tab" aria-controls="nav-drm" aria-selected="true">DRM</button></a><?php endif; ?>
