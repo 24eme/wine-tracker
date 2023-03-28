@@ -101,7 +101,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                         </div>
                         <div class="col-md-6 p-5">
                           <div class="chiffre">
-                            <h2><?php echo $chiffres["evolution_par_rapport_a_n_1"]?> %</h2>
+                            <h2><?php echo $chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"]?> %</h2>
                             <p>Évolution comparée à la campagne précédente</p>
                           </div>
                         </div>
@@ -137,7 +137,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                         </div>
                         <div class="col-md-6 p-5">
                           <div class="chiffre">
-                            <h2><?php echo $chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"]?> %</h2>
+                            <h2><?php echo $chiffres["evolution_par_rapport_a_n_1"]?> %</h2>
                             <p>Évolution comparée à la campagne précédente</p>
                           </div>
                         </div>
