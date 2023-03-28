@@ -263,9 +263,10 @@ contrats['ordre_mois']= contrats['mois'].map(contrat_mois_sort,na_action=None)
 
 #Contractualisation
 contrats_courants = contrats.query("campagne==@campagne_courante")
+ordre_mois_courant_n_1 = contrat_mois_sort[datetime.now().month-1];
+contrats_n_1 = contrats.query("campagne==@campagne_courante_n_1 and ordre_mois <= @ordre_mois_courant_n_1")
 chiffre7 = contrats_courants['volume propose'].sum()
 chiffre7 = round(chiffre7,2)
-
 #chiffre7
 
 
@@ -273,8 +274,7 @@ chiffre7 = round(chiffre7,2)
 
 
 #Evolution contractualisation n-1
-ordre_mois_courant = contrat_mois_sort[datetime.now().month];
-contrats_n_1 = contrats.query("campagne==@campagne_courante_n_1 and ordre_mois <= @ordre_mois_courant")
+contrats_n_1 = contrats.query("campagne==@campagne_courante_n_1 and ordre_mois <= @ordre_mois_courant_n_1")
 chiffre8 = contrats_n_1['volume propose'].sum()
 chiffre8 = (((chiffre7-chiffre8)/chiffre8))*100
 chiffre8 = round(chiffre8,2)
@@ -294,7 +294,6 @@ dictionary ={
     "volume_contractualisation" : chiffre7,
     "evolution_par_rapport_a_n_1" : chiffre8
 }
-
 
 dossier = dossier_graphes+id_operateur
 pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
