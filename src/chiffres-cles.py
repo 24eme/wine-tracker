@@ -222,10 +222,14 @@ famille = etablissement['famille'].unique()[0]
 
 contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False)
 
+contrats = contrats.query("statut == 'SOLDE' or statut == 'NONSOLDE'")
+contrats.rename(columns = {'type de vente':'type_de_vente'}, inplace = True)
+contrats = contrats.query("type_de_vente == 'vrac'")
+
 contrats_csv = contrats.copy()
 contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','volume propose (en hl)':'volume propose'}, inplace = True)
+
 contrats = contrats_csv.query("identifiant_vendeur == @id_operateur").reset_index()
-contrats = contrats.query("statut == 'SOLDE' or statut == 'NONSOLDE'")
 
 negociant = False
 if 'negociant' in famille:
@@ -243,12 +247,13 @@ if 'negociant' in famille:
                                 'nom_a' : 'nom_vendeur',
                                 'nom_v' : 'nom_acheteur'}, inplace = True)
 
+
 contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
 contrats = contrats.query('campagne in @lastcampagnes')
+contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
 
 contrat_mois_sort = { 8 : "01" , 9 : "02", 10 : "03", 11 : "04" , 12 : "05", 1 : "06", 2 : "07", 3 : "08", 4 : "09", 5 : "10", 6 : "11",7 : "12" }
 
-contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
 contrats['mois'] = contrats['date de validation'].dt.month
 contrats['ordre_mois']= contrats['mois'].map(contrat_mois_sort,na_action=None)
 
@@ -260,6 +265,7 @@ contrats['ordre_mois']= contrats['mois'].map(contrat_mois_sort,na_action=None)
 contrats_courants = contrats.query("campagne==@campagne_courante")
 chiffre7 = contrats_courants['volume propose'].sum()
 chiffre7 = round(chiffre7,2)
+
 #chiffre7
 
 
@@ -269,12 +275,9 @@ chiffre7 = round(chiffre7,2)
 #Evolution contractualisation n-1
 ordre_mois_courant = contrat_mois_sort[datetime.now().month];
 contrats_n_1 = contrats.query("campagne==@campagne_courante_n_1 and ordre_mois <= @ordre_mois_courant")
-
 chiffre8 = contrats_n_1['volume propose'].sum()
-
 chiffre8 = (((chiffre7-chiffre8)/chiffre8))*100
 chiffre8 = round(chiffre8,2)
-
 #chiffre8
 
 
