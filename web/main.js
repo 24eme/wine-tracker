@@ -1,52 +1,52 @@
 //option selectionné est le filtre qui est dans l'url
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  var url = window.location.href;
-  var onglet = url.split('#').pop();
-  var href = new URL(url);
-  if(onglet == "drm" || onglet == "contrats"){
-    document.getElementById("nav-"+onglet+"-tab").click()
+  var url = new URL(window.location.href);
+  var onglet = url.hash;
+  var href = new URL(url.href);
+
+  if(onglet == "#drm" || onglet == "#contrats"){
+    document.getElementById("nav-"+onglet.replace('#', '')+"-tab").click()
   }
 
-  if(!href.searchParams.get('filtre')){ //si pas de filtre dans l'url par defaut "TOUT-TOUT"
-    href.searchParams.set('filtre',filtre.value);
-    window.location = href;
-  }
-  else{
+  (document.querySelectorAll('#nav-tab .nav-link') || []).forEach(function (nav) {
+    const trigger = new bootstrap.Tab(nav)
+    nav.addEventListener('click', function (e) {
+      e.preventDefault()
+      trigger.show()
+      window.location.hash = nav.dataset.onglet
 
-    let drmOptionNames = [...document.getElementById('filtre').options].map(o => o.value);
+      const currentFilter = href.searchParams.get('filtre') || 'TOUT-TOUT'
+      const select = document.getElementById('filtre-'+nav.dataset.onglet)
 
-    if(drmOptionNames.includes(href.searchParams.get('filtre'))){
-      document.getElementById('filtre').value = href.searchParams.get('filtre');
-    }
-    else{
-      var onglets = document.getElementsByClassName("nav-link");
-      for (var i = 0; i < onglets.length; i++) {
-          onglets[i].addEventListener('click',function() {
-            href.searchParams.set('filtre',"TOUT-TOUT");
-            href.hash = "#"+this.dataset.onglet;
-            window.location = href;
-          });
+      if ([...select.options].map(o => o.value).includes(currentFilter) === false) {
+        const redirectTo = new URL(window.location.href);
+        redirectTo.searchParams.set('filtre', 'TOUT-TOUT')
+        window.location = redirectTo
+        return false;
+      }
+    })
+  });
+
+  document.addEventListener('click', function(e) {
+    if (toggle = e.target.closest('.legendtoggle')) {
+      const filter = [...toggle.parentNode.children].filter((child) => child.matches('.legendtext')).map(o => o.dataset.unformatted)
+      const block_parent = toggle.closest('.graph-container')
+
+      if (filter === null || block_parent === null) {
+        return false
+      }
+
+      const row = block_parent.closest('.graphs-container')
+      const graphs = [...row.children].filter((child) => (child !== block_parent && child.matches('.graph-container')))
+
+      for (const graph of graphs) {
+        const toSwitch = graph.querySelector('.legendtext[data-unformatted="'+filter+'"] ~ .legendtoggle')
+        toSwitch.dispatchEvent(new Event('mouseup'));
       }
     }
+  });
 
-    let contratsOptionNames = [...document.getElementById('filtre-contrat').options].map(o => o.value);
-
-    if(contratsOptionNames.includes(href.searchParams.get('filtre'))){
-      document.getElementById('filtre-contrat').value = href.searchParams.get('filtre');
-    }
-
-    else{
-      var onglets = document.getElementsByClassName("nav-link");
-      for (var i = 0; i < onglets.length; i++) {
-          onglets[i].addEventListener('click',function() {
-            href.searchParams.set('filtre',"TOUT-TOUT");
-            href.hash = "#"+this.dataset.onglet;
-            window.location = href;
-          });
-      }
-    }
-  }
 });
 
 // quand on change de filtre l'url est mis à jour et la page est rechargée.
@@ -55,22 +55,6 @@ function changeFilter(filtre){
   href.searchParams.set('filtre',filtre.value);
   window.location = href;
 }
-
-document.addEventListener('click', function(e) {
-    if( e.target.className.baseVal != "legendtoggle"){
-      return;
-    }
-    var tab = document.getElementsByClassName('legendtext');
-    var elementlegendtext = e.target.previousElementSibling.previousElementSibling;
-
-    for( const element of tab){
-      if(element.dataset.unformatted == elementlegendtext.dataset.unformatted && element != elementlegendtext){
-        element.setAttribute("id","temp");
-        document.getElementById("temp").nextElementSibling.nextElementSibling.dispatchEvent(new Event('mouseup'));
-        element.removeAttribute("id");
-      }
-    }
-});
 
 function changeRadioValue(choix){
   document.getElementById(choix.dataset.toshow).classList.remove("d-none");
