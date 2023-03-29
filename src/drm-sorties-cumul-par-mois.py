@@ -81,9 +81,10 @@ sorties = sorties.reset_index()
 sorties['couleur'] = sorties['couleur'].str.upper()
 
 sorties.set_index(['identifiant','filtre_produit','couleur'], inplace = True)
+sorties["annee"] = sorties["periode"].str.extract('(\d{4}).*', expand = False)
 
-sorties['mois'] = sorties["periode"].str.extract('.*(\d{2})', expand = False)
-sorties['mois'] = sorties['mois'].map(mois,na_action=None)
+sorties['m'] = sorties["periode"].str.extract('.*(\d{2})', expand = False)
+sorties['mois'] = sorties['m'].map(mois,na_action=None)
 
 sorties['ordre_mois']= sorties['mois'].map(mois_sort,na_action=None)
 
@@ -132,7 +133,7 @@ df_final.rename(columns = {'volume mouvement':'volume'}, inplace = True)
 tabcouleur = ["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#E75047"]
 couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
 
-df_final['volume cumule'] = df_final.groupby(["identifiant","filtre_produit", "couleur","campagne"])['volume'].cumsum()
+df_final.sort_values(by=["identifiant",'filtre_produit','couleur',"ordre_mois","campagne"])
 
 #df_final
 
@@ -141,7 +142,6 @@ df_final['volume cumule'] = df_final.groupby(["identifiant","filtre_produit", "c
 
 
 def create_graphe(final,identifiant,appellation,couleur):
-
     # CREATION DU GRAPHE
     fig = px.histogram(final, x="mois", y="volume cumule",
                  color='campagne', barmode='group',
@@ -175,7 +175,27 @@ def create_graphe(final,identifiant,appellation,couleur):
 # In[ ]:
 
 
+#remplir avec 0 les mois où il ne s'est rien passé + puis trie + puis calcul du cumul +puis creation du graphe
+les_annees = sorties["annee"].unique()
+les_mois = sorties["m"].unique()
+
 for bloc in df_final.index.unique():
     df = df_final.loc[[bloc]]
+    df = df.reset_index()
+    for a in les_annees[:-1]:
+        for m in les_mois:
+            p = a+'-'+m
+            campagne = str(a)+'-'+str(int(a)+1)
+            if(a == les_annees[0] and int(m) < 8):
+                continue
+            if (int(m)  < 8):
+                campagne = str(int(a)-1)+'-'+str(a)
+            if(p not in df.periode.unique()):
+                df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, p, 0, a ,m,mois[m],mois_sort[mois[m]]]
+
+    df = df.sort_values(by=["identifiant",'filtre_produit','couleur',"ordre_mois","campagne"])
+    df['volume cumule'] = df.groupby(["identifiant","filtre_produit", "couleur","campagne"])['volume'].cumsum()
+
+    df = df.reset_index(drop=True)
     create_graphe(df,bloc[0],bloc[1],bloc[2])
 
