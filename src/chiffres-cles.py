@@ -111,7 +111,7 @@ sorties_all_all = sorties_all_all.reset_index()
 sorties_all_all['volume cumule'] = sorties_all_all.groupby(["identifiant","campagne"])['volume mouvement'].cumsum()
 
 if(len(sorties_all_all.index) > 0):
-    chiffre1 = sorties_all_all["volume cumule"].iat[int(lastMonthOrdre)-1]
+    chiffre1 = sorties_all_all["volume cumule"].iat[len(sorties_all_all)-1]
     chiffre1 = round(chiffre1,2)
 #chiffre1
 
@@ -133,7 +133,7 @@ sorties_all_all = sorties.groupby(["identifiant",'campagne','periode',"mois","or
 sorties_all_all = sorties_all_all.reset_index()
 sorties_all_all['volume cumule'] = sorties_all_all.groupby(["identifiant","campagne"])['volume mouvement'].cumsum()
 
-chiffre2 = sorties_all_all["volume cumule"].iat[int(lastMonthOrdre)-1]
+chiffre2 = sorties_all_all["volume cumule"].iat[len(sorties_all_all)-1]
 
 if(len(sorties_all_all.index) > 0):
     chiffre2 = (((chiffre1-chiffre2)/chiffre2))*100
@@ -163,9 +163,13 @@ vrac['mois'] = vrac["periode"].str.extract('.*(\d{2})', expand = False)
 vrac['mois'] = vrac['mois'].map(mois,na_action=None)
 vrac['ordre_mois']= vrac['mois'].map(mois_sort,na_action=None)
 
-if(len(vrac.index) > 0):
-    chiffre3 = vrac["volume mouvement"].iat[int(lastMonthOrdre)-1]
+last_month_ordre = format(int(lastMonthOrdre), "02d")
+vrac = vrac.query("ordre_mois==@last_month_ordre")
+
+if(len(vrac.index) > 0 ):
+    chiffre3 = vrac["volume mouvement"][0]
     chiffre3 = round(chiffre3,2)
+
 #chiffre3
 
 
@@ -182,8 +186,11 @@ vrac['mois'] = vrac["periode"].str.extract('.*(\d{2})', expand = False)
 vrac['mois'] = vrac['mois'].map(mois,na_action=None)
 vrac['ordre_mois']= vrac['mois'].map(mois_sort,na_action=None)
 
+last_month_ordre = format(int(lastMonthOrdre), "02d")
+vrac = vrac.query("ordre_mois==@last_month_ordre")
+
 if(len(vrac.index) > 0):
-    chiffre4 = vrac["volume mouvement"].iat[int(lastMonthOrdre)-1]
+    chiffre4 = vrac["volume mouvement"][0]
     chiffre4 = (((chiffre3-chiffre4)/chiffre4))*100
     chiffre4 = round(chiffre4,2)
 #chiffre4
@@ -194,17 +201,21 @@ if(len(vrac.index) > 0):
 
 #Volume sortie conditionné mois
 typedemouvementsconditionne = ['sorties/crd', 'sorties/factures', 'sorties/export', 'sorties/crd_acquittes', 'sorties/acq_crd']
-vrac = mouvements.query("type_de_mouvement in @typedemouvementsconditionne and campagne==@campagne_courante")
-vrac = vrac.groupby(["identifiant",'campagne','periode']).sum(["volume mouvement"])[["volume mouvement"]]
-vrac = vrac.reset_index()
-vrac.set_index(['identifiant'], inplace = True)
+conditionne = mouvements.query("type_de_mouvement in @typedemouvementsconditionne and campagne==@campagne_courante")
+conditionne = conditionne.groupby(["identifiant",'campagne','periode']).sum(["volume mouvement"])[["volume mouvement"]]
+conditionne = conditionne.reset_index()
+conditionne.set_index(['identifiant'], inplace = True)
 
-vrac['mois'] = vrac["periode"].str.extract('.*(\d{2})', expand = False)
-vrac['mois'] = vrac['mois'].map(mois,na_action=None)
-vrac['ordre_mois']= vrac['mois'].map(mois_sort,na_action=None)
+conditionne['mois'] = conditionne["periode"].str.extract('.*(\d{2})', expand = False)
+conditionne['mois'] = conditionne['mois'].map(mois,na_action=None)
+conditionne['ordre_mois']= conditionne['mois'].map(mois_sort,na_action=None)
 
-if(len(vrac.index) > 0):
-    chiffre5 = vrac["volume mouvement"].iat[int(lastMonthOrdre)-1]
+last_month_ordre = format(int(lastMonthOrdre), "02d")
+conditionne = conditionne.query("ordre_mois==@last_month_ordre")
+
+if(len(conditionne.index) > 0):
+
+    chiffre5 = conditionne["volume mouvement"][0]
     chiffre5 = round(chiffre5,2)
 
 #chiffre5
@@ -214,17 +225,20 @@ if(len(vrac.index) > 0):
 
 
 #Evolution sortie conditionné du mois
-vrac = mouvements.query("type_de_mouvement in @typedemouvementsconditionne and campagne==@campagne_courante_n_1")
-vrac = vrac.groupby(["identifiant",'campagne','periode']).sum(["volume mouvement"])[["volume mouvement"]]
-vrac = vrac.reset_index()
-vrac.set_index(['identifiant'], inplace = True)
+conditionne = mouvements.query("type_de_mouvement in @typedemouvementsconditionne and campagne==@campagne_courante_n_1")
+conditionne = conditionne.groupby(["identifiant",'campagne','periode']).sum(["volume mouvement"])[["volume mouvement"]]
+conditionne = conditionne.reset_index()
+conditionne.set_index(['identifiant'], inplace = True)
 
-vrac['mois'] = vrac["periode"].str.extract('.*(\d{2})', expand = False)
-vrac['mois'] = vrac['mois'].map(mois,na_action=None)
-vrac['ordre_mois']= vrac['mois'].map(mois_sort,na_action=None)
+conditionne['mois'] = conditionne["periode"].str.extract('.*(\d{2})', expand = False)
+conditionne['mois'] = conditionne['mois'].map(mois,na_action=None)
+conditionne['ordre_mois']= conditionne['mois'].map(mois_sort,na_action=None)
 
-if(len(vrac.index) > 0):
-    chiffre6 = vrac["volume mouvement"].iat[int(lastMonthOrdre)-1]
+last_month_ordre = format(int(lastMonthOrdre), "02d")
+conditionne = conditionne.query("ordre_mois==@last_month_ordre")
+
+if(len(conditionne.index) > 0):
+    chiffre6 = conditionne["volume mouvement"][0]
     chiffre6 = (((chiffre5-chiffre6)/chiffre6))*100
     chiffre6 = round(chiffre6,2)
 
@@ -283,6 +297,7 @@ contrats['ordre_mois']= contrats['mois'].map(contrat_mois_sort,na_action=None)
 contrats_courants = contrats.query("campagne==@campagne_courante")
 ordre_mois_courant_n_1 = contrat_mois_sort[datetime.now().month-1];
 contrats_n_1 = contrats.query("campagne==@campagne_courante_n_1 and ordre_mois <= @ordre_mois_courant_n_1")
+
 if(len(contrats_n_1.index) > 0):
     chiffre7 = contrats_courants['volume propose'].sum()
     chiffre7 = round(chiffre7,2)
