@@ -28,6 +28,19 @@ csv_mouvements = path+"/data/drm/export_bi_mouvements.csv"
 # In[ ]:
 
 
+chiffre1 = 0
+chiffre2 = 0
+chiffre3 = 0
+chiffre4 = 0
+chiffre5 = 0
+chiffre6 = 0
+chiffre7 = 0
+chiffre8 = 0
+
+
+# In[ ]:
+
+
 id_operateur=None
 
 parser = argparse.ArgumentParser()
@@ -97,8 +110,9 @@ sorties_all_all = sorties.groupby(["identifiant",'campagne','periode',"mois","or
 sorties_all_all = sorties_all_all.reset_index()
 sorties_all_all['volume cumule'] = sorties_all_all.groupby(["identifiant","campagne"])['volume mouvement'].cumsum()
 
-chiffre1 = sorties_all_all["volume cumule"].iat[int(lastMonthOrdre)-1]
-chiffre1 = round(chiffre1,2)
+if(len(sorties_all_all.index) > 0):
+    chiffre1 = sorties_all_all["volume cumule"].iat[int(lastMonthOrdre)-1]
+    chiffre1 = round(chiffre1,2)
 #chiffre1
 
 
@@ -121,8 +135,10 @@ sorties_all_all['volume cumule'] = sorties_all_all.groupby(["identifiant","campa
 
 chiffre2 = sorties_all_all["volume cumule"].iat[int(lastMonthOrdre)-1]
 
-chiffre2 = (((chiffre1-chiffre2)/chiffre2))*100
-chiffre2 = round(chiffre2,2)
+if(len(sorties_all_all.index) > 0):
+    chiffre2 = (((chiffre1-chiffre2)/chiffre2))*100
+    chiffre2 = round(chiffre2,2)
+
 #chiffre2
 
 
@@ -147,9 +163,9 @@ vrac['mois'] = vrac["periode"].str.extract('.*(\d{2})', expand = False)
 vrac['mois'] = vrac['mois'].map(mois,na_action=None)
 vrac['ordre_mois']= vrac['mois'].map(mois_sort,na_action=None)
 
-chiffre3 = vrac["volume mouvement"].iat[int(lastMonthOrdre)-1]
-chiffre3 = round(chiffre3,2)
-
+if(len(vrac.index) > 0):
+    chiffre3 = vrac["volume mouvement"].iat[int(lastMonthOrdre)-1]
+    chiffre3 = round(chiffre3,2)
 #chiffre3
 
 
@@ -166,10 +182,10 @@ vrac['mois'] = vrac["periode"].str.extract('.*(\d{2})', expand = False)
 vrac['mois'] = vrac['mois'].map(mois,na_action=None)
 vrac['ordre_mois']= vrac['mois'].map(mois_sort,na_action=None)
 
-chiffre4 = vrac["volume mouvement"].iat[int(lastMonthOrdre)-1]
-chiffre4 = (((chiffre3-chiffre4)/chiffre4))*100
-chiffre4 = round(chiffre4,2)
-
+if(len(vrac.index) > 0):
+    chiffre4 = vrac["volume mouvement"].iat[int(lastMonthOrdre)-1]
+    chiffre4 = (((chiffre3-chiffre4)/chiffre4))*100
+    chiffre4 = round(chiffre4,2)
 #chiffre4
 
 
@@ -187,8 +203,9 @@ vrac['mois'] = vrac["periode"].str.extract('.*(\d{2})', expand = False)
 vrac['mois'] = vrac['mois'].map(mois,na_action=None)
 vrac['ordre_mois']= vrac['mois'].map(mois_sort,na_action=None)
 
-chiffre5 = vrac["volume mouvement"].iat[int(lastMonthOrdre)-1]
-chiffre5 = round(chiffre5,2)
+if(len(vrac.index) > 0):
+    chiffre5 = vrac["volume mouvement"].iat[int(lastMonthOrdre)-1]
+    chiffre5 = round(chiffre5,2)
 
 #chiffre5
 
@@ -206,9 +223,10 @@ vrac['mois'] = vrac["periode"].str.extract('.*(\d{2})', expand = False)
 vrac['mois'] = vrac['mois'].map(mois,na_action=None)
 vrac['ordre_mois']= vrac['mois'].map(mois_sort,na_action=None)
 
-chiffre6 = vrac["volume mouvement"].iat[int(lastMonthOrdre)-1]
-chiffre6 = (((chiffre5-chiffre6)/chiffre6))*100
-chiffre6 = round(chiffre6,2)
+if(len(vrac.index) > 0):
+    chiffre6 = vrac["volume mouvement"].iat[int(lastMonthOrdre)-1]
+    chiffre6 = (((chiffre5-chiffre6)/chiffre6))*100
+    chiffre6 = round(chiffre6,2)
 
 #chiffre6
 
@@ -265,8 +283,9 @@ contrats['ordre_mois']= contrats['mois'].map(contrat_mois_sort,na_action=None)
 contrats_courants = contrats.query("campagne==@campagne_courante")
 ordre_mois_courant_n_1 = contrat_mois_sort[datetime.now().month-1];
 contrats_n_1 = contrats.query("campagne==@campagne_courante_n_1 and ordre_mois <= @ordre_mois_courant_n_1")
-chiffre7 = contrats_courants['volume propose'].sum()
-chiffre7 = round(chiffre7,2)
+if(len(contrats_n_1.index) > 0):
+    chiffre7 = contrats_courants['volume propose'].sum()
+    chiffre7 = round(chiffre7,2)
 #chiffre7
 
 
@@ -275,9 +294,10 @@ chiffre7 = round(chiffre7,2)
 
 #Evolution contractualisation n-1
 contrats_n_1 = contrats.query("campagne==@campagne_courante_n_1 and ordre_mois <= @ordre_mois_courant_n_1")
-chiffre8 = contrats_n_1['volume propose'].sum()
-chiffre8 = (((chiffre7-chiffre8)/chiffre8))*100
-chiffre8 = round(chiffre8,2)
+if(len(contrats_n_1.index) > 0):
+    chiffre8 = contrats_n_1['volume propose'].sum()
+    chiffre8 = (((chiffre7-chiffre8)/chiffre8))*100
+    chiffre8 = round(chiffre8,2)
 #chiffre8
 
 

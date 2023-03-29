@@ -18,8 +18,8 @@ if (! $GET['filtre']) {
 
 $path = "graphes/".$GET['id'];
 
-if (! is_dir($path."/drm") || ! is_dir($path."/contrat")) {
-    die('Il manque au moins un dossier de données. La génération a été lancée ?');
+if (! is_dir($path."/drm") && ! is_dir($path."/contrat")) {
+    die('Il manque au moins les dossiers de données. La génération a été lancée ?');
 }
 
 $ls_dossier_drm = array_diff((scandir($path."/drm")) ?: [], array('.', '..'));
@@ -74,34 +74,42 @@ $list_produits_contrats = $data['produits']['contrats'];
             <p class="mt-3">Dernière mise à jour : <?php echo $data["date"];?></p>
             <div class="row">
               <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
-                <div class="col">
-                  <div class="chiffre">
-                    <h2 class="mb-0"><?php echo $chiffres["cumul_sortie_campagne_en_cours"]?> hl</h2>
-                    <p class="<?php if($chiffres["evolution_mois_par_rapport_a_n_1"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_mois_par_rapport_a_n_1"]?> %</p>
-                    <p>Cumul volume de sortie depuis début de la campagne</p>
+                <?php if ($chiffres["cumul_sortie_campagne_en_cours"]): ?>
+                  <div class="col">
+                    <div class="chiffre">
+                      <h2 class="mb-0"><?php echo $chiffres["cumul_sortie_campagne_en_cours"]?> hl</h2>
+                      <p class="<?php if($chiffres["evolution_mois_par_rapport_a_n_1"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_mois_par_rapport_a_n_1"]?> %</p>
+                      <p>Cumul volume de sortie depuis début de la campagne</p>
+                    </div>
                   </div>
-                </div>
-                <div class="col">
-                  <div class="chiffre">
-                    <h2 class="mb-0"><?php echo $chiffres["volume_de_sortie_vrac"]?> hl</h2>
-                    <p class="<?php if($chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"]?> %</p>
-                    <p>Volume de sortie VRAC du mois précédent</p>
+                <?php endif; ?>
+                <?php if ($chiffres["volume_de_sortie_vrac"]): ?>
+                  <div class="col">
+                    <div class="chiffre">
+                      <h2 class="mb-0"><?php echo $chiffres["volume_de_sortie_vrac"]?> hl</h2>
+                      <p class="<?php if($chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"]?> %</p>
+                      <p>Volume de sortie VRAC du mois précédent</p>
+                    </div>
                   </div>
-                </div>
-                <div class="col">
-                  <div class="chiffre">
-                    <h2 class="mb-0"><?php echo $chiffres["volume_sortie_conditionne_mois"]?> hl</h2>
-                    <p class="<?php if($chiffres["evolution_sortie_conditionne_du_mois"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_sortie_conditionne_du_mois"]?> %</p>
-                    <p>Volume de sortie conditionné du mois précédent</p>
+                <?php endif; ?>
+                <?php if ($chiffres["volume_sortie_conditionne_mois"]): ?>
+                  <div class="col">
+                    <div class="chiffre">
+                      <h2 class="mb-0"><?php echo $chiffres["volume_sortie_conditionne_mois"]?> hl</h2>
+                      <p class="<?php if($chiffres["evolution_sortie_conditionne_du_mois"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_sortie_conditionne_du_mois"]?> %</p>
+                      <p>Volume de sortie conditionné du mois précédent</p>
+                    </div>
                   </div>
-                </div>
-                <div class="col">
-                  <div class="chiffre">
-                    <h2 class="mb-0"><?php echo $chiffres["volume_contractualisation"]?> hl</h2>
-                    <p class="<?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_par_rapport_a_n_1"]?> %</p>
-                    <p>Volume contractualisation du mois précédent</p>
+                <?php endif; ?>
+                <?php if ($chiffres["volume_contractualisation"]): ?>
+                  <div class="col">
+                    <div class="chiffre">
+                      <h2 class="mb-0"><?php echo $chiffres["volume_contractualisation"]?> hl</h2>
+                      <p class="<?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_par_rapport_a_n_1"]?> %</p>
+                      <p>Volume contractualisation du mois précédent</p>
+                    </div>
                   </div>
-                </div>
+                <?php endif; ?>
               </div>
             </div>
           </div>
