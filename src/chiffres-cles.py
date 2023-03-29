@@ -133,8 +133,8 @@ sorties_all_all = sorties.groupby(["identifiant",'campagne','periode',"mois","or
 sorties_all_all = sorties_all_all.reset_index()
 sorties_all_all['volume cumule'] = sorties_all_all.groupby(["identifiant","campagne"])['volume mouvement'].cumsum()
 
-chiffre2 = sorties_all_all["volume cumule"].iat[len(sorties_all_all)-1]
 
+chiffre2 = sorties_all_all["volume cumule"].iat[int(lastMonthOrdre)-1]
 if(len(sorties_all_all.index) > 0):
     chiffre2 = (((chiffre1-chiffre2)/chiffre2))*100
     chiffre2 = round(chiffre2,2)
@@ -166,7 +166,7 @@ vrac['ordre_mois']= vrac['mois'].map(mois_sort,na_action=None)
 last_month_ordre = format(int(lastMonthOrdre), "02d")
 vrac = vrac.query("ordre_mois==@last_month_ordre")
 
-if(len(vrac.index) > 0 ):
+if(len(vrac.index) > 0):
     chiffre3 = vrac["volume mouvement"][0]
     chiffre3 = round(chiffre3,2)
 
@@ -193,6 +193,7 @@ if(len(vrac.index) > 0):
     chiffre4 = vrac["volume mouvement"][0]
     chiffre4 = (((chiffre3-chiffre4)/chiffre4))*100
     chiffre4 = round(chiffre4,2)
+
 #chiffre4
 
 
