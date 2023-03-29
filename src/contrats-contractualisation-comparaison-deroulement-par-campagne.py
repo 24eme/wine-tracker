@@ -58,7 +58,7 @@ contrats = contrats.query("type_de_vente == 'vrac'")
 
 contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
 contrats['semaine'] = contrats['date de validation'].dt.isocalendar().week
-contrats['semaine'] = pd.to_numeric(contrats['semaine'], downcast='integer')
+#contrats['semaine'] = pd.to_numeric(contrats['semaine'], downcast='integer')
 
 #contrats['semaine'].unique()
 lastcampagnes = contrats['campagne'].unique()
@@ -147,7 +147,7 @@ couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
 
 
 def create_graphe(df,identifiant,appellation,couleur):
-    fig = px.line(df, x="semaine", y="volume", color='campagne', width=1250, height=650,color_discrete_sequence=couleurs,
+    fig = px.line(df, x="semaine", y="volume", color='campagne', custom_data=['semaine-sort','campagne'], width=1250, height=650,color_discrete_sequence=couleurs,
                  labels={
                      "semaine": "Numéro de la semaine - Début de campagne : Semaine 31",
                      "volume": "Volume contractualisé hebdomadaire (en hl)"})
@@ -168,6 +168,14 @@ def create_graphe(df,identifiant,appellation,couleur):
 
     fig.add_vline(x=0)
     fig.add_hline(y=0)
+
+    fig.update_traces(
+        hovertemplate="<br>".join([
+            "Campagne %{customdata[1]}",
+            "Semaine n°%{customdata[0]}",
+            "%{y} hl",
+        ])
+    )
     #fig.show()
 
     dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur

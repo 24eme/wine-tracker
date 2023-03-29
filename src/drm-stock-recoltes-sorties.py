@@ -210,9 +210,12 @@ def create_graphique(final,identifiant,appellation,couleur):
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True,showline=True, linewidth=1, linecolor='Lightgrey')
     fig.update_yaxes(fixedrange=True,rangemode="tozero")
-
+    fig.update_traces(
+        hovertemplate="<br>".join([
+            "%{y} hl",
+        ])
+    )
     #fig.show()
-
     dossier = dossier_graphes+"/"+identifiant+"/drm/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
 

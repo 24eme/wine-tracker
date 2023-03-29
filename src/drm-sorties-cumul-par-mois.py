@@ -143,7 +143,7 @@ df_final.sort_values(by=["identifiant",'filtre_produit','couleur',"ordre_mois","
 
 def create_graphe(final,identifiant,appellation,couleur):
     # CREATION DU GRAPHE
-    fig = px.histogram(final, x="mois", y="volume cumule",
+    fig = px.bar(final, x="mois", y="volume cumule",custom_data=['campagne'],
                  color='campagne', barmode='group',
                  height=500,
                  color_discrete_sequence=couleurs)
@@ -162,6 +162,14 @@ def create_graphe(final,identifiant,appellation,couleur):
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True)
     fig.update_yaxes(fixedrange=True)
+
+    fig.update_traces(
+        hovertemplate="<br>".join([
+            "%{x} %{customdata[0]}",
+            "%{y} hl",
+        ])
+    )
+
     #fig.show()
 
     dossier = dossier_graphes+"/"+identifiant+"/drm/"+appellation+"-"+couleur

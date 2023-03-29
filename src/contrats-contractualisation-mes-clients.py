@@ -139,9 +139,14 @@ df_final['prix'] = df_final['prix']/len(lastcampagnes)
 
 def create_graphe(df, identifiant, appellation, couleur):
 
-    fig = px.pie(df, values='volume', names='Client', color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
+    fig = px.pie(df, values='volume', names='Client',custom_data=['Client','volume'], color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
     fig.update_traces(textposition='inside', textinfo='label+text', text=df['volume'].map("{:} hl".format))
     fig.update_layout(legend_itemdoubleclick=False)
+    fig.update_traces(
+    hovertemplate="<br>".join([
+        "%{customdata[0]} hl",
+    ])
+    )
     #fig.show()
 
     dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur
@@ -149,9 +154,15 @@ def create_graphe(df, identifiant, appellation, couleur):
 
     fig.write_html(dossier+"/contrats-contractualisation-mes-clients-en-hl.html",include_plotlyjs=False)
 
-    fig = px.pie(df, values='prix', names='Client', color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
+    fig = px.pie(df, values='prix', names='Client',custom_data=['Client', 'prix'], color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
     fig.update_traces(textposition='inside', textinfo='label+text', text=df['prix'].map("{:} €".format))
     fig.update_layout(legend_itemdoubleclick=False)
+
+    fig.update_traces(
+    hovertemplate="<br>".join([
+        "%{customdata[0]} €",
+    ])
+    )
     #fig.show()
 
     fig.write_html(dossier+"/contrats-contractualisation-mes-clients-en-euros.html",include_plotlyjs=False)

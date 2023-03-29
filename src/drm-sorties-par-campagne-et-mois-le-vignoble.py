@@ -147,7 +147,7 @@ df_final.rename(columns = {'volume mouvement':'volume',"mois-campagne":'periode'
 
 def create_graphe(final,appellation,couleur):
     # CREATION DU GRAPHE
-    fig = px.line(final, x='periode', y="volume", markers=True, color_discrete_sequence=["#D1342F"], title="Le vignoble")
+    fig = px.line(final, x='periode', y="volume",custom_data=['mois', 'campagne'], markers=True, color_discrete_sequence=["#D1342F"], title="Le vignoble")
     fig.update_layout(title={
                         'text': "<b>LE VIGNOBLE</b>",
                         'y':0.9,
@@ -170,6 +170,12 @@ def create_graphe(final,appellation,couleur):
     fig.update_xaxes(fixedrange=True,showline=True, linewidth=1, linecolor='Lightgrey',showticklabels=False)
     fig.update_yaxes(fixedrange=True,rangemode="tozero")
     
+    fig.update_traces(
+        hovertemplate="<br>".join([
+            "%{customdata[0]} %{customdata[1]}",
+            "%{y} hl",
+        ])
+    )
     for tick in range(len(final)):
         if tick % 12 == 0:
             fig.add_vline(tick, annotation_text="Campagne "+final['campagne'][tick])
