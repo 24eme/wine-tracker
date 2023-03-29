@@ -79,7 +79,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                     <div class="chiffre">
                       <h2 class="mb-0"><?php echo $chiffres["cumul_sortie_campagne_en_cours"]?> hl</h2>
                       <p class="<?php if($chiffres["evolution_mois_par_rapport_a_n_1"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_mois_par_rapport_a_n_1"]?> %</p>
-                      <p>Cumul volume de sortie depuis début de la campagne</p>
+                      <p>Cumul volume de sortie depuis le début de la campagne</p>
                     </div>
                   </div>
                 <?php endif; ?>
@@ -106,7 +106,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                     <div class="chiffre">
                       <h2 class="mb-0"><?php echo $chiffres["volume_contractualisation"]?> hl</h2>
                       <p class="<?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_par_rapport_a_n_1"]?> %</p>
-                      <p>Volume contractualisation du mois précédent</p>
+                      <p>Volume contractualisation depuis le début de la campagne</p>
                     </div>
                   </div>
                 <?php endif; ?>
