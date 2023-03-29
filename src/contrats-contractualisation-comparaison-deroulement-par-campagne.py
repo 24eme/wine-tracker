@@ -58,6 +58,8 @@ contrats = contrats.query("type_de_vente == 'vrac'")
 
 contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
 contrats['semaine'] = contrats['date de validation'].dt.isocalendar().week
+contrats['semaine'] = pd.to_numeric(contrats['semaine'], downcast='integer')
+
 #contrats['semaine'].unique()
 lastcampagnes = contrats['campagne'].unique()
 lastcampagnes.sort()
