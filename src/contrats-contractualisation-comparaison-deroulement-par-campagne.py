@@ -139,15 +139,12 @@ df_final = df_final.sort_values(by=['identifiant_vendeur', 'filtre_produit','cou
 
 df_final['campagne-semaine'] = df_final['campagne']+"-"+df_final['semaine'].apply(str)
 
-tabcouleur = ["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#E75047"]
-couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
-
 
 # In[ ]:
 
 
 def create_graphe(df,identifiant,appellation,couleur):
-    fig = px.line(df, x="semaine", y="volume", color='campagne', custom_data=['semaine-sort','campagne'], width=1250, height=650,color_discrete_sequence=couleurs,
+    fig = px.line(df, x="semaine", y="volume", color='campagne', custom_data=['semaine-sort','campagne'], width=1250, height=650,color_discrete_sequence=["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#E75047"],
                  labels={
                      "semaine": "Numéro de la semaine - Début de campagne : Semaine 31",
                      "volume": "Volume contractualisé hebdomadaire (en hl)"})
@@ -189,6 +186,7 @@ def create_graphe(df,identifiant,appellation,couleur):
 # In[ ]:
 
 
+#AJOUT DES 0
 for bloc in df_final.index.unique():
     df = df_final.loc[[bloc]]
     df = df.reset_index()
@@ -207,6 +205,5 @@ for bloc in df_final.index.unique():
     df = df.reset_index(drop=True)
     df = df.sort_values(by=['identifiant_vendeur', 'filtre_produit','couleur','campagne','semaine-sort'])
     df['volume'] = df.groupby(["identifiant_vendeur","filtre_produit", "couleur","campagne"])['volume propose'].cumsum()
-
     create_graphe(df,bloc[0],bloc[1],bloc[2])
 
