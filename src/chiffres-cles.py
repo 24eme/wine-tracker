@@ -253,6 +253,9 @@ etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15", 
 etablissement = etablissements.query("identifiant == @id_operateur")
 famille = etablissement['famille'].unique()[0]
 
+if not famille:
+    raise Exception("OPERATEUR N'EST PAS DANS LE CSV DES ETABLISSEMENT")
+
 contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False)
 
 contrats = contrats.query("statut == 'SOLDE' or statut == 'NONSOLDE'")

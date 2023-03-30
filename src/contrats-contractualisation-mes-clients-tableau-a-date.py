@@ -57,6 +57,9 @@ etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15", 
 etablissement = etablissements.query("identifiant == @id_operateur")
 famille = etablissement['famille'].unique()[0]
 
+if not famille:
+    raise Exception("OPERATEUR N'EST PAS DANS LE CSV DES ETABLISSEMENT")
+
 
 # In[ ]:
 
