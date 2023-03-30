@@ -8,6 +8,7 @@ import pandas as pd
 import plotly.express as px
 import argparse
 import pathlib
+from datetime import datetime
 
 
 # In[ ]:
@@ -81,7 +82,6 @@ sorties = sorties.reset_index()
 sorties['couleur'] = sorties['couleur'].str.upper()
 
 sorties.set_index(['identifiant','filtre_produit','couleur'], inplace = True)
-sorties["annee"] = sorties["periode"].str.extract('(\d{4}).*', expand = False)
 
 sorties['m'] = sorties["periode"].str.extract('.*(\d{2})', expand = False)
 sorties['mois'] = sorties['m'].map(mois,na_action=None)
@@ -135,6 +135,8 @@ couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
 
 df_final.sort_values(by=["identifiant",'filtre_produit','couleur',"ordre_mois","campagne"])
 
+df_final["annee"] = df_final["periode"].str.extract('(\d{4}).*', expand = False)
+
 #df_final
 
 
@@ -183,23 +185,36 @@ def create_graphe(final,identifiant,appellation,couleur):
 # In[ ]:
 
 
-#remplir avec 0 les mois où il ne s'est rien passé + puis trie + puis calcul du cumul +puis creation du graphe
-les_annees = sorties["annee"].unique()
-les_mois = sorties["m"].unique()
+df_final.sort_values(by=["identifiant",'filtre_produit','couleur',"ordre_mois","campagne"])
+
+
+# In[ ]:
+
+
+#REMPLIR AVEC DES 0 POUR LES MOIS POUR LES QUELLES NOUS N'AVONS RIEN ET CREATION DES GRAPHES DANS LA FOULE
+
+currentMonth = format(datetime.now().month, "02d")
+
+annees = sorted(df_final['annee'].unique())
+les_mois = sorted(sorties["m"].unique())
 
 for bloc in df_final.index.unique():
+
     df = df_final.loc[[bloc]]
     df = df.reset_index()
-    for a in les_annees[:-1]:
+
+    for a in annees:
         for m in les_mois:
+            if(a == annees[0] and int(m) < 8): #si la première annees ne pas prendre de 0 à 8
+                continue
+            if(a == annees[len(annees)-1] and int(m) > int(currentMonth)): #si la dernière annee ne pas prendre de 0 à 8
+                continue
             p = a+'-'+m
             campagne = str(a)+'-'+str(int(a)+1)
-            if(a == les_annees[0] and int(m) < 8):
-                continue
-            if (int(m)  < 8):
+            if (int(m)  < 8): #si le mois est plus petit que 8 alors campagne précédente
                 campagne = str(int(a)-1)+'-'+str(a)
-            if(p not in df.periode.unique()):
-                df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, p, 0, a ,m,mois[m],mois_sort[mois[m]]]
+            if(p not in df.periode.unique()): #si la periode ne se trouve pas dans la liste on l'ajoute
+                df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, p, 0, m ,mois[m],mois_sort[mois[m]],a]
 
     df = df.sort_values(by=["identifiant",'filtre_produit','couleur',"ordre_mois","campagne"])
     df['volume cumule'] = df.groupby(["identifiant","filtre_produit", "couleur","campagne"])['volume'].cumsum()
