@@ -138,6 +138,8 @@ chiffre2 = sorties_all_all["volume cumule"].iat[int(lastMonthOrdre)-1]
 if(len(sorties_all_all.index) > 0):
     chiffre2 = (((chiffre1-chiffre2)/chiffre2))*100
     chiffre2 = round(chiffre2,2)
+    if(chiffre2 > 0):
+        chiffre2 = '+'+str(chiffre2)
 
 #chiffre2
 
@@ -193,7 +195,8 @@ if(len(vrac.index) > 0):
     chiffre4 = vrac["volume mouvement"][0]
     chiffre4 = (((chiffre3-chiffre4)/chiffre4))*100
     chiffre4 = round(chiffre4,2)
-
+    if(chiffre4 > 0):
+        chiffre4 = '+'+str(chiffre4)
 #chiffre4
 
 
@@ -242,7 +245,8 @@ if(len(conditionne.index) > 0):
     chiffre6 = conditionne["volume mouvement"][0]
     chiffre6 = (((chiffre5-chiffre6)/chiffre6))*100
     chiffre6 = round(chiffre6,2)
-
+    if(chiffre6 > 0):
+        chiffre6 = '+'+str(chiffre6)
 #chiffre6
 
 
@@ -317,6 +321,8 @@ if(len(contrats_n_1.index) > 0):
     chiffre8 = contrats_n_1['volume propose'].sum()
     chiffre8 = (((chiffre7-chiffre8)/chiffre8))*100
     chiffre8 = round(chiffre8,2)
+    if(chiffre8 > 0):
+        chiffre8 = '+'+str(chiffre8)
 #chiffre8
 
 
