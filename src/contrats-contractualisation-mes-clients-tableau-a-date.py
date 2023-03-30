@@ -129,7 +129,7 @@ contrats_annee_n_1 = contrats_annee_n_1.groupby(["identifiant_vendeur","filtre_p
 contrats_annee_n_1.rename(columns = {'volume propose':'n-1'}, inplace = True)
 
 
-df_merge_spe_spe = contrats_annee_courante.merge(contrats_annee_n_1,how = 'left',on=['identifiant_vendeur','filtre_produit','couleur','identifiant acheteur','nom_acheteur']).merge(contrats_all,on=['identifiant_vendeur','filtre_produit','couleur','identifiant acheteur','nom_acheteur'])
+df_merge_spe_spe = contrats_annee_courante.merge(contrats_annee_n_1,how = 'left',on=['identifiant_vendeur','filtre_produit','couleur','identifiant acheteur','nom_acheteur']).merge(contrats_all,how = 'left',on=['identifiant_vendeur','filtre_produit','couleur','identifiant acheteur','nom_acheteur'])
 df_merge_spe_spe = df_merge_spe_spe.reset_index()
 df_merge_spe_spe.set_index(['identifiant_vendeur','filtre_produit','couleur'], inplace = True)
 
@@ -160,7 +160,7 @@ contrats_annee_n_1_spe_all = contrats_annee_n_1_spe_all.groupby(["identifiant_ve
 contrats_annee_n_1_spe_all.rename(columns = {'volume propose':'n-1'}, inplace = True)
 
 
-df_merge_spe_all = contrats_annee_courante_spe_all.merge(contrats_annee_n_1_spe_all,how = 'left',on=['identifiant_vendeur','filtre_produit','identifiant acheteur','nom_acheteur']).merge(contrats_all_spe_all,on=['identifiant_vendeur','filtre_produit','identifiant acheteur','nom_acheteur'])
+df_merge_spe_all = contrats_annee_courante_spe_all.merge(contrats_annee_n_1_spe_all,how = 'left',on=['identifiant_vendeur','filtre_produit','identifiant acheteur','nom_acheteur']).merge(contrats_all_spe_all,how = 'left',on=['identifiant_vendeur','filtre_produit','identifiant acheteur','nom_acheteur'])
 df_merge_spe_all["couleur"] = "TOUT"
 df_merge_spe_all = df_merge_spe_all.reset_index()
 df_merge_spe_all.set_index(['identifiant_vendeur','filtre_produit','couleur'], inplace = True)
@@ -190,7 +190,7 @@ contrats_annee_n_1_all_all = contrats.query('campagne in @campagne_n_1')
 contrats_annee_n_1_all_all = contrats_annee_n_1_all_all.groupby(["identifiant_vendeur","identifiant acheteur","nom_acheteur"]).sum(["volume propose"])[["volume propose"]]
 contrats_annee_n_1_all_all.rename(columns = {'volume propose':'n-1'}, inplace = True)
 
-df_merge_all_all = contrats_annee_courante_all_all.merge(contrats_annee_n_1_all_all,how = 'left',on=['identifiant_vendeur','identifiant acheteur','nom_acheteur']).merge(contrats_all_all_all,on=['identifiant_vendeur','identifiant acheteur','nom_acheteur'])
+df_merge_all_all = contrats_annee_courante_all_all.merge(contrats_annee_n_1_all_all,how = 'left',on=['identifiant_vendeur','identifiant acheteur','nom_acheteur']).merge(contrats_all_all_all,how = 'left',on=['identifiant_vendeur','identifiant acheteur','nom_acheteur'])
 df_merge_all_all["couleur"] = "TOUT"
 df_merge_all_all["filtre_produit"] = "TOUT"
 df_merge_all_all = df_merge_all_all.reset_index()
@@ -255,11 +255,9 @@ df_final = df_final.drop(['identifiant acheteur','n-1','5 DA'], axis=1)
 
 
 def create_table(df, identifiant, appellation, couleur):
-    
     pd.set_option('display.max_colwidth', 40)
     html_table = df.to_html(index=False, justify='left',classes='table table-bordered text-end',escape=False)
     #print(html_table)
-    
     dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
 
