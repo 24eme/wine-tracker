@@ -77,8 +77,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                 <?php if ($chiffres["cumul_sortie_campagne_en_cours"]): ?>
                   <div class="col">
                     <div class="chiffre">
-                      <h2 class="mb-0"><?php echo $chiffres["cumul_sortie_campagne_en_cours"]?> hl</h2>
-                      <p class="<?php if($chiffres["evolution_mois_par_rapport_a_n_1"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_mois_par_rapport_a_n_1"]?> %</p>
+                      <h2 class="mb-0"><?php echo $chiffres["cumul_sortie_campagne_en_cours"]?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_mois_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo $chiffres["evolution_mois_par_rapport_a_n_1"]?> %</span></h2>
                       <p>Cumul volume de sortie depuis le début de la campagne</p>
                     </div>
                   </div>
@@ -86,8 +85,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                 <?php if ($chiffres["volume_de_sortie_vrac"]): ?>
                   <div class="col">
                     <div class="chiffre">
-                      <h2 class="mb-0"><?php echo $chiffres["volume_de_sortie_vrac"]?> hl</h2>
-                      <p class="<?php if($chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"]?> %</p>
+                      <h2 class="mb-0"><?php echo $chiffres["volume_de_sortie_vrac"]?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo $chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"]?> %</span></h2>
                       <p>Volume de sortie VRAC du mois précédent</p>
                     </div>
                   </div>
@@ -95,8 +93,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                 <?php if ($chiffres["volume_sortie_conditionne_mois"]): ?>
                   <div class="col">
                     <div class="chiffre">
-                      <h2 class="mb-0"><?php echo $chiffres["volume_sortie_conditionne_mois"]?> hl</h2>
-                      <p class="<?php if($chiffres["evolution_sortie_conditionne_du_mois"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_sortie_conditionne_du_mois"]?> %</p>
+                      <h2 class="mb-0"><?php echo $chiffres["volume_sortie_conditionne_mois"]?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_sortie_conditionne_du_mois"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo $chiffres["evolution_sortie_conditionne_du_mois"]?> %</span></h2>
                       <p>Volume de sortie conditionné du mois précédent</p>
                     </div>
                   </div>
@@ -104,8 +101,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                 <?php if ($chiffres["volume_contractualisation"]): ?>
                   <div class="col">
                     <div class="chiffre">
-                      <h2 class="mb-0"><?php echo $chiffres["volume_contractualisation"]?> hl</h2>
-                      <p class="<?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>text-success<?php else: ?>text-danger <?php endif; ?>"><?php echo $chiffres["evolution_par_rapport_a_n_1"]?> %</p>
+                      <h2 class="mb-0"><?php echo $chiffres["volume_contractualisation"]?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo $chiffres["evolution_par_rapport_a_n_1"]?> %</span></h2>
                       <p>Volume contractualisation depuis le début de la campagne</p>
                     </div>
                   </div>
