@@ -112,7 +112,7 @@ sorties_all_all['volume cumule'] = sorties_all_all.groupby(["identifiant","campa
 
 if(len(sorties_all_all.index) > 0):
     chiffre1 = sorties_all_all["volume cumule"].iat[len(sorties_all_all)-1]
-    chiffre1 = round(chiffre1,2)
+    chiffre1 = round(chiffre1)
 #chiffre1
 
 
@@ -137,7 +137,7 @@ sorties_all_all['volume cumule'] = sorties_all_all.groupby(["identifiant","campa
 chiffre2 = sorties_all_all["volume cumule"].iat[int(lastMonthOrdre)-1]
 if(len(sorties_all_all.index) > 0):
     chiffre2 = (((chiffre1-chiffre2)/chiffre2))*100
-    chiffre2 = round(chiffre2,2)
+    chiffre2 = round(chiffre2)
     if(chiffre2 > 0):
         chiffre2 = '+'+str(chiffre2)
 
@@ -170,7 +170,7 @@ vrac = vrac.query("ordre_mois==@last_month_ordre")
 
 if(len(vrac.index) > 0):
     chiffre3 = vrac["volume mouvement"][0]
-    chiffre3 = round(chiffre3,2)
+    chiffre3 = round(chiffre3)
 
 #chiffre3
 
@@ -194,7 +194,7 @@ vrac = vrac.query("ordre_mois==@last_month_ordre")
 if(len(vrac.index) > 0):
     chiffre4 = vrac["volume mouvement"][0]
     chiffre4 = (((chiffre3-chiffre4)/chiffre4))*100
-    chiffre4 = round(chiffre4,2)
+    chiffre4 = round(chiffre4)
     if(chiffre4 > 0):
         chiffre4 = '+'+str(chiffre4)
 #chiffre4
@@ -220,7 +220,7 @@ conditionne = conditionne.query("ordre_mois==@last_month_ordre")
 if(len(conditionne.index) > 0):
 
     chiffre5 = conditionne["volume mouvement"][0]
-    chiffre5 = round(chiffre5,2)
+    chiffre5 = round(chiffre5)
 
 #chiffre5
 
@@ -244,7 +244,7 @@ conditionne = conditionne.query("ordre_mois==@last_month_ordre")
 if(len(conditionne.index) > 0):
     chiffre6 = conditionne["volume mouvement"][0]
     chiffre6 = (((chiffre5-chiffre6)/chiffre6))*100
-    chiffre6 = round(chiffre6,2)
+    chiffre6 = round(chiffre6)
     if(chiffre6 > 0):
         chiffre6 = '+'+str(chiffre6)
 #chiffre6
@@ -308,7 +308,7 @@ contrats_n_1 = contrats.query("campagne==@campagne_courante_n_1 and ordre_mois <
 
 if(len(contrats_n_1.index) > 0):
     chiffre7 = contrats_courants['volume propose'].sum()
-    chiffre7 = round(chiffre7,2)
+    chiffre7 = round(chiffre7)
 #chiffre7
 
 
@@ -320,7 +320,7 @@ contrats_n_1 = contrats.query("campagne==@campagne_courante_n_1 and ordre_mois <
 if(len(contrats_n_1.index) > 0):
     chiffre8 = contrats_n_1['volume propose'].sum()
     chiffre8 = (((chiffre7-chiffre8)/chiffre8))*100
-    chiffre8 = round(chiffre8,2)
+    chiffre8 = round(chiffre8)
     if(chiffre8 > 0):
         chiffre8 = '+'+str(chiffre8)
 #chiffre8

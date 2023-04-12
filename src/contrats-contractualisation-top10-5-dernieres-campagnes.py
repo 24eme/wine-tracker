@@ -151,7 +151,7 @@ def create_graphe(df, identifiant, appellation, couleur):
                       paper_bgcolor="white",
                       plot_bgcolor = "white",
                       hovermode = False,
-                      yaxis=dict(tickformat=".f"),
+                      yaxis=dict(tickformat=".0f"),
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False
                      )

@@ -161,7 +161,7 @@ def create_graphe(final,appellation,couleur):
                       legend_title=None,
                       paper_bgcolor="#F7F7F7",
                       plot_bgcolor = "#F7F7F7",
-                      yaxis=dict(tickformat=".f"),
+                      yaxis=dict(tickformat=".0f"),
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False
                      )

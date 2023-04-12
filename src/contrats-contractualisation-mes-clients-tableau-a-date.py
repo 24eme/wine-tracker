@@ -211,10 +211,12 @@ df_merge_all_all.set_index(['identifiant_vendeur','filtre_produit','couleur'], i
 df_final = pd.concat([df_merge_spe_spe, df_merge_spe_all])
 df_final = pd.concat([df_final, df_merge_all_all])
 
-df_final["5 DA"] = df_final["5 DA"]/5
-df_final = df_final.fillna(0)
 
-df_final = df_final.round(1)
+df_final['n'] = round(df_final['n']).astype(int)
+df_final["n-1"] = round(df_final["n-1"].fillna(0)).astype(int)
+
+df_final["5 DA"] = df_final["5 DA"]/5
+df_final["5 DA"] = round(df_final["5 DA"].fillna(0)).astype(int)
 
 nom_col_n_1 = 'Campagne '+lastcampagnes[-2:][0]
 nom_col_5_DA = 'Moy 5 dernières campagnes complètes'
@@ -250,8 +252,6 @@ else :
 df_final = df_final.sort_values(by=['identifiant_vendeur','filtre_produit','couleur'])
 
 df_final = df_final.drop(['identifiant acheteur','n-1','5 DA'], axis=1)
-
-#df_final
 
 
 # In[ ]:

@@ -132,8 +132,9 @@ df_final.rename(columns = {'volume propose':'volume'}, inplace = True)
 df_final.rename(columns = {'nom_acheteur':"Client"}, inplace = True)
 
 
-df_final['volume'] = df_final['volume']/len(lastcampagnes)
-df_final['prix'] = df_final['prix']/len(lastcampagnes)
+df_final['volume'] = round(df_final['volume']/len(lastcampagnes)).astype(int)
+df_final['prix'] = round(df_final['prix']/len(lastcampagnes)).astype(int)
+
 #df_final
 
 
@@ -144,12 +145,15 @@ def create_graphe(df, identifiant, appellation, couleur):
 
     fig = px.pie(df, values='volume', names='Client',custom_data=['Client','volume'], color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
     fig.update_traces(textposition='inside', textinfo='label+text', text=df['volume'].map("{:} hl".format))
-    fig.update_layout(legend_itemdoubleclick=False)
+    fig.update_layout(legend_itemclick=False, legend_itemdoubleclick=False)
     fig.update_traces(
     hovertemplate="<br>".join([
-        "%{customdata[0]} hl",
+        "%{customdata[0][0]}",
+        "%{customdata[0][1]} hl",
+        "%{percent}"
     ])
     )
+
     #fig.show()
 
     dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur
@@ -159,11 +163,13 @@ def create_graphe(df, identifiant, appellation, couleur):
 
     fig = px.pie(df, values='prix', names='Client',custom_data=['Client', 'prix'], color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
     fig.update_traces(textposition='inside', textinfo='label+text', text=df['prix'].map("{:} €".format))
-    fig.update_layout(legend_itemdoubleclick=False)
+    fig.update_layout(legend_itemclick=False,legend_itemdoubleclick=False)
 
     fig.update_traces(
     hovertemplate="<br>".join([
-        "%{customdata[0]} €",
+        "%{customdata[0][0]}",
+        "%{customdata[0][1]} €",
+        "%{percent}"
     ])
     )
     #fig.show()
