@@ -9,11 +9,20 @@ $args = [
 $GET = filter_input_array(INPUT_GET, $args, true);
 
 if (! $GET['id']) {
-    die('Paramètre requis manquant : id');
+    header('Location: /');
+    exit;
+}
+
+if (! $_SESSION['etablissement_id'] || !isset($_SESSION['etablissement_id']) || ($_SESSION['etablissement_id'] != $GET['id']) ) {
+    if (!file_exists('../debug')) {
+        header('Location: /');
+        exit;
+    }
 }
 
 if (! $GET['filtre']) {
-    header('Location: /?'.http_build_query(['id' => $GET['id'], 'filtre' => 'TOUT-TOUT']));
+    header('Location: ./?'.http_build_query(['id' => $GET['id'], 'filtre' => 'TOUT-TOUT']));
+    exit;
 }
 
 $path = "../graphes/".$GET['id'];
@@ -21,6 +30,11 @@ $path = "../graphes/".$GET['id'];
 if (! is_dir($path."/drm") && ! is_dir($path."/contrat")) {
     die('Il manque au moins les dossiers de données. La génération a été lancée ?');
 }
+
+if (file_exists('../debug')) {
+    echo "<h1 style='color:red;'>DEBUG</h1>";
+}
+
 
 $ls_dossier_drm = array_diff((scandir($path."/drm")) ?: [], array('.', '..'));
 $ls_dossier_contrats = array_diff((scandir($path."/contrat")) ?: [], array('.', '..'));

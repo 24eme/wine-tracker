@@ -7,3 +7,4 @@ data/drm/*
 !data/drm/.gitignore
 *~
 tags
+debug
