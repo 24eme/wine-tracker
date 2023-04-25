@@ -12,17 +12,13 @@ source dir/bin/activate
 Pour la génération des graphes, jupyter notebook est utilisé :
 
 ```
-pip3 install jupyter
-pip3 install pandas
-pip3 install plotly
-pip3 install argparse
+pip3 install jupyter pandas plotly argparse
 ```
 
 Pour la génération des .py à partir des jupyter :
 
 ```
-pip3 install Jinja2
-pip3 install nbconvert
+pip3 install Jinja2 nbconvert
 ```
 
 ## Préparation des données
