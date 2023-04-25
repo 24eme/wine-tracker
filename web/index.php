@@ -16,7 +16,7 @@ if (! $GET['filtre']) {
     header('Location: /?'.http_build_query(['id' => $GET['id'], 'filtre' => 'TOUT-TOUT']));
 }
 
-$path = "graphes/".$GET['id'];
+$path = "../graphes/".$GET['id'];
 
 if (! is_dir($path."/drm") && ! is_dir($path."/contrat")) {
     die('Il manque au moins les dossiers de données. La génération a été lancée ?');
@@ -48,9 +48,9 @@ $list_produits_contrats = $data['produits']['contrats'];
 <html>
   <head>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="web/main.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="web/plotly-2.18.0.min.js"></script>
+    <script src="plotly-2.18.0.min.js"></script>
   </head>
   <body>
     <nav class="navbar">
@@ -58,7 +58,7 @@ $list_produits_contrats = $data['produits']['contrats'];
         <h2>
           ESPACE <span class="fw-bold">DE STATISTIQUES PERSONNALISES</span>
         </h2>
-      <img height="40px" src="web/img/logo.png"></img>
+      <img height="40px" src="img/logo.png"></img>
       </div>
     </nav>
     <div class="container mt-5">
@@ -160,7 +160,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                         <?php include $drm_graph_path."/drm-sortie-vrac-condionne.html";?>
                         <?php else: ?>
                           <div class="col-xs-12 mt-5 p-5 text-center fw-bold entete">
-                            <img height="400px" src="web/img/database-slash.svg" title="Données non disponible" />
+                            <img height="400px" src="img/database-slash.svg" title="Données non disponible" />
                           </div>
                         <?php endif;?>
                       </div>
@@ -181,7 +181,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                         <?php include $drm_graph_path."/drm-sorties-par-campagne-et-mois.html";?>
                         <?php else: ?>
                           <div class="col-xs-12 mt-5 p-5 text-center fw-bold entete">
-                            <img height="400px" src="web/img/database-slash.svg" title="Données non disponible" />
+                            <img height="400px" src="img/database-slash.svg" title="Données non disponible" />
                           </div>
                         <?php endif;?>
                       </div>
@@ -295,14 +295,14 @@ $list_produits_contrats = $data['produits']['contrats'];
       <div class="container">
         <div class="row">
           <div class="col-md-6 text-left p-4">
-            <img height="40px" src="web/img/logo-footer.jpg"></img>
+            <img height="40px" src="img/logo-footer.jpg"></img>
           </div>
           <div class="col-md-6 text-end p-4">
-            <img height="40px" src="web/img/logo.png"></img>
+            <img height="40px" src="img/logo.png"></img>
           </div>
         </div>
       </div>
     </footer>
-    <script src="web/main.js"></script>
+    <script src="main.js"></script>
   </body>
 </html>
