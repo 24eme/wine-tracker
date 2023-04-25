@@ -39,7 +39,7 @@ if not id_operateur:
 # In[ ]:
 
 
-etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15", low_memory=False)
+etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15", low_memory=False, index_col=False)
 etablissement = etablissements.query("identifiant == @id_operateur")
 famille = etablissement['famille'].unique()[0]
 
@@ -50,7 +50,7 @@ if not famille:
 # In[ ]:
 
 
-contrats = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False)
+contrats = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False, index_col=False)
 
 contrats = contrats.query("statut == 'SOLDE' or statut == 'NONSOLDE'")
 contrats.rename(columns = {'type de vente':'type_de_vente','prix unitaire (en hl)':'prix'}, inplace = True)

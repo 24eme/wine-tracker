@@ -31,7 +31,7 @@ mois_sort = { "Août" : "01" , "Septembre" : "02", "Octobre" : "03", "Novembre" 
 # In[ ]:
 
 
-mouvements = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False)
+mouvements = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False, index_col=False)
 
 lastcampagnes = mouvements['campagne'].unique()
 lastcampagnes.sort()

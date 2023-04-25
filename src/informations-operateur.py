@@ -43,15 +43,15 @@ if not id_operateur:
 # In[ ]:
 
 
-etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15", low_memory=False)
+etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15", low_memory=False, index_col=False)
 etablissement = etablissements.query("identifiant == @id_operateur")
 famille = etablissement['famille'].unique()[0]
 
 if not famille:
     raise Exception("OPERATEUR N'EST PAS DANS LE CSV DES ETABLISSEMENT")
 
-drm = pd.read_csv(csv, sep=";",encoding="iso-8859-1", low_memory=False)
-contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False)
+drm = pd.read_csv(csv, sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
+contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
 
 
 contrats_csv = contrats.copy()

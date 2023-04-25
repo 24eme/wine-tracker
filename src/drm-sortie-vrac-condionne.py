@@ -40,7 +40,7 @@ except:
 
 
 #préparations des données de l'opérateur sans filtres
-mouvements = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False)
+mouvements = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False, index_col=False)
 
 lastcampagnes = mouvements['campagne'].unique()
 lastcampagnes.sort()
