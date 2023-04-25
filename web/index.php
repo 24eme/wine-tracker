@@ -7,6 +7,8 @@ $args = [
 ];
 
 $GET = filter_input_array(INPUT_GET, $args, true);
+session_name('symfony');
+session_start();
 
 if (! $GET['id']) {
     header('Location: /');
