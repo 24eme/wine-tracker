@@ -67,12 +67,13 @@ $list_produits_contrats = $data['produits']['contrats'];
     <link href="main.css" rel="stylesheet">
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="plotly-2.18.0.min.js"></script>
+    <title>Statistiques personnalisées pour <?php echo $data["name"];?></title>
   </head>
   <body>
     <nav class="navbar">
       <div class="container mt-2">
         <h2>
-          ESPACE <span class="fw-bold">DE STATISTIQUES PERSONNALISES</span>
+          ESPACE DE <span class="fw-bold">STATISTIQUES PERSONNALISÉES</span>
         </h2>
       <img height="40px" src="img/logo.png"></img>
       </div>
@@ -80,7 +81,7 @@ $list_produits_contrats = $data['produits']['contrats'];
     <div class="container mt-5">
       <div class="content">
           <div>
-              <h2>Statistiques et graphiques pour : <?php echo $data["name"];?> </h2>
+              <h2>Statistiques et graphiques pour <?php echo $data["name"];?> </h2>
           </div>
           <hr class="border border-danger border-2 opacity-50">
           <div>
