@@ -25,7 +25,7 @@ source = "DRM Inter-Rhône"
 # In[ ]:
 
 
-drm = pd.read_csv(csv, sep=";",encoding="iso8859_15")
+drm = pd.read_csv(csv, sep=";",encoding="iso8859_15",index_col=False)
 
 
 # In[ ]:
@@ -42,7 +42,7 @@ drm = drm.query('campagne in @lastcampagnes')
 
 #SEULEMENT DONNEES SUR LES DRM PRODUCTEURS
 
-etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15")
+etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15",index_col=False)
 familleproducteurs = ['producteur cave_cooperative','producteur cave_particuliere','producteur vendeur_raisin']
 etablissements = etablissements.query("famille in @familleproducteurs")
 
@@ -56,7 +56,7 @@ drm = drm.query('identifiant in @identifiantsproducteurs')
 
 #pour les volumes récoltés :
 csv_mouvements = path+"/data/drm/export_bi_mouvements.csv"  #il manque un ; à la fin du header.
-mouvements = pd.read_csv(csv_mouvements, sep=";",encoding="iso8859_15")
+mouvements = pd.read_csv(csv_mouvements, sep=";",encoding="iso8859_15",index_col=False)
 mouvements.rename(columns = {'identifiant declarant':'identifiant','type de mouvement':'type_de_mouvement','certification':'certifications','genre':'genres','appellation':'appellations','mention':'mentions','lieu':'lieux','couleur':'couleurs'}, inplace = True)
 mouvements = mouvements.query('identifiant in @identifiantsproducteurs')
 mouvements = mouvements.query('campagne in @lastcampagnes')
