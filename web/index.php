@@ -27,9 +27,11 @@ if (! $GET['filtre']) {
     exit;
 }
 
-$path = "../graphes/".$GET['id'];
+$path_cave = "../graphes/".$GET['id'];
+$path_vignoble = "../graphes/LE_VIGNOBLE";
 
-if (! is_dir($path."/drm") && ! is_dir($path."/contrat")) {
+
+if (! is_dir($path_cave."/drm") && ! is_dir($path_cave."/contrat")) {
     die('Il manque au moins les dossiers de données. La génération a été lancée ?');
 }
 
@@ -38,18 +40,18 @@ if (file_exists('../debug')) {
 }
 
 
-$ls_dossier_drm = array_diff((scandir($path."/drm")) ?: [], array('.', '..'));
-$ls_dossier_contrats = array_diff((scandir($path."/contrat")) ?: [], array('.', '..'));
+$ls_dossier_drm = array_diff((scandir($path_cave."/drm")) ?: [], array('.', '..'));
+$ls_dossier_contrats = array_diff((scandir($path_cave."/contrat")) ?: [], array('.', '..'));
 
-$drm_graph_path               = $path."/drm/".$GET['filtre'];
-$drm_graph_le_vignoble_path     = "graphes/LE_VIGNOBLE/drm/".$GET['filtre'];
-$contrat_graph_path           = $path."/contrat/".$GET['filtre'];
-$contrat_le_vignoble_graph_path = "graphes/LE_VIGNOBLE/contrat/".$GET['filtre'];
+$drm_graph_path               = $path_cave."/drm/".$GET['filtre'];
+$drm_graph_le_vignoble_path     = $path_vignoble."/drm/".$GET['filtre'];
+$contrat_graph_path           = $path_cave."/contrat/".$GET['filtre'];
+$contrat_le_vignoble_graph_path = $path_vignoble."/contrat/".$GET['filtre'];
 
-$json = file_get_contents($path."/".$GET['id'].".json");
+$json = file_get_contents($path_cave."/".$GET['id'].".json");
 $data = json_decode($json, true);
 
-$json_chiffre = file_get_contents($path."/".$GET['id']."_chiffre.json");
+$json_chiffre = file_get_contents($path_cave."/".$GET['id']."_chiffre.json");
 $chiffres = json_decode($json_chiffre, true);
 
 
