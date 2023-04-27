@@ -81,8 +81,6 @@ mouvements.rename(columns = {'type de mouvement':'type_de_mouvement'}, inplace =
 typedemouvements = ['sorties/vrac','sorties/vrac_contrat','sorties/vrac_export','sorties/crd', 'sorties/factures', 'sorties/export', 'sorties/crd_acquittes', 'sorties/acq_crd','sorties/consommation']
 mouvements = mouvements.query("type_de_mouvement in @typedemouvements").reset_index()
 
-mouvements["volume mouvement"] = mouvements["volume mouvement"]*(-1)
-
 lastMonth = format(datetime.now().month-1, "02d")
 lastMonthFrench = mois[lastMonth]
 lastMonthOrdre = mois_sort[lastMonthFrench].replace("0", "")

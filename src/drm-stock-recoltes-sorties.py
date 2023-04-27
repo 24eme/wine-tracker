@@ -90,7 +90,6 @@ drm_recolte = drm_recolte.groupby(["identifiant", "campagne","filtre_produit", "
 #SOMME SORTIES
 typedemouvementssorties = ['sorties/vrac','sorties/vrac_contrat','sorties/vrac_export','sorties/crd', 'sorties/factures', 'sorties/export', 'sorties/crd_acquittes', 'sorties/acq_crd','sorties/consommation']
 drm_sortie = mouvements.query("type_de_mouvement in @typedemouvementssorties").reset_index()
-drm_sortie["volume mouvement"] = drm_sortie["volume mouvement"]*(-1)
 drm_sortie = drm_sortie.groupby(["identifiant", "campagne","filtre_produit", "couleurs"]).sum(["volume mouvement"])[["volume mouvement"]]
 
 

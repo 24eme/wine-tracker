@@ -35,7 +35,6 @@ mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = T
 # In[ ]:
 
 
-mouvements["volume mouvement"] = mouvements["volume mouvement"]*(-1)
 mouvements.rename(columns = {'type de mouvement':'type_de_mouvement'}, inplace = True)
 mouvements['sorties'] = mouvements["type_de_mouvement"].str.lower().str.startswith("sorties/")
 mouvements = mouvements.query("sorties == True")

@@ -64,7 +64,6 @@ typedemouvements = ['sorties/vrac','sorties/vrac_contrat','sorties/vrac_export',
 mouvements = mouvements.query("type_de_mouvement in @typedemouvements").reset_index()
 
 
-mouvements["volume mouvement"] = mouvements["volume mouvement"]*(-1)
 mouvements['sorties'] = mouvements["type_de_mouvement"].str.lower().str.startswith("sorties/")
 
 mouvements['filtre_produit'] = mouvements['appellation'] + "-" + mouvements['lieu'] + "-" +mouvements['certification']+ "-" +mouvements['genre']+ "-" +mouvements['mention']
