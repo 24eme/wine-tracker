@@ -1,5 +1,16 @@
 <?php
 
+$debug = file_exists('../debug');
+
+function include_with_debug($f) {
+    global $debug;
+    if ($debug && !file_exists($f)) {
+        echo "<p><pre>ERROR $f not found</pre></p>";
+    }else{
+        include($f);
+    }
+}
+
 $args = [
     'id' => FILTER_SANITIZE_STRING,
     'filtre' => FILTER_SANITIZE_STRING,
@@ -114,7 +125,7 @@ $list_produits_contrats = $data['produits']['contrats'];
             <h3 class="pb-4 mb-4 fst-italic border-bottom">
                 Statistiques et graphiques pour <?php echo $data["name"];?>
                 <?php
-                if (file_exists('../debug')) {
+                if ($debug) {
                     echo "<span style='color:red;'>DEBUG</span>";
                 }
                 ?>
@@ -198,10 +209,10 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     <div class="row shadow bg-white rounded p-1 graphs-container">
                                         <h3 class="col-xs-12 p-4 text-center fw-bold">Évolution des stocks, récoltes et sorties</h3>
                                         <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
-                                            <?php include $drm_graph_path."/drm-stock-recoltes-sorties.html";?>
+                                            <?php include_with_debug($drm_graph_path."/drm-stock-recoltes-sorties.html");?>
                                         </div>
                                         <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
-                                            <?php include $drm_graph_le_vignoble_path."/drm-stock-recoltes-sorties.html";?>
+                                            <?php include_with_debug($drm_graph_le_vignoble_path."/drm-stock-recoltes-sorties.html");?>
                                         </div>
                                         <div class="col-xs-12">
                                             <p class="text-muted text-end fs-6">
@@ -215,7 +226,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         <h3 class="col-xs-12 p-4 text-center fw-bold">Évolution des sorties de chais VRAC/Conditionné</h3>
                                         <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
                                             <?php if(file_exists($drm_graph_path."/drm-sortie-vrac-condionne.html")): ?>
-                                                <?php include $drm_graph_path."/drm-sortie-vrac-condionne.html";?>
+                                                <?php include_with_debug($drm_graph_path."/drm-sortie-vrac-condionne.html");?>
                                             <?php else: ?>
                                                 <div class="col-xs-12 mt-5 p-5 text-center fw-bold entete">
                                                     <img height="400px" src="img/database-slash.svg" title="Données non disponible" />
@@ -223,7 +234,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                             <?php endif;?>
                                         </div>
                                         <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
-                                            <?php include $drm_graph_le_vignoble_path."/drm-sortie-vrac-condionne.html";?>
+                                            <?php include_with_debug($drm_graph_le_vignoble_path."/drm-sortie-vrac-condionne.html");?>
                                         </div>
                                         <div class="col-xs-12">
                                             <p class="text-muted text-end fs-6">
@@ -236,7 +247,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         <h3 class="col-xs-12 p-4 text-center fw-bold">Évolution des sorties par mois - campagne</h3>
                                         <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
                                             <?php if(file_exists($drm_graph_path."/drm-sorties-par-campagne-et-mois.html")): ?>
-                                                <?php include $drm_graph_path."/drm-sorties-par-campagne-et-mois.html";?>
+                                                <?php include_with_debug($drm_graph_path."/drm-sorties-par-campagne-et-mois.html");?>
                                             <?php else: ?>
                                                 <div class="col-xs-12 mt-5 p-5 text-center fw-bold entete">
                                                     <img height="400px" src="img/database-slash.svg" title="Données non disponible" />
@@ -244,7 +255,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                             <?php endif;?>
                                         </div>
                                         <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
-                                            <?php include $drm_graph_le_vignoble_path."/drm-sorties-par-campagne-et-mois.html";?>
+                                            <?php include_with_debug($drm_graph_le_vignoble_path."/drm-sorties-par-campagne-et-mois.html");?>
                                         </div>
                                         <div class="col-xs-12">
                                             <p class="text-muted text-end fs-6">
@@ -257,7 +268,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         <h3 class="col-xs-12 p-4 text-center fw-bold entete">Cumul de l'évolution des sorties de chais par mois</h3>
                                         <h4 class="col-xs-12 text-center fw-bold">MA CAVE</h4>
                                         <div class="col-md-12 graph-container" style="height: 500px;">
-                                            <?php include $drm_graph_path."/drm-sorties-cumul-par-mois.html";?>
+                                            <?php include_with_debug($drm_graph_path."/drm-sorties-cumul-par-mois.html");?>
                                         </div>
                                     </div>
                                 <?php endif;?>
@@ -292,7 +303,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                             <label class="btn btn-light" for="btn-radio-prix">en €</label>
                                         </div>
                                         <div id="pie-volume" class="d-block">
-                                            <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html";?>
+                                            <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html");?>
                                             <div class="col-xs-12">
                                                 <p class="text-muted text-end fs-6">
                                                     En hl. Sources: Contrats Inter-Rhône
@@ -300,7 +311,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                             </div>
                                         </div>
                                         <div id="pie-prix" class="d-none">
-                                            <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients-en-euros.html";?>
+                                            <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-en-euros.html");?>
                                             <div class="col-xs-12">
                                                 <p class="text-muted text-end fs-6">
                                                     En €. Sources: Contrats Inter-Rhône
@@ -314,7 +325,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         <h3 class="col-xs-8 pt-4 text-center fw-bold entete">Comparaison à date des contractualisations</h3>
                                         <h4 class="col-xs-8 p-1 pb-4 text-center fw-bold entete">Évolution de volume contractualisé comparée à la campagne précédente et à la moyenne des 5 dernières campagnes</h4>
                                         <div class="col-xs-10">
-                                            <?php include $contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html";?>
+                                            <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html");?>
                                         </div>
                                         <p class="text-muted text-end fs-6">
                                             En hl. Sources: Contrats Inter-Rhône
@@ -325,7 +336,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     <div class="mt-3 row shadow bg-white rounded p-1">
                                         <h3 class="col-xs-8 p-4 text-center fw-bold entete">Top 10 des volumes des tiers sur 5 ans</h3>
                                         <div class="col-xs-10">
-                                            <?php include $contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html";?>
+                                            <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html");?>
                                         </div>
                                         <p class="text-muted text-end fs-6">
                                             En hl. Sources: Contrats Inter-Rhône
@@ -336,7 +347,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     <div class="mt-3 row shadow bg-white rounded p-1">
                                         <h3 class="col-xs-8 p-4 text-center fw-bold entete">Comparaison déroulement de la campagne sur les 5 dernières campagnes</h3>
                                         <div class="col-xs-10">
-                                            <?php include $contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html";?>
+                                            <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html");?>
                                         </div>
                                         <p class="text-muted text-end fs-6">
                                             En hl. Sources: Contrats Inter-Rhône
