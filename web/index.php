@@ -10,14 +10,16 @@ $GET = filter_input_array(INPUT_GET, $args, true);
 session_name('symfony');
 session_start();
 
-if (! $GET['id']) {
+if (!isset($GET['id'])  || !$GET['id']) {
     if (!file_exists('../debug')) {
         header('Location: /');
         exit;
     }
 }
 
-if (! $_SESSION['etablissement_id'] || !isset($_SESSION['etablissement_id']) || ($_SESSION['etablissement_id'] != $GET['id']) ) {
+$identifiant = $GET['id'];
+
+if (! $_SESSION['etablissement_id'] || !isset($_SESSION['etablissement_id']) || ($_SESSION['etablissement_id'] != $identifiant) ) {
     if (!file_exists('../debug')) {
         header('Location: /');
         exit;
@@ -25,11 +27,11 @@ if (! $_SESSION['etablissement_id'] || !isset($_SESSION['etablissement_id']) || 
 }
 
 if (! $GET['filtre']) {
-    header('Location: ./?'.http_build_query(['id' => $GET['id'], 'filtre' => 'TOUT-TOUT']));
+    header('Location: ./?'.http_build_query(['id' => $identifiant, 'filtre' => 'TOUT-TOUT']));
     exit;
 }
 
-$path_cave = "../graphes/".$GET['id'];
+$path_cave = "../graphes/".$identifiant;
 $path_vignoble = "../graphes/LE_VIGNOBLE";
 
 
@@ -45,10 +47,10 @@ $drm_graph_le_vignoble_path     = $path_vignoble."/drm/".$GET['filtre'];
 $contrat_graph_path           = $path_cave."/contrat/".$GET['filtre'];
 $contrat_le_vignoble_graph_path = $path_vignoble."/contrat/".$GET['filtre'];
 
-$json = file_get_contents($path_cave."/".$GET['id'].".json");
+$json = file_get_contents($path_cave."/".$identifiant.".json");
 $data = json_decode($json, true);
 
-$json_chiffre = file_get_contents($path_cave."/".$GET['id']."_chiffre.json");
+$json_chiffre = file_get_contents($path_cave."/".$identifiant."_chiffre.json");
 $chiffres = json_decode($json_chiffre, true);
 
 
@@ -76,21 +78,21 @@ $list_produits_contrats = $data['produits']['contrats'];
                     &nbsp;
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-center link-declarvins">
-                    <a class="btn btn-sm btn-outline-secondary" href="#">Se deconnecter</a>
+                    <a class="btn btn-sm btn-outline-secondary" href="/logout">Se deconnecter</a>
                 </div>
             </div>
         </div>
 
         <div class="nav-scroller py-1 mb-2 col-8">
             <nav class="nav d-flex justify-content-between">
-                <a href="#" class="p-2 link-declarvins">DRM</a></li>
-                <a href="#" class="p-2 link-declarvins">Contrat</a></li>
-                <a href="#" class="p-2 link-secondary active">Statistiques</a></li>
-                <a href="#" class="p-2 link-declarvins">Commercialisation</a></li>
-                <a href="#" class="p-2 link-declarvins">Factures</a></li>
-                <a href="#" class="p-2 link-declarvins">Aides Occitanie</a></li>
-                <a href="#" class="p-2 link-declarvins">Documents</a></li>
-                <a href="#" class="p-2 link-declarvins">Profil</a></li>
+                <a href="/drm/<?php echo $identifiant; ?>" class="p-2 link-declarvins">DRM</a></li>
+                <a href="/vrac/<?php echo $identifiant; ?>" class="p-2 link-declarvins">Contrat</a></li>
+                <a href="." class="p-2 link-secondary active">Statistiques</a></li>
+                <a href="/dae/<?php echo $identifiant; ?>" class="p-2 link-declarvins">Commercialisation</a></li>
+                <a href="/facture/<?php echo $identifiant; ?>" class="p-2 link-declarvins">Factures</a></li>
+                <a href="/subvention/etablissement/<?php echo $identifiant; ?>" class="p-2 link-declarvins">Aides Occitanie</a></li>
+                <a href="/fichier/etablissement/<?php echo $identifiant; ?>" class="p-2 link-declarvins">Documents</a></li>
+                <a href="/profil/<?php echo $identifiant; ?>" class="p-2 link-declarvins">Profil</a></li>
             </nav>
         </div>
     </header>
