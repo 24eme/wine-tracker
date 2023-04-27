@@ -106,7 +106,7 @@ $list_produits_contrats = $data['produits']['contrats'];
         </div>
 
         <div class="row g-5">
-            <div class="col-3 offset-9">
+            <div class="col-3 offset-9 text-muted">
                 Dernière mise à jour : <?php echo $data["date"];?>
             </div>
             <h3 class="pb-4 mb-4 fst-italic border-bottom">
