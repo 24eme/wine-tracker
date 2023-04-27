@@ -1,25 +1,9 @@
 body{
-  font-family : 'Liberation Sans'
-}
-
-.navbar{
-  background-color: #e75047;
-}
-
-.nav-link{
-  color : black;
-}
-
-.active{
-  color : #e75047 !important;
+  font-family : 'Josefin, Trebuchet, Liberation Sans'
 }
 
 .chiffre{
   max-width: 85%;
-}
-
-nav a{
-  text-decoration: none;
 }
 
 .table td:first-child {
@@ -52,4 +36,48 @@ nav a{
 
 .icone-info:hover .icone-info-text {
   visibility: visible;
+}
+
+.bg-vvr-main {
+    background-color: #701712;
+}
+.bg-vvr-main h1, h2, h3, h4, h5 {
+    color: white;
+}
+.bg-vvr-secondary-1 {
+    background-color: #ea4f57;
+}
+.bg-vvr-secondary-2 {
+    background-color: #f7bb58;
+}
+.bg-vvr-secondary-3 {
+    background-color: #f2969c;
+}
+
+h1, h2, h3 {
+    color: #701712;
+}
+h4, h5 {
+    color: #f7bb58;
+}
+.active{
+  color : #701712 !important;
+}
+#nav-tab a {
+    text-decoration: none;
+}
+#nav-tab a .nav-link{
+    color: #f7bb58;
+}
+a.link-declarvins:hover {
+    color: #86005b !important;
+}
+a.link-declarvins {
+    color: #565e64 !important;
+}
+header nav a.active:hover {
+    color : #701712 !important;
+}
+.link-declarvins .btn:hover {
+    background-color: #86005b !important;
 }
