@@ -147,7 +147,7 @@ df_final['campagne-semaine'] = df_final['campagne']+"-"+df_final['semaine'].appl
 
 
 def create_graphe(df,identifiant,appellation,couleur):
-    fig = px.line(df, x="semaine", y="volume", color='campagne', custom_data=['semaine-sort','campagne'], width=1250, height=650,color_discrete_sequence=["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#E75047"],
+    fig = px.line(df, x="semaine", y="volume", color='campagne', custom_data=['semaine-sort','campagne'], width=1250, height=650,color_discrete_sequence=["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#ea4f57"],
                  labels={
                      "semaine": "Numéro de la semaine - Début de campagne : Semaine 31",
                      "volume": "Volume contractualisé hebdomadaire (en hl)"})

@@ -129,7 +129,7 @@ df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleur'])
 
 df_final.rename(columns = {'volume mouvement':'volume'}, inplace = True)
 
-tabcouleur = ["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#E75047"]
+tabcouleur = ["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#ea4f57"]
 couleurs = tabcouleur[-len(df_final['campagne'].unique()):]
 
 df_final.sort_values(by=["identifiant",'filtre_produit','couleur',"ordre_mois","campagne"])
@@ -149,7 +149,7 @@ def create_graphe(final,identifiant,appellation,couleur):
                  height=500,
                  color_discrete_sequence=couleurs)
     fig.update_layout(title_font_size=24,
-                      title_font_color="rgb(231, 80, 71)",
+                      title_font_color="#f7bb58",
                       xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,

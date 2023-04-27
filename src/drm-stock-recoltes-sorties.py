@@ -184,7 +184,7 @@ df_final = df_final.fillna(0)
 def create_graphique(final,identifiant,appellation,couleur):
 
     # CREATION DU GRAPHE
-    fig = px.line(final, x="campagne", y="value", color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue","green","#d1342f"],
+    fig = px.line(final, x="campagne", y="value", color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue","green","#ea4f57"],
                   title="Ma cave")
     fig.update_traces(mode="markers+lines", hovertemplate=None)
     fig.update_layout(hovermode="x")
@@ -195,7 +195,7 @@ def create_graphique(final,identifiant,appellation,couleur):
                         'xanchor': 'center',
                         'yanchor': 'top'},
                       title_font_size=24,
-                      title_font_color="rgb(231, 80, 71)",
+                      title_font_color='#f7bb58',
                       xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,

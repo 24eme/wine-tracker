@@ -165,7 +165,7 @@ df_final = df_final.fillna(0)
 
 
 def create_graphe(final,identifiant,appellation,couleur):
-    fig = px.bar(final, x="campagne", y="volume", color="variable",color_discrete_sequence=["#e74e62", "#d1342f", "#961d50"],
+    fig = px.bar(final, x="campagne", y="volume", color="variable",color_discrete_sequence=["#ea4f57","#f2969c","#f7bb58"],
                  text_auto=True,
                  title="Ma cave")
     fig.update_layout(title={
@@ -175,7 +175,7 @@ def create_graphe(final,identifiant,appellation,couleur):
                         'xanchor': 'center',
                         'yanchor': 'top'},
                       title_font_size=24,
-                      title_font_color="rgb(231, 80, 71)",
+                      title_font_color="#f7bb58",
                       xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,

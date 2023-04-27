@@ -142,9 +142,9 @@ df_final.rename(columns = {'nom_acheteur':"Client"}, inplace = True)
 
 
 def create_graphe(df, identifiant, appellation, couleur):
-    fig = px.bar(df, y='Client',x="volume",color_discrete_sequence=["#E75047"],text_auto=True, width=1250, height=650,orientation='h')
+    fig = px.bar(df, y='Client',x="volume",color_discrete_sequence=["#ea4f57"],text_auto=True, width=1250, height=650,orientation='h')
     fig.update_layout(title_font_size=24,
-                      title_font_color="rgb(231, 80, 71)",
+                      title_font_color="#f7bb58",
                       xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,

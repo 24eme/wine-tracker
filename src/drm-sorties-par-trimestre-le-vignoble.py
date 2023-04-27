@@ -167,7 +167,7 @@ df_final['trimestre'] = df_final['trimestre-start']+" ➙ "+df_final['trimestre-
 
 def create_graphe(final,appellation,couleur):
     # CREATION DU GRAPHE
-    fig = px.line(final, x='trimestre', y="volume", markers=True,color_discrete_sequence=["#d1342f"], title="Le vignoble")
+    fig = px.line(final, x='trimestre', y="volume", markers=True,color_discrete_sequence=["#ea4f57"], title="Le vignoble")
     fig.update_layout(title={
                         'text': "<b>LE VIGNOBLE</b>",
                         'y':0.9,

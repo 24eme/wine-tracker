@@ -146,7 +146,7 @@ df_final.rename(columns = {'volume mouvement':'volume',"mois-campagne":'periode'
 
 def create_graphe(final,appellation,couleur):
     # CREATION DU GRAPHE
-    fig = px.line(final, x='periode', y="volume",custom_data=['mois', 'campagne'], markers=True, color_discrete_sequence=["#D1342F"], title="Le vignoble")
+    fig = px.line(final, x='periode', y="volume",custom_data=['mois', 'campagne'], markers=True, color_discrete_sequence=["#ea4f57"], title="Le vignoble")
     fig.update_layout(title={
                         'text': "<b>LE VIGNOBLE</b>",
                         'y':0.9,

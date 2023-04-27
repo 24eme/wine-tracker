@@ -178,7 +178,7 @@ df_final = df_final.fillna(0)
 def create_graphique(final,appellation,couleur):
 
     # CREATION DU GRAPHE
-    fig = px.line(final, x="campagne", y="value", color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue","green","#d1342f"],
+    fig = px.line(final, x="campagne", y="value", color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue","green","#ea4f57"],
                   title="Le vignoble")
     fig.update_traces(mode="markers+lines", hovertemplate=None)
     fig.update_layout(hovermode="x")
