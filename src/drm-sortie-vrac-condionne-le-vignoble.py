@@ -140,7 +140,7 @@ df_final = df_final.fillna(0)
 
 
 def create_graphe(final,appellation,couleur):
-    fig = px.bar(final, x="campagne", y="volume", color="variable",color_discrete_sequence=["#e74e62", "#ea4f57", "#961d50"],
+    fig = px.bar(final, x="campagne", y="volume", color="variable",color_discrete_sequence=["#ea4f57","#f2969c","#f7bb58"],
                  text_auto=True,
                  title="Le vignoble")
     fig.update_layout(title={
