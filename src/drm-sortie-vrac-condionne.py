@@ -84,7 +84,7 @@ conditionne = conditionne.groupby(["identifiant","filtre_produit","couleur","cam
 conditionne.rename(columns = {'volume mouvement':'Conditionné'}, inplace = True)
 
 
-#LES AUTRES #'sorties/consommation' 
+#LES AUTRES #'sorties/consommation'
 autres = mouvements.query("type_de_mouvement == 'sorties/consommation'").reset_index()
 autres = autres.groupby(["identifiant","filtre_produit","couleur","campagne"]).sum(["volume mouvement"])[["volume mouvement"]]
 autres.rename(columns = {'volume mouvement':'Autres'}, inplace = True)
@@ -217,4 +217,3 @@ for bloc in df_final.index.unique():
     df = pd.melt(df, id_vars=['identifiant','filtre_produit','couleur','campagne'], value_vars=['Vrac','Conditionné','Autres'])
     df.rename(columns = {'value':'volume'}, inplace = True)
     create_graphe(df,bloc[0],bloc[1],bloc[2])
-
