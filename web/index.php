@@ -128,7 +128,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                 Dernière mise à jour : <?php echo $data["date"];?>
             </div>
             <h2 class="mx-3 mb-5">
-                Statistiques et graphiques pour <?php echo $data["name"];?>
+                <?php echo $data["name"];?> : statistiques et graphiques
                 <?php
                 if ($debug) {
                     echo "<span style='color:red;'>DEBUG</span>";
@@ -212,69 +212,70 @@ $list_produits_contrats = $data['produits']['contrats'];
 
                                 <div class="mt-5 row">
                                     <div class="row shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-8 entete">Évolution des stocks, récoltes et sorties</h3>
+                                        <h3 class="col-xs-8 entete"><span>Stocks, récoltes et sorties</span></h3>
                                         <div class="col-xs-4"></div>
-                                        <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
+                                        <div class="col-md-6 mt-4 graph-container">
                                             <?php include_with_debug($drm_graph_path."/drm-stock-recoltes-sorties.html");?>
                                         </div>
-                                        <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
+                                        <div class="col-md-6 mt-4 graph-container">
                                             <?php include_with_debug($drm_graph_le_vignoble_path."/drm-stock-recoltes-sorties.html");?>
                                         </div>
                                         <div class="col-xs-12">
-                                            <p class="text-muted text-end fs-6">
-                                                En hl. Sorties hors replis, hors déclassements.</br>
-                                                Sources : DRM Inter-Rhône
-                                            </p>
+                                            <p class="text-muted text-end fs-6">Sources : DRM Inter-Rhône</p>
+                                            <p class="explications">Évolution des stocks physiques de production en début de campagne, des récoltes et des sorties de chais (hors replis et déclassement) sur 10 campagnes. Les données, exprimées en hl, sont issues des DRM Inter-Rhône.</p>
+
                                         </div>
                                     </div>
 
                                     <div class="mt-3 row shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-12 entete">Évolution des sorties de chais VRAC/Conditionné</h3>
-                                        <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
+                                        <h3 class="col-xs-12 entete"><span>Sorties de chais VRAC/Conditionné</span></h3>
+                                        <div class="col-md-6 mt-4 graph-container">
                                             <?php if(file_exists($drm_graph_path."/drm-sortie-vrac-condionne.html")): ?>
                                                 <?php include_with_debug($drm_graph_path."/drm-sortie-vrac-condionne.html");?>
                                             <?php else: ?>
-                                                <div class="col-xs-12 mt-5 p-5 text-center fw-bold entete">
+                                                <div class="col-xs-12 mt-5 p-5 text-center fw-bold entete</span>"><span>
                                                     <img height="400px" src="img/database-slash.svg" title="Données non disponible" />
                                                 </div>
                                             <?php endif;?>
                                         </div>
-                                        <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
+                                        <div class="col-md-6 mt-4 graph-container">
                                             <?php include_with_debug($drm_graph_le_vignoble_path."/drm-sortie-vrac-condionne.html");?>
                                         </div>
                                         <div class="col-xs-12">
-                                            <p class="text-muted text-end fs-6">
-                                                En hl. Sources: DRM Inter-Rhône
-                                            </p>
+                                            <p class="text-muted text-end fs-6">En hl. Sources: DRM Inter-Rhône</p>
+                                            <p class="explications">Évolution des sorties de chais vrac (france et export), conditionné (crd france et export) et autres volumes (consommation perso) sur 10 camapgne. Les volumes sont exprimés en hectolitres. Les données proviennent des DRM Inter-Rhone.</p>
                                         </div>
                                     </div>
 
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-12 entete">Évolution des sorties par mois - campagne</h3>
-                                        <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
+                                        <h3 class="col-xs-12 entete"><span>Sorties mensuelles</span></h3>
+                                        <div class="col-md-6 mt-4 graph-container">
                                             <?php if(file_exists($drm_graph_path."/drm-sorties-par-campagne-et-mois.html")): ?>
                                                 <?php include_with_debug($drm_graph_path."/drm-sorties-par-campagne-et-mois.html");?>
                                             <?php else: ?>
-                                                <div class="col-xs-12 mt-5 p-5 text-center fw-bold entete">
+                                                <div class="col-xs-12 mt-5 p-5 text-center fw-bold entete</span>"><span>
                                                     <img height="400px" src="img/database-slash.svg" title="Données non disponible" />
                                                 </div>
                                             <?php endif;?>
                                         </div>
-                                        <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
+                                        <div class="col-md-6 mt-4 graph-container">
                                             <?php include_with_debug($drm_graph_le_vignoble_path."/drm-sorties-par-campagne-et-mois.html");?>
                                         </div>
                                         <div class="col-xs-12">
-                                            <p class="text-muted text-end fs-6">
-                                                Sources: DRM Inter-Rhône
-                                            </p>
+                                            <p class="text-muted text-end fs-6">Sources: DRM Inter-Rhône</p>
+                                            <p class="explications">Évolution des sorties (vrac, contrat, exports, crd, factures et consommations personnelles) par mois et par campagne sur 3 ans. Les données sont issues des DRM Inter-Rhône et sont exprimées en hectolitres.</p>
                                         </div>
                                     </div>
                                 <?php if(file_exists($drm_graph_path."/drm-sorties-cumul-par-mois.html")): ?>
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-12 entete">Cumul de l'évolution des sorties de chais par mois</h3>
+                                        <h3 class="col-xs-12 entete"><span>Cumul des sorties de chais</span></h3>
                                         <h4 class="col-xs-12 text-center fw-bold">MA CAVE</h4>
                                         <div class="col-md-12 graph-container" style="height: 500px;">
                                             <?php include_with_debug($drm_graph_path."/drm-sorties-cumul-par-mois.html");?>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <p class="text-muted text-end fs-6">Sources: DRM Inter-Rhône</p>
+                                            <p class="explications">Cumul de campagne des sorties (vrac, contrat, exports, crd, factures et consommations personnelles) par mois sur 5 campagnes et la campagne en cours. Les données sont issues des DRM Inter-Rhône et sont exprimées en hectolitres.</p>
                                         </div>
                                     </div>
                                 <?php endif;?>
@@ -301,63 +302,85 @@ $list_produits_contrats = $data['produits']['contrats'];
                             <div class="mt-5 row">
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html")): ?>
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-12 entete">Moyenne contractualisation sur les 5 dernières campagnes</h3>
-                                        <div class="col-2 btn-group" role="group">
+                                        <h3 class="col-xs-12 entete"><span>Contractualisation moyenne</span></h3>
+                                        <div class="col-md-12 graph-container">
+                                          <div class="col-2 btn-group mx-5 mt-5" role="group">
                                             <input type="radio" class="radio-btn-contrats btn-check" name="btnradio" id="btn-radio-volume" autocomplete="off" checked onclick="changeRadioValue(this)" data-toshow="pie-volume" data-tohide="pie-prix">
                                             <label class="btn btn-light" for="btn-radio-volume">en hl</label>
                                             <input type="radio" class="radio-btn-contrats btn-check" name="btnradio" id="btn-radio-prix" autocomplete="off" onclick="changeRadioValue(this)" data-toshow="pie-prix" data-tohide="pie-volume">
                                             <label class="btn btn-light" for="btn-radio-prix">en €</label>
-                                        </div>
-                                        <div id="pie-volume" class="d-block">
+                                          </div>
+                                          <div id="pie-volume" class="d-block">
                                             <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html");?>
                                             <div class="col-xs-12">
                                                 <p class="text-muted text-end fs-6">
                                                     En hl. Sources: Contrats Inter-Rhône
                                                 </p>
+                                                <p class="explications">
+                                                    Moyenne sur 5 ans des volumes contractualisés en hectolitres par tiers.
+                                                </p>
                                             </div>
-                                        </div>
-                                        <div id="pie-prix" class="d-none">
+                                          </div>
+                                          <div id="pie-prix" class="d-none">
                                             <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-en-euros.html");?>
                                             <div class="col-xs-12">
                                                 <p class="text-muted text-end fs-6">
                                                     En €. Sources: Contrats Inter-Rhône
                                                 </p>
+                                                <p class="explications">
+                                                    Moyenne sur 5 ans des prix des contracts réalisés en euros par tiers.
+                                                </p>
                                             </div>
+                                          </div>
                                         </div>
                                     </div>
                                 <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html")): ?>
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-8 pt-4 text-center fw-bold entete">Comparaison à date des contractualisations</h3>
-                                        <h4 class="col-xs-8 p-1 pb-4 text-center fw-bold entete">Évolution de volume contractualisé comparée à la campagne précédente et à la moyenne des 5 dernières campagnes</h4>
-                                        <div class="col-xs-10">
-                                            <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html");?>
+                                        <h3 class="col-xs-8 pt-4 text-center fw-bold entete"><span>Contractualisations à date</span></h3>
+                                        <div class="col-md-12 graph-container">
+                                            <div class="col-xs-10 mt-5">
+                                                <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html");?>
+                                            </div>
+                                            <p class="text-muted text-end fs-6">
+                                                En hl. Sources: Contrats Inter-Rhône
+                                            </p>
+                                            <p class="explications">
+                                                Volumes contractualisés de la campagne en cours comparées à la campagne précédente et à la moyenne des 5 dernières campagnes. Les volumes sont exprimés en hectolitres.
+                                            </p>
                                         </div>
-                                        <p class="text-muted text-end fs-6">
-                                            En hl. Sources: Contrats Inter-Rhône
-                                        </p>
                                     </div>
                                 <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html")): ?>
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-8 p-4 text-center fw-bold entete">Top 10 des volumes des tiers sur 5 ans</h3>
-                                        <div class="col-xs-10">
-                                            <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html");?>
+                                        <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Top 10</span></h3>
+                                        <div class="col-md-12 graph-container">
+                                            <div class="col-xs-10">
+                                                <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html");?>
+                                            </div>
+                                            <p class="text-muted text-end fs-6">
+                                                En hl. Sources: Contrats Inter-Rhône
+                                            </p>
+                                            <p class="explications">
+                                                Top 10 des volumes contractualisés par tiers sur 5 ans. Les volumes sont exprimés en hectolitres. Les données proviennent des contrats visés par Inter-Rhône.
+                                            </p>
                                         </div>
-                                        <p class="text-muted text-end fs-6">
-                                            En hl. Sources: Contrats Inter-Rhône
-                                        </p>
                                     </div>
                                 <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html")): ?>
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-8 p-4 text-center fw-bold entete">Comparaison déroulement de la campagne sur les 5 dernières campagnes</h3>
-                                        <div class="col-xs-10">
-                                            <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html");?>
+                                        <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Déroulement de la campagne</span></h3>
+                                        <div class="col-md-12 graph-container">
+                                            <div class="col-xs-10">
+                                                <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html");?>
+                                            </div>
+                                            <p class="text-muted text-end fs-6">
+                                                En hl. Sources: Contrats Inter-Rhône
+                                            </p>
+                                            <p class="explications">
+                                                Comparaison du cumul de campagne des volumes contractualisés de la campagne en cours (en rouge) avec les 4 dernières campagnes. Les volumes sont en hectolitres. Les données proviennent des contrats visés par Inter-Rhône.
+                                            </p>
                                         </div>
-                                        <p class="text-muted text-end fs-6">
-                                            En hl. Sources: Contrats Inter-Rhône
-                                        </p>
                                     </div>
                                 <?php endif;?>
                             </div>

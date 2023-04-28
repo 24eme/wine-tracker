@@ -74,6 +74,9 @@ h3.entete {
     text-align: center;
     margin-top: 80px;
 }
+.entete span {
+    background-color: #fff9;
+}
 h4, h5 {
     color: #f7bb58;
 }
@@ -113,4 +116,16 @@ header nav a.active {
     background-image: url(img/vrr_motif2.svg);
     background-repeat: no-repeat;
     background-position: top right;
+}
+.graph-container {
+    background-color: white;
+}
+.explications {
+    font-weight: bold;
+    text-align: center;
+    width: 80%;
+    margin: 50px auto;
+    padding: 15px 5px;
+    border-top: 5px solid #ffb93f;
+    text-transform: uppercase;
 }
