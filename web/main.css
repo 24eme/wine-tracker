@@ -112,10 +112,16 @@ header nav a.active {
 .menu a {
     text-decoration: none;
 }
-.graphs-container {
+.graphs-container:nth-child(2n) {
     background-image: url(img/vrr_motif2.svg);
-    background-repeat: no-repeat;
     background-position: top right;
+}
+.graphs-container:nth-child(2n+1) {
+    background-image: url(img/vrr_motif4.svg);
+    background-position: top left;
+}
+.graphs-container {
+    background-repeat: no-repeat;
 }
 .graph-container {
     background-color: white;
