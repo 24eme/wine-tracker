@@ -40,7 +40,11 @@ body{
 
 .bg-vvr-main {
     background-color: #701712;
+    background-image: url("img/vrr_motif1.svg");
+    background-repeat: no-repeat;
+    background-position: top right;
 }
+
 .bg-vvr-main h1, h2, h3, h4, h5 {
     color: white;
 }
@@ -55,7 +59,20 @@ body{
 }
 
 h1, h2, h3 {
+    text-transform: uppercase;
     color: #701712;
+    font-weight: bold;
+}
+h2 {
+    border-bottom: var(--bs-border-width) var(--bs-border-style) black !important;
+    padding-left: 0px !important;
+    font-weight: bold;
+    max-width: 95% !important;
+    color: black;
+}
+h3.entete {
+    text-align: center;
+    margin-top: 80px;
 }
 h4, h5 {
     color: #f7bb58;
@@ -65,19 +82,35 @@ h4, h5 {
 }
 #nav-tab a {
     text-decoration: none;
+    font-weight: bold;
 }
 #nav-tab a .nav-link{
     color: #f7bb58;
 }
 a.link-declarvins:hover {
-    color: #86005b !important;
+    background-color: #86005b !important;
 }
 a.link-declarvins {
     color: #565e64 !important;
 }
-header nav a.active:hover {
-    color : #701712 !important;
+header nav a:hover {
+    color: white !important;
+}
+header nav a.active {
+    background-color : #701712 !important;
+    color: white !important;
 }
 .link-declarvins .btn:hover {
     background-color: #86005b !important;
+}
+.menu {
+    background-color: #f1f1f1;
+}
+.menu a {
+    text-decoration: none;
+}
+.graphs-container {
+    background-image: url(img/vrr_motif2.svg);
+    background-repeat: no-repeat;
+    background-position: top right;
 }

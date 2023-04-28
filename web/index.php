@@ -81,7 +81,8 @@ $list_produits_contrats = $data['produits']['contrats'];
     <script src="plotly-2.18.0.min.js"></script>
 </head>
 <body>
-    <header class="container">
+    <header>
+      <div class="container">
         <div class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
                 <div class="col-4 pt-1">
@@ -95,25 +96,29 @@ $list_produits_contrats = $data['produits']['contrats'];
                 </div>
             </div>
         </div>
-
-        <div class="nav-scroller py-1 mb-2 col-8">
-            <nav class="nav d-flex justify-content-between">
-                <a href="/drm/<?php echo $identifiant; ?>" class="p-2 link-declarvins">DRM</a></li>
-                <a href="/vrac/<?php echo $identifiant; ?>" class="p-2 link-declarvins">Contrat</a></li>
-                <a href="." class="p-2 link-secondary active">Statistiques</a></li>
-                <a href="/dae/<?php echo $identifiant; ?>" class="p-2 link-declarvins">Commercialisation</a></li>
-                <a href="/facture/<?php echo $identifiant; ?>" class="p-2 link-declarvins">Factures</a></li>
-                <a href="/subvention/etablissement/<?php echo $identifiant; ?>" class="p-2 link-declarvins">Aides Occitanie</a></li>
-                <a href="/fichier/etablissement/<?php echo $identifiant; ?>" class="p-2 link-declarvins">Documents</a></li>
-                <a href="/profil/<?php echo $identifiant; ?>" class="p-2 link-declarvins">Profil</a></li>
+      </div>
+      <div class="container">
+        <div class="menu">
+        <div class="nav-scroller px-3 col-10">
+            <nav class="nav d-flex">
+                <a href="/drm/<?php echo $identifiant; ?>" class="py-2 px-3 link-declarvins">DRM</a></li>
+                <a href="/vrac/<?php echo $identifiant; ?>" class="py-2 px-3 link-declarvins">Contrat</a></li>
+                <a href="." class="py-2 px-3 link-secondary active">Statistiques</a></li>
+                <a href="/dae/<?php echo $identifiant; ?>" class="py-2 px-3 link-declarvins">Commercialisation</a></li>
+                <a href="/facture/<?php echo $identifiant; ?>" class="py-2 px-3 link-declarvins">Factures</a></li>
+                <a href="/subvention/etablissement/<?php echo $identifiant; ?>" class="py-2 px-3 link-declarvins">Aides Occitanie</a></li>
+                <a href="/fichier/etablissement/<?php echo $identifiant; ?>" class="py-2 px-3 link-declarvins">Documents</a></li>
+                <a href="/profil/<?php echo $identifiant; ?>" class="py-2 px-3 link-declarvins">Profil</a></li>
             </nav>
         </div>
+        </div>
+      </div>
     </header>
 
     <main class="container">
-        <div class="p-4 p-md-5 mb-4 text-white rounded bg-vvr-main">
+        <div class="p-4 p-md-5 mb-4 text-white bg-vvr-main">
             <div class="col-md-6 px-0">
-                <h1 class="display-4 fst-italic">Espace de statistiques personnalisées</h1>
+                <h1 class="display-4 text-uppercase">Espace de statistiques personnalisées</h1>
                 <p class="lead my-3">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
             </div>
         </div>
@@ -122,26 +127,26 @@ $list_produits_contrats = $data['produits']['contrats'];
             <div class="col-3 offset-9 text-muted">
                 Dernière mise à jour : <?php echo $data["date"];?>
             </div>
-            <h3 class="pb-4 mb-4 fst-italic border-bottom">
+            <h2 class="mx-3 mb-5">
                 Statistiques et graphiques pour <?php echo $data["name"];?>
                 <?php
                 if ($debug) {
                     echo "<span style='color:red;'>DEBUG</span>";
                 }
                 ?>
-            </h3>
+            </h2>
         </div>
 
         <article class="blog-post">
-            <div class="container mt-5">
+            <div class="container">
                 <div class="content">
-                    <div class="mt-5">
+                    <div>
                         <div class="row">
                             <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
                                 <?php if ($chiffres["cumul_sortie_campagne_en_cours"]): ?>
                                     <div class="col">
                                         <div class="chiffre">
-                                            <h2 class="mb-0 end"><?php echo number_format($chiffres["cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_mois_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_mois_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></h2>
+                                            <h3 class="mb-0 end"><?php echo number_format($chiffres["cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_mois_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_mois_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></h3>
                                             <p>Cumul volume de sortie depuis le début de la campagne</p>
                                         </div>
                                     </div>
@@ -149,7 +154,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php if ($chiffres["volume_de_sortie_vrac"]): ?>
                                     <div class="col">
                                         <div class="chiffre">
-                                            <h2 class="mb-0"><?php echo number_format($chiffres["volume_de_sortie_vrac"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></h2>
+                                            <h3 class="mb-0"><?php echo number_format($chiffres["volume_de_sortie_vrac"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_sorite_vrac_mois_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></h3>
                                             <p>Volume de sortie VRAC du mois précédent</p>
                                         </div>
                                     </div>
@@ -157,7 +162,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php if ($chiffres["volume_sortie_conditionne_mois"]): ?>
                                     <div class="col">
                                         <div class="chiffre">
-                                            <h2 class="mb-0"><?php echo number_format($chiffres["volume_sortie_conditionne_mois"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_sortie_conditionne_du_mois"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_sortie_conditionne_du_mois"], 0, ',', '&nbsp;'); ?> %</span></h2>
+                                            <h3 class="mb-0"><?php echo number_format($chiffres["volume_sortie_conditionne_mois"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_sortie_conditionne_du_mois"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_sortie_conditionne_du_mois"], 0, ',', '&nbsp;'); ?> %</span></h3>
                                             <p>Volume de sortie conditionné du mois précédent</p>
                                         </div>
                                     </div>
@@ -165,7 +170,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php if ($chiffres["volume_contractualisation"]): ?>
                                     <div class="col">
                                         <div class="chiffre">
-                                            <h2 class="mb-0"><?php echo number_format($chiffres["volume_contractualisation"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></h2>
+                                            <h3 class="mb-0"><?php echo number_format($chiffres["volume_contractualisation"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></h2>
                                             <p>Volume contractualisation depuis le début de la campagne</p>
                                         </div>
                                     </div>
@@ -206,8 +211,9 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 </div>
 
                                 <div class="mt-5 row">
-                                    <div class="row shadow bg-white rounded p-1 graphs-container">
-                                        <h3 class="col-xs-12 p-4 text-center fw-bold">Évolution des stocks, récoltes et sorties</h3>
+                                    <div class="row shadow bg-white p-1 graphs-container">
+                                        <h3 class="col-xs-8 entete">Évolution des stocks, récoltes et sorties</h3>
+                                        <div class="col-xs-4"></div>
                                         <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
                                             <?php include_with_debug($drm_graph_path."/drm-stock-recoltes-sorties.html");?>
                                         </div>
@@ -222,8 +228,8 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         </div>
                                     </div>
 
-                                    <div class="mt-3 row shadow bg-white rounded p-1 graphs-container">
-                                        <h3 class="col-xs-12 p-4 text-center fw-bold">Évolution des sorties de chais VRAC/Conditionné</h3>
+                                    <div class="mt-3 row shadow bg-white p-1 graphs-container">
+                                        <h3 class="col-xs-12 entete">Évolution des sorties de chais VRAC/Conditionné</h3>
                                         <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
                                             <?php if(file_exists($drm_graph_path."/drm-sortie-vrac-condionne.html")): ?>
                                                 <?php include_with_debug($drm_graph_path."/drm-sortie-vrac-condionne.html");?>
@@ -243,8 +249,8 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         </div>
                                     </div>
 
-                                    <div class="row mt-3 shadow bg-white rounded p-1 graphs-container">
-                                        <h3 class="col-xs-12 p-4 text-center fw-bold">Évolution des sorties par mois - campagne</h3>
+                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
+                                        <h3 class="col-xs-12 entete">Évolution des sorties par mois - campagne</h3>
                                         <div class="col-md-6 mt-4 graph-container" style="height: 650px;">
                                             <?php if(file_exists($drm_graph_path."/drm-sorties-par-campagne-et-mois.html")): ?>
                                                 <?php include_with_debug($drm_graph_path."/drm-sorties-par-campagne-et-mois.html");?>
@@ -264,8 +270,8 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         </div>
                                     </div>
                                 <?php if(file_exists($drm_graph_path."/drm-sorties-cumul-par-mois.html")): ?>
-                                    <div class="row mt-3 shadow bg-white rounded p-1 graphs-container">
-                                        <h3 class="col-xs-12 p-4 text-center fw-bold entete">Cumul de l'évolution des sorties de chais par mois</h3>
+                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
+                                        <h3 class="col-xs-12 entete">Cumul de l'évolution des sorties de chais par mois</h3>
                                         <h4 class="col-xs-12 text-center fw-bold">MA CAVE</h4>
                                         <div class="col-md-12 graph-container" style="height: 500px;">
                                             <?php include_with_debug($drm_graph_path."/drm-sorties-cumul-par-mois.html");?>
@@ -294,8 +300,8 @@ $list_produits_contrats = $data['produits']['contrats'];
                             </div>
                             <div class="mt-5 row">
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html")): ?>
-                                    <div class="mt-3 row shadow bg-white rounded p-1">
-                                        <h3 class="col-xs-12 p-4 text-center fw-bold entete">Moyenne contractualisation sur les 5 dernières campagnes</h3>
+                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
+                                        <h3 class="col-xs-12 entete">Moyenne contractualisation sur les 5 dernières campagnes</h3>
                                         <div class="col-2 btn-group" role="group">
                                             <input type="radio" class="radio-btn-contrats btn-check" name="btnradio" id="btn-radio-volume" autocomplete="off" checked onclick="changeRadioValue(this)" data-toshow="pie-volume" data-tohide="pie-prix">
                                             <label class="btn btn-light" for="btn-radio-volume">en hl</label>
@@ -321,7 +327,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     </div>
                                 <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html")): ?>
-                                    <div class="mt-3 row shadow bg-white rounded p-1">
+                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 pt-4 text-center fw-bold entete">Comparaison à date des contractualisations</h3>
                                         <h4 class="col-xs-8 p-1 pb-4 text-center fw-bold entete">Évolution de volume contractualisé comparée à la campagne précédente et à la moyenne des 5 dernières campagnes</h4>
                                         <div class="col-xs-10">
@@ -333,7 +339,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     </div>
                                 <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html")): ?>
-                                    <div class="mt-3 row shadow bg-white rounded p-1">
+                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 p-4 text-center fw-bold entete">Top 10 des volumes des tiers sur 5 ans</h3>
                                         <div class="col-xs-10">
                                             <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html");?>
@@ -344,7 +350,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     </div>
                                 <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html")): ?>
-                                    <div class="mt-3 row shadow bg-white rounded p-1">
+                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 p-4 text-center fw-bold entete">Comparaison déroulement de la campagne sur les 5 dernières campagnes</h3>
                                         <div class="col-xs-10">
                                             <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html");?>
