@@ -137,34 +137,7 @@ df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleur'])
 df_final['campagne-ordre-mois'] = df_final['campagne']+"-"+df_final['ordre-mois']
 df_final['mois-campagne'] = df_final['mois']+"-"+df_final['campagne']
 
-
 # In[ ]:
-
-
-#AJOUT DE TOUS LES MOIS
-for bloc in df_final.index.unique():
-    df = df_final.loc[[bloc]]
-    for campagne in lastcampagnes:
-        for m in list((range(1,13))):
-            com = campagne+'-'+str(m).zfill(2)
-            pcom = max(df['campagne-ordre-mois'].unique())
-            if( com < pcom and com not in df['campagne-ordre-mois'].unique()):
-                if(m != 5):
-                    real_mois = (m+7)%12
-                else:
-                    real_mois = (m+8)%12
-                mois_string = mois[str(real_mois).zfill(2)]
-                new = [bloc[0],bloc[1],bloc[2],campagne,mois_string,0,format(m, '02d'),campagne+'-'+str(format(m, '02d')),mois_string+'-'+campagne]
-                df = df.reset_index()
-                df = df.append(pd.Series(new, index=df.columns[:len(new)]), ignore_index=True)
-                df.set_index(['identifiant','filtre_produit','couleur'], inplace = True)
-    new = df_final.loc[[bloc]].merge(df,on = ["identifiant",'filtre_produit','couleur',"campagne","mois","volume mouvement",'ordre-mois','campagne-ordre-mois','mois-campagne'], how = "right")
-    df_final = df_final.drop([bloc])
-    df_final = pd.concat([df_final, new])
-
-df_final = df_final.sort_values(by=["identifiant",'filtre_produit','couleur',"campagne",'ordre-mois'])
-#df_final
-
 
 # In[ ]:
 
