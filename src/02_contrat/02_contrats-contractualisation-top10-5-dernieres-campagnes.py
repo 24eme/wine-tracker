@@ -135,7 +135,7 @@ df_final = df_final.sort_values(by=['identifiant_vendeur','filtre_produit','coul
 df_final.rename(columns = {'volume propose':'volume'}, inplace = True)
 df_final.rename(columns = {'nom_acheteur':"Client"}, inplace = True)
 
-#df_final
+df_final = df_final.round({'volume': 0, 'prix': 0})
 
 
 # In[ ]:
@@ -151,18 +151,19 @@ def create_graphe(df, identifiant, appellation, couleur):
                       paper_bgcolor="white",
                       plot_bgcolor = "white",
                       hovermode = False,
-                      yaxis=dict(tickformat=".0f"),
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False
                      )
+    fig.update_xaxes(matches=None, showticklabels=True, fixedrange=True)
+    fig.update_xaxes(tickformat=",")
+    fig.update_layout(separators="*  .")
     fig.add_vline(x=0)
-    fig.update_traces(textfont_size=14,textposition="outside", cliponaxis=False,texttemplate = "%{value:} hl",)
+    fig.update_traces(textfont_size=14,textposition="outside", cliponaxis=False,texttemplate = "%{value} hl",)
     fig.for_each_yaxis(lambda x: x.update(showgrid=True))
     fig.for_each_xaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_yaxes(ticksuffix = "  ", fixedrange=True)
-    fig.update_xaxes(matches=None, showticklabels=True, visible=False,fixedrange=True)
-    
-    
+
+    #fig.show()
     dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
     pathlib.Path(dossier).parent.parent.touch()

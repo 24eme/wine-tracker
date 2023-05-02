@@ -175,7 +175,7 @@ df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleurs'])
 
 df_final = df_final.fillna(0)
 
-#df_final
+df_final = df_final.round({'Récoltes (hl)': 0, 'Sorties de chais (hl)': 0, "Stock physique en début de camp production (hl)":0})
 
 
 # In[ ]:
@@ -185,7 +185,7 @@ def create_graphique(final,identifiant,appellation,couleur):
 
     # CREATION DU GRAPHE
     fig = px.line(final, x="campagne", y="value", color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue","green","#ea4f57"],
-                  title="Ma cave")
+                  title="Ma cave",height=650)
     fig.update_traces(mode="markers+lines", hovertemplate=None)
     fig.update_layout(hovermode="x")
     fig.update_layout(title={
@@ -201,10 +201,13 @@ def create_graphique(final,identifiant,appellation,couleur):
                       legend_title=None,
                       paper_bgcolor="white",
                       plot_bgcolor = "white",
-                      yaxis=dict(tickformat=".0f"),
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
-                      legend_itemdoubleclick=False
+                      legend_itemdoubleclick=False,
                      )
+
+    fig.update_yaxes(tickformat=",")
+    fig.update_layout(separators="* .*")
+
     fig.for_each_xaxis(lambda x: x.update(showgrid=False))
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True,showline=True, linewidth=1, linecolor='Lightgrey')

@@ -137,7 +137,6 @@ df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleur'])
 df_final['campagne-ordre-mois'] = df_final['campagne']+"-"+df_final['ordre-mois']
 df_final['mois-campagne'] = df_final['mois']+"-"+df_final['campagne']
 
-# In[ ]:
 
 # In[ ]:
 
@@ -145,10 +144,7 @@ df_final['mois-campagne'] = df_final['mois']+"-"+df_final['campagne']
 df_final.rename(columns = {'volume mouvement':'volume',"mois-campagne":'periode'}, inplace = True)
 
 df_final = df_final.fillna(0)
-
-
-
-#df_final
+df_final = df_final.round({'volume': 0})
 
 
 # In[ ]:
@@ -156,7 +152,7 @@ df_final = df_final.fillna(0)
 
 def create_graphe(final,identifiant,appellation,couleur):
     # CREATION DU GRAPHE
-    fig = px.line(final, x='periode', y="volume", custom_data=['mois', 'campagne'], markers=True, color_discrete_sequence=["#ea4f57"], title="Ma cave")
+    fig = px.line(final, x='periode', y="volume", custom_data=['mois', 'campagne'], markers=True, color_discrete_sequence=["#ea4f57"], title="Ma cave",height=650)
     fig.update_layout(title={
                         'text': "<b>MA CAVE</b>",
                         'y':0.9,
@@ -178,6 +174,8 @@ def create_graphe(final,identifiant,appellation,couleur):
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True, showline=True, linewidth=1, linecolor='Lightgrey', showticklabels=False)
     fig.update_yaxes(fixedrange=True, rangemode="tozero")
+    fig.update_yaxes(tickformat=",")
+    fig.update_layout(separators="* .*")
     
     fig.update_traces(
         hovertemplate="<br>".join([
