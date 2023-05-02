@@ -217,6 +217,7 @@ def create_graphique(final,identifiant,appellation,couleur):
     #fig.show()
     dossier = dossier_graphes+"/"+identifiant+"/drm/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(dossier).parent.parent.touch()
 
     fig.write_html(dossier+"/drm-stock-recoltes-sorties.html",include_plotlyjs=False)
 

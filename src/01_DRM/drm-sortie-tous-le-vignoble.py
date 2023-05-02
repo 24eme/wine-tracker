@@ -93,6 +93,7 @@ def create_graphe(final,appellation,couleur):
 
     dossier = dossier_graphes+"/LE_VIGNOBLE/drm/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(dossier).parent.parent.touch()
 
     fig.write_html(dossier+"/drm-sortie-tous.html",include_plotlyjs=False)
 

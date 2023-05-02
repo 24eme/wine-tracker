@@ -188,11 +188,12 @@ def create_graphe(final,identifiant,appellation,couleur):
     for tick in range(len(final)):
         if tick % 12 == 0:
             fig.add_vline(tick, annotation_text="Campagne "+final['campagne'][tick])
-    
+
     #fig.show()
 
     dossier = dossier_graphes+"/"+identifiant+"/drm/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(dossier).parent.parent.touch()
 
     fig.write_html(dossier+"/drm-sorties-par-campagne-et-mois.html",include_plotlyjs=False)
 

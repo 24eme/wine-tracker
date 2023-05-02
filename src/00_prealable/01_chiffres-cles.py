@@ -340,6 +340,7 @@ dictionary ={
 
 dossier = dossier_graphes+id_operateur
 pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
+pathlib.Path(dossier).touch()
 
 with open(dossier+"/"+id_operateur+"_chiffre.json", "w") as outfile:
     json.dump(dictionary, outfile)

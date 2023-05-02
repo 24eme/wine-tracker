@@ -263,6 +263,7 @@ def create_table(df, identifiant, appellation, couleur):
     #print(html_table)
     dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(dossier).parent.parent.touch()
 
     html_file = open(dossier+"/contrats-contractualisation-mes-clients-tableau-a-date.html","w")
     html_file.write(html_table)

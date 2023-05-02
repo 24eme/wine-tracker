@@ -194,6 +194,7 @@ def create_graphe(final,identifiant,appellation,couleur):
 
     dossier = dossier_graphes+"/"+identifiant+"/drm/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(dossier).parent.parent.touch()
 
     fig.write_html(dossier+"/drm-sortie-vrac-condionne.html",include_plotlyjs=False)
 

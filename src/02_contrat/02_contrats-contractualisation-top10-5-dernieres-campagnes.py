@@ -165,6 +165,7 @@ def create_graphe(df, identifiant, appellation, couleur):
     
     dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(dossier).parent.parent.touch()
 
     fig.write_html(dossier+"/contrats-contractualisation-top-10-5-dernieres-campagnes.html",include_plotlyjs=False)
     return
