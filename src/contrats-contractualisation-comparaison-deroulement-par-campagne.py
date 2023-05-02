@@ -9,6 +9,7 @@ import plotly.express as px
 import argparse
 import pathlib
 from datetime import datetime
+import datetime as dt
 
 path = pathlib.Path().absolute()
 path = str(path).replace("src","")
@@ -61,7 +62,11 @@ contrats = contrats.query("type_de_vente == 'vrac'")
 
 contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
 contrats['semaine'] = contrats['date de validation'].dt.isocalendar().week
+contrats['annee'] = contrats['date de validation'].dt.isocalendar().year
+contrats['A-WS'] = contrats['annee'].apply(str)+'-W'+contrats['semaine'].apply(str)+ '-1'
+contrats['firstdayoftheweek'] = contrats['A-WS'].map(lambda x: dt.datetime.strptime(x, "%G-W%V-%u"))
 #contrats['semaine'] = pd.to_numeric(contrats['semaine'], downcast='integer')
+
 
 #contrats['semaine'].unique()
 lastcampagnes = contrats['campagne'].unique()
@@ -97,7 +102,7 @@ if 'negociant' in famille:
 
 contrats['filtre_produit'] = contrats['appellation'] + "-" + contrats['lieu'] + "-" +contrats['certification']+ "-" +contrats['genre']+ "-" +contrats['mention']
 
-contrats_spe_spe = contrats.groupby(["identifiant_vendeur","filtre_produit", "couleur","campagne","semaine"]).sum(["volume propose"])[["volume propose"]]
+contrats_spe_spe = contrats.groupby(["identifiant_vendeur","filtre_produit", "couleur","campagne","semaine","firstdayoftheweek"]).sum(["volume propose"])[["volume propose"]]
 contrats_spe_spe.reset_index(level=['semaine'], inplace=True)
 contrats_spe_spe['semaine-sort'] = (contrats_spe_spe['semaine']-31)%53
 contrats_spe_spe = contrats_spe_spe.sort_values(by=["identifiant_vendeur","filtre_produit", "couleur","campagne",'semaine-sort'])
@@ -109,7 +114,7 @@ contrats_spe_spe.set_index(['identifiant_vendeur','filtre_produit','couleur'], i
 
 # PAR APPELLATIONS
 
-contrats_spe_all = contrats.groupby(["identifiant_vendeur","filtre_produit", "campagne","semaine"]).sum(["volume propose"])[["volume propose"]]
+contrats_spe_all = contrats.groupby(["identifiant_vendeur","filtre_produit", "campagne","semaine","firstdayoftheweek"]).sum(["volume propose"])[["volume propose"]]
 contrats_spe_all.reset_index(level=['semaine'], inplace=True)
 contrats_spe_all['semaine-sort'] = (contrats_spe_all['semaine']-31)%53
 contrats_spe_all = contrats_spe_all.sort_values(by=["identifiant_vendeur","filtre_produit","campagne",'semaine-sort'])
@@ -122,7 +127,7 @@ contrats_spe_all.set_index(['identifiant_vendeur','filtre_produit','couleur'], i
 
 #AUCUN FILTRE TOUTES LES APPELLATIONS ET TOUTES LES COULEURS
 
-contrats_all_all = contrats.groupby(["identifiant_vendeur","campagne","semaine"]).sum(["volume propose"])[["volume propose"]]
+contrats_all_all = contrats.groupby(["identifiant_vendeur","campagne","semaine","firstdayoftheweek"]).sum(["volume propose"])[["volume propose"]]
 contrats_all_all.reset_index(level=['semaine'], inplace=True)
 contrats_all_all['semaine-sort'] = (contrats_all_all['semaine']-31)%53
 contrats_all_all = contrats_all_all.sort_values(by=["identifiant_vendeur","campagne",'semaine-sort'])
@@ -147,7 +152,10 @@ df_final['campagne-semaine'] = df_final['campagne']+"-"+df_final['semaine'].appl
 
 
 def create_graphe(df,identifiant,appellation,couleur):
-    fig = px.line(df, x="semaine", y="volume", color='campagne', custom_data=['semaine-sort','campagne'], width=1250, height=650,color_discrete_sequence=["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#ea4f57"],
+
+    df['firstdayoftheweek'] = df['firstdayoftheweek'].dt.strftime('%d/%m/%Y')
+
+    fig = px.line(df, x="semaine", y="volume", color='campagne', custom_data=['semaine-sort','campagne','firstdayoftheweek'], width=1250, height=650,color_discrete_sequence=["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#ea4f57"],
                  labels={
                      "semaine": "Numéro de la semaine - Début de campagne : Semaine 31",
                      "volume": "Volume contractualisé hebdomadaire (en hl)"})
@@ -172,7 +180,7 @@ def create_graphe(df,identifiant,appellation,couleur):
     fig.update_traces(
         hovertemplate="<br>".join([
             "Campagne %{customdata[1]}",
-            "Semaine n°%{customdata[0]}",
+            "Semaine n°%{customdata[0]} (%{customdata[2]})",
             "%{y} hl",
         ])
     )
@@ -194,15 +202,16 @@ for bloc in df_final.index.unique():
     df = df_final.loc[[bloc]]
     df = df.reset_index()
     for campagne in lastcampagnes:
+        annee = str(campagne[5:])
         if campagne+'-31' not in df['campagne-semaine'].unique():
-            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, 31,0,0,campagne+'-31']
+            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne,dt.datetime.strptime(annee+'-W31-1', "%G-W%V-%u"),31,0,0,campagne+'-31']
 
         if campagne+'-30' not in df['campagne-semaine'].unique() and campagne != lastcampagnes[-1:][0]:
-            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, 30,0,53,campagne+'-30']
+            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne,dt.datetime.strptime(annee+'-W30-1', "%G-W%V-%u"),30,0,53,campagne+'-30']
 
         currentweek = datetime.today().isocalendar()[1]
         if campagne+'-'+str(currentweek) not in df['campagne-semaine'].unique() and campagne == lastcampagnes[-1:][0]:
-            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, currentweek,0,(currentweek-31)%53,campagne+'-'+str(currentweek)]
+            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne,dt.datetime.strptime(annee+'-W'+str(currentweek)+'-1', "%G-W%V-%u"),currentweek,0,(currentweek-31)%53,campagne+'-'+str(currentweek)]
 
     df = df.sort_values(by=['campagne'])
     df = df.reset_index(drop=True)
