@@ -169,6 +169,7 @@ df_final = pd.concat([df_final_spe_spe, drm_merge_spe_all])
 df_final = pd.concat([df_final, drm_merge_all_all])
 df_final = df_final.sort_values(by=['filtre_produit','couleurs'])
 df_final = df_final.fillna(0)
+df_final = df_final.round({'Récoltes (hl)': 0, 'Sorties de chais (hl)': 0, "Stock physique en début de camp production (hl)":0})
 #df_final
 
 
@@ -195,10 +196,12 @@ def create_graphique(final,appellation,couleur):
                       legend_title=None,
                       paper_bgcolor="#F7F7F7",
                       plot_bgcolor = "#F7F7F7",
-                      yaxis=dict(tickformat=".0f"),
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False
                      )
+
+    fig.update_yaxes(tickformat=",")
+    fig.update_layout(separators="* .*")
 
     fig.for_each_xaxis(lambda x: x.update(showgrid=False))
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))

@@ -139,6 +139,7 @@ for bloc in df_final.index.unique():
 
 df_final = df_final.sort_values(by=['filtre_produit','couleur',"campagne",'ordre-mois'])
 df_final.rename(columns = {'volume mouvement':'volume',"mois-campagne":'periode'}, inplace = True)
+df_final = df_final.round({'volume': 0})
 
 
 # In[ ]:
@@ -168,7 +169,8 @@ def create_graphe(final,appellation,couleur):
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True,showline=True, linewidth=1, linecolor='Lightgrey',showticklabels=False)
     fig.update_yaxes(fixedrange=True,rangemode="tozero")
-    
+    fig.update_yaxes(tickformat=",")
+    fig.update_layout(separators="* .*")
     fig.update_traces(
         hovertemplate="<br>".join([
             "%{customdata[0]} %{customdata[1]}",

@@ -148,6 +148,9 @@ df_final = df_final.sort_values(by=['identifiant_vendeur', 'filtre_produit','cou
 df_final['campagne-semaine'] = df_final['campagne']+"-"+df_final['semaine'].apply(str)
 
 
+df_final = df_final.round({'volume propose': 0})
+
+
 # In[ ]:
 
 
@@ -173,6 +176,9 @@ def create_graphe(df,identifiant,appellation,couleur):
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True,showline=True, linewidth=1, linecolor='Lightgrey')
     fig.update_yaxes(fixedrange=True,rangemode="tozero")
+
+    fig.update_yaxes(tickformat=",")
+    fig.update_layout(separators="*  .")
 
     fig.add_vline(x=0)
     fig.add_hline(y=0)

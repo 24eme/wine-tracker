@@ -133,6 +133,7 @@ df_final = pd.concat([df_final_spe_spe, df_final_spe_all])
 df_final = pd.concat([df_final, df_final_all_all])
 df_final = df_final.sort_values(by=['filtre_produit','couleur','campagne'])
 df_final = df_final.fillna(0)
+df_final = df_final.round({'Vrac': 0, 'Conditionné': 0, "Autres":0})
 #df_final
 
 
@@ -161,6 +162,10 @@ def create_graphe(final,appellation,couleur):
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False
                      )
+
+    fig.update_yaxes(tickformat=",")
+    fig.update_layout(separators="* .*")
+
     fig.for_each_xaxis(lambda x: x.update(showgrid=False))
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True)

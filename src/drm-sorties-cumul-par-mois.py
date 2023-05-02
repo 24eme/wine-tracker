@@ -136,7 +136,7 @@ df_final.sort_values(by=["identifiant",'filtre_produit','couleur',"ordre_mois","
 
 df_final["annee"] = df_final["periode"].str.extract('(\d{4}).*', expand = False)
 
-#df_final
+df_final = df_final.round({'volume': 0})
 
 
 # In[ ]:
@@ -163,7 +163,8 @@ def create_graphe(final,identifiant,appellation,couleur):
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True)
     fig.update_yaxes(fixedrange=True)
-
+    fig.update_yaxes(tickformat=",")
+    fig.update_layout(separators="* .*")
     fig.update_traces(
         hovertemplate="<br>".join([
             "%{x} %{customdata[0]}",

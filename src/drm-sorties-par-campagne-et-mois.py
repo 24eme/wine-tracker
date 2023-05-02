@@ -144,10 +144,7 @@ df_final['mois-campagne'] = df_final['mois']+"-"+df_final['campagne']
 df_final.rename(columns = {'volume mouvement':'volume',"mois-campagne":'periode'}, inplace = True)
 
 df_final = df_final.fillna(0)
-
-
-
-#df_final
+df_final = df_final.round({'volume': 0})
 
 
 # In[ ]:
@@ -177,6 +174,8 @@ def create_graphe(final,identifiant,appellation,couleur):
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True, showline=True, linewidth=1, linecolor='Lightgrey', showticklabels=False)
     fig.update_yaxes(fixedrange=True, rangemode="tozero")
+    fig.update_yaxes(tickformat=",")
+    fig.update_layout(separators="* .*")
     
     fig.update_traces(
         hovertemplate="<br>".join([

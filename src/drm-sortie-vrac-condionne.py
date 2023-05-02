@@ -158,7 +158,7 @@ df_final = pd.concat([df_final_spe_spe, df_final_spe_all])
 df_final = pd.concat([df_final, df_final_all_all])
 df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleur','campagne'])
 df_final = df_final.fillna(0)
-#df_final
+df_final = df_final.round({'Vrac': 0, 'Conditionné': 0, "Autres":0})
 
 
 # In[ ]:
@@ -191,6 +191,8 @@ def create_graphe(final,identifiant,appellation,couleur):
     fig.update_xaxes(fixedrange=True)
     fig.update_yaxes(fixedrange=True)
     #fig.show()
+    fig.update_yaxes(tickformat=",")
+    fig.update_layout(separators="* .*")
 
     dossier = dossier_graphes+"/"+identifiant+"/drm/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
