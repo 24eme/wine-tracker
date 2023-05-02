@@ -141,12 +141,12 @@ $list_produits_contrats = $data['produits']['contrats'];
             <div class="container">
                 <div class="content">
                     <div>
-                        <div class="row">
+                        <div class="row  text-end">
                             <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
                                 <?php if ($chiffres["cumul_sortie_campagne_en_cours"]): ?>
                                     <div class="col">
                                         <div class="chiffre">
-                                            <h3 class="mb-0 end"><?php echo number_format($chiffres["cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_mois_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_mois_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></h3>
+                                            <h3 class="mb-0"><?php echo number_format($chiffres["cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_mois_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_mois_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></h3>
                                             <p>Cumul volume de sortie depuis le début de la campagne</p>
                                         </div>
                                     </div>
@@ -335,22 +335,6 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         </div>
                                     </div>
                                 <?php endif;?>
-                                <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html")): ?>
-                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-8 pt-4 text-center fw-bold entete"><span>Contractualisations à date</span></h3>
-                                        <div class="col-md-12 graph-container">
-                                            <div class="col-xs-10 mt-5">
-                                                <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html");?>
-                                            </div>
-                                            <p class="text-muted text-end fs-6">
-                                                En hl. Sources: Contrats Inter-Rhône
-                                            </p>
-                                            <p class="explications">
-                                                Volumes contractualisés de la campagne en cours comparées à la campagne précédente et à la moyenne des 5 dernières campagnes. Les volumes sont exprimés en hectolitres.
-                                            </p>
-                                        </div>
-                                    </div>
-                                <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html")): ?>
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Top 10</span></h3>
@@ -363,6 +347,22 @@ $list_produits_contrats = $data['produits']['contrats'];
                                             </p>
                                             <p class="explications">
                                                 Top 10 des volumes contractualisés par tiers sur 5 ans. Les volumes sont exprimés en hectolitres. Les données proviennent des contrats visés par Inter-Rhône.
+                                            </p>
+                                        </div>
+                                    </div>
+                                <?php endif;?>
+                                <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html")): ?>
+                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
+                                        <h3 class="col-xs-8 pt-4 text-center fw-bold entete"><span>Contractualisations à date</span></h3>
+                                        <div class="col-md-12 graph-container">
+                                            <div class="col-xs-10 mt-5">
+                                                <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html");?>
+                                            </div>
+                                            <p class="text-muted text-end fs-6">
+                                                En hl. Sources: Contrats Inter-Rhône
+                                            </p>
+                                            <p class="explications">
+                                                Volumes contractualisés de la campagne en cours comparées à la campagne précédente et à la moyenne des 5 dernières campagnes. Les volumes sont exprimés en hectolitres.
                                             </p>
                                         </div>
                                     </div>
