@@ -167,7 +167,7 @@ df_final = df_final.fillna(0)
 def create_graphe(final,identifiant,appellation,couleur):
     fig = px.bar(final, x="campagne", y="volume", color="variable",color_discrete_sequence=["#ea4f57","#f2969c","#f7bb58"],
                  text_auto=True,
-                 title="Ma cave")
+                 title="Ma cave",height=650)
     fig.update_layout(title={
                         'text': "<b>MA CAVE</b>",
                         'y':0.9,
@@ -217,3 +217,4 @@ for bloc in df_final.index.unique():
     df = pd.melt(df, id_vars=['identifiant','filtre_produit','couleur','campagne'], value_vars=['Vrac','Conditionné','Autres'])
     df.rename(columns = {'value':'volume'}, inplace = True)
     create_graphe(df,bloc[0],bloc[1],bloc[2])
+

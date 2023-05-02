@@ -137,7 +137,6 @@ df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleur'])
 df_final['campagne-ordre-mois'] = df_final['campagne']+"-"+df_final['ordre-mois']
 df_final['mois-campagne'] = df_final['mois']+"-"+df_final['campagne']
 
-# In[ ]:
 
 # In[ ]:
 
@@ -156,7 +155,7 @@ df_final = df_final.fillna(0)
 
 def create_graphe(final,identifiant,appellation,couleur):
     # CREATION DU GRAPHE
-    fig = px.line(final, x='periode', y="volume", custom_data=['mois', 'campagne'], markers=True, color_discrete_sequence=["#ea4f57"], title="Ma cave")
+    fig = px.line(final, x='periode', y="volume", custom_data=['mois', 'campagne'], markers=True, color_discrete_sequence=["#ea4f57"], title="Ma cave",height=650)
     fig.update_layout(title={
                         'text': "<b>MA CAVE</b>",
                         'y':0.9,
