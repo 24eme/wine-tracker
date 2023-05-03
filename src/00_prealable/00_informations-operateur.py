@@ -50,47 +50,26 @@ famille = etablissement['famille'].unique()[0]
 if not famille:
     raise Exception("OPERATEUR N'EST PAS DANS LE CSV DES ETABLISSEMENT")
 
+# In[ ]:
+
 drm = pd.read_csv(csv, sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
-contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
-
-
-contrats_csv = contrats.copy()
-contrats_csv['couleur'] = contrats_csv['couleur'].str.upper()
-
-contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','volume propose (en hl)':'volume propose'}, inplace = True)
-
-contrats = contrats_csv.query("identifiant_vendeur == @id_operateur").reset_index()
-
-negociant = False
-if 'negociant' in famille:
-    negociant = True
-    contrats_csv.rename(columns = {'identifiant acheteur':'identifiant_acheteur'}, inplace = True)
-    contrats = contrats_csv.query("identifiant_acheteur == @id_operateur").reset_index()
-    contrats.rename(columns = { 'identifiant_acheteur' : 'identifiant_a', #temp
-                                'identifiant_vendeur' : 'identifiant_v',
-                                'nom_acheteur' : 'nom_a',
-                                ' nom vendeur' : 'nom_v'
-                                }, inplace = True)
-
-    contrats.rename(columns = { 'identifiant_a' : 'identifiant_vendeur',
-                                'identifiant_v' : 'identifiant acheteur',
-                                'nom_a' : 'nom_vendeur',
-                                'nom_v' : 'nom_acheteur'}, inplace = True)
-    
-
 drm['libelle produit'] = drm['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
+
+contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
 contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
 
-csv= drm.query("identifiant == @id_operateur").reset_index()
 
+# In[ ]:
+
+
+csv= drm.query("identifiant == @id_operateur").reset_index()
 nom = csv.nom.unique()[0]
-date = datetime.today().strftime('%d/%m/%Y')
 
 csv['filtre_produits'] = csv['appellations'] + "-" + csv['lieux'] + "-" +csv['certifications']+ "-" +csv['genres']+ "-" +csv['mentions']+ "-" +csv['couleurs'].str.upper()
 
 ### CREATION DU TABLEAU ASSOCIATIF APPELLATION-LIBELLE ###
 
-produits = csv[["filtre_produits","libelle produit"]]
+produits = csv[["filtre_produits","libelle produit"]].unique()
 produits = produits.drop_duplicates()
 produits = produits.to_dict('records')
 
@@ -131,6 +110,36 @@ update_produits = {"TOUT-TOUT": "Toutes les appellations"}
 update_produits.update(produits)
 
 produits = update_produits
+
+
+# In[ ]:
+
+
+contrats_csv = contrats.copy()
+contrats_csv['couleur'] = contrats_csv['couleur'].str.upper()
+
+contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','volume propose (en hl)':'volume propose'}, inplace = True)
+
+contrats = contrats_csv.query("identifiant_vendeur == @id_operateur").reset_index()
+
+negociant = False
+if 'negociant' in famille:
+    negociant = True
+    contrats_csv.rename(columns = {'identifiant acheteur':'identifiant_acheteur'}, inplace = True)
+    contrats = contrats_csv.query("identifiant_acheteur == @id_operateur").reset_index()
+    contrats.rename(columns = { 'identifiant_acheteur' : 'identifiant_a', #temp
+                                'identifiant_vendeur' : 'identifiant_v',
+                                'nom_acheteur' : 'nom_a',
+                                ' nom vendeur' : 'nom_v'
+                                }, inplace = True)
+
+    contrats.rename(columns = { 'identifiant_a' : 'identifiant_vendeur',
+                                'identifiant_v' : 'identifiant acheteur',
+                                'nom_a' : 'nom_vendeur',
+                                'nom_v' : 'nom_acheteur'}, inplace = True)
+
+
+# In[ ]:
 
 
 #produits presents dans les contrats :
@@ -186,6 +195,11 @@ produits_contrat = update_produits
 
 ### FIN CREATION DU TABLEAU ###
 
+
+# In[ ]:
+
+
+date = datetime.today().strftime('%d/%m/%Y')
 dictionary ={
     "name" : nom,
     "date" : date,
