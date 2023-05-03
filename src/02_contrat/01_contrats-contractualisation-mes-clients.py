@@ -10,7 +10,7 @@ import argparse
 import pathlib
 
 path = pathlib.Path().absolute()
-path = str(path).replace("src","")
+path = str(path).replace("/src","").replace("/02_contrat","")
 dossier_graphes=path+"/graphes/"
 csv = path+"/data/contrats/export_bi_contrats.csv"  #il manque un ; à la fin du header.
 csv_etablissements = path+"/data/contrats/export_bi_etablissements.csv" #il manque un ; à la fin du header.
@@ -145,7 +145,7 @@ def create_graphe(df, identifiant, appellation, couleur):
 
     fig = px.pie(df, values='volume', names='Client',custom_data=['Client','volume'], color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
     fig.update_traces(textposition='inside', textinfo='label+text', text=df['volume'].map("{:} hl".format))
-    fig.update_layout(legend_itemclick=False, legend_itemdoubleclick=False)
+    fig.update_layout(legend_itemclick=False, legend_itemdoubleclick=False,legend_font_size=15)
     fig.update_traces(
     hovertemplate="<br>".join([
         "%{customdata[0][0]}",
@@ -164,7 +164,7 @@ def create_graphe(df, identifiant, appellation, couleur):
 
     fig = px.pie(df, values='prix', names='Client',custom_data=['Client', 'prix'], color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
     fig.update_traces(textposition='inside', textinfo='label+text', text=df['prix'].map("{:} €".format))
-    fig.update_layout(legend_itemclick=False,legend_itemdoubleclick=False)
+    fig.update_layout(legend_itemclick=False,legend_itemdoubleclick=False,legend_font_size=15)
 
     fig.update_traces(
     hovertemplate="<br>".join([

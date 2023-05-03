@@ -14,7 +14,7 @@ import pathlib
 
 
 path = pathlib.Path().absolute()
-path = str(path).replace("src","")
+path = str(path).replace("/src","").replace("/01_DRM","")
 dossier_graphes=path+"/graphes/"
 csv = path+"/data/drm/export_bi_mouvements.csv"  #il manque un ; à la fin du header.
 source = "DRM Inter-Rhône"
@@ -168,7 +168,8 @@ def create_graphe(final,identifiant,appellation,couleur):
                       plot_bgcolor = "white",
                       yaxis=dict(tickformat=".0f"),
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
-                      legend_itemdoubleclick=False
+                      legend_itemdoubleclick=False,
+                      legend_font_size=15
                      )
     fig.for_each_xaxis(lambda x: x.update(showgrid=False))
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))

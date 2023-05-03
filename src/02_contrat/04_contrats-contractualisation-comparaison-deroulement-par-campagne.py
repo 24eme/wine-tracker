@@ -12,7 +12,7 @@ from datetime import datetime
 import datetime as dt
 
 path = pathlib.Path().absolute()
-path = str(path).replace("src","")
+path = str(path).replace("/src","").replace("/02_contrat","")
 dossier_graphes=path+"/graphes/"
 csv = path+"/data/contrats/export_bi_contrats.csv"  #il manque un ; à la fin du header.
 csv_etablissements = path+"/data/contrats/export_bi_etablissements.csv" #il manque un ; à la fin du header.
@@ -170,7 +170,8 @@ def create_graphe(df,identifiant,appellation,couleur):
                           yaxis=dict(tickformat=".0f"),
                           legend=dict(orientation="h",xanchor = "center",x = 0.5, y= -0.3),
                           legend_itemdoubleclick=False,
-                          legend_title=None
+                          legend_title=None,
+                          legend_font_size=15
                          )
     fig.for_each_xaxis(lambda x: x.update(showgrid=False))
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
