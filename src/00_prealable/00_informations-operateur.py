@@ -60,9 +60,12 @@ acheteurs = etablissements[etablissements['famille'] != 'producteur']
 
 drm = pd.read_csv(csv, sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
 drm['libelle produit'] = drm['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
+drm = drm.loc[drm['appellations'] != "CDP"]
 
 contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
 contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
+
+contrats = contrats.loc[contrats['appellation'] != "CDP"]
 
 
 # In[ ]:

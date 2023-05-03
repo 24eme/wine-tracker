@@ -59,6 +59,7 @@ contrats = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False, ind
 contrats = contrats.query("statut == 'SOLDE' or statut == 'NONSOLDE'")
 contrats.rename(columns = {'type de vente':'type_de_vente'}, inplace = True)
 contrats = contrats.query("type_de_vente == 'vrac'")
+contrats = contrats.query("appellation != 'CDP'")
 
 contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
 contrats['semaine'] = contrats['date de validation'].dt.isocalendar().week

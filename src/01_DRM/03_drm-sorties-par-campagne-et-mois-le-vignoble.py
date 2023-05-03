@@ -37,6 +37,7 @@ lastcampagnes = mouvements['campagne'].unique()
 lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-3:]
 mouvements = mouvements.query('campagne in @lastcampagnes')
+mouvements = mouvements.query("appellation != 'CDP'")
 
 mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = True)
 

@@ -49,6 +49,7 @@ etablissements = etablissements.query("famille in @familleproducteurs")
 identifiantsproducteurs = etablissements['identifiant'].unique()
 
 drm = drm.query('identifiant in @identifiantsproducteurs')
+drm = drm.loc[drm['appellations'] != "CDP"]
 
 
 # In[ ]:
@@ -60,6 +61,8 @@ mouvements = pd.read_csv(csv_mouvements, sep=";",encoding="iso8859_15",index_col
 mouvements.rename(columns = {'identifiant declarant':'identifiant','type de mouvement':'type_de_mouvement','certification':'certifications','genre':'genres','appellation':'appellations','mention':'mentions','lieu':'lieux','couleur':'couleurs'}, inplace = True)
 mouvements = mouvements.query('identifiant in @identifiantsproducteurs')
 mouvements = mouvements.query('campagne in @lastcampagnes')
+mouvements = mouvements.query("appellations != 'CDP'")
+
 #mouvements
 
 
