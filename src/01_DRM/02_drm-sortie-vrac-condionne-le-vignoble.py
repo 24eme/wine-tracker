@@ -26,6 +26,7 @@ lastcampagnes = mouvements['campagne'].unique()
 lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-10:]
 mouvements = mouvements.query('campagne in @lastcampagnes')
+mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 
 mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = True)
 
@@ -47,13 +48,13 @@ mouvements['filtre_produit'] = mouvements['appellation'] + "-" + mouvements['lie
 ### PAR APPELLATION ET COULEUR
 
 #les VRACS # 'sorties/vrac', 'sorties/vrac_contrat','sorties/vrac_export'
-typedemouvementsvracs = ['sorties/vrac','sorties/vrac_contrat','sorties/vrac_export']
+typedemouvementsvracs = ['sorties/vrac']
 vrac = mouvements.query("type_de_mouvement in @typedemouvementsvracs").reset_index()
 vrac = vrac.groupby(["filtre_produit","couleur","campagne"]).sum(["volume mouvement"])[["volume mouvement"]]
 vrac.rename(columns = {'volume mouvement':'Vrac'}, inplace = True)
 
 #les CONDITIONNE # 'sorties/crd', 'sorties/factures', 'sorties/export', 'sorties/crd_acquittes', 'sorties/acq_crd'
-typedemouvementsconditionne = ['sorties/crd', 'sorties/factures', 'sorties/export', 'sorties/crd_acquittes', 'sorties/acq_crd']
+typedemouvementsconditionne = ['sorties/crd', 'sorties/factures', 'sorties/export', 'sorties/acq_crd']
 conditionne = mouvements.query("type_de_mouvement in @typedemouvementsconditionne").reset_index()
 conditionne = conditionne.groupby(["filtre_produit","couleur","campagne"]).sum(["volume mouvement"])[["volume mouvement"]]
 conditionne.rename(columns = {'volume mouvement':'Conditionné'}, inplace = True)

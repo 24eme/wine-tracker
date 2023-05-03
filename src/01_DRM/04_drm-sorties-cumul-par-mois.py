@@ -54,6 +54,7 @@ lastcampagnes = mouvements['campagne'].unique()
 lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-5:]
 mouvements = mouvements.query('campagne in @lastcampagnes')
+mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 
 mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = True)
 
@@ -61,7 +62,7 @@ if(id_operateur):
     mouvements = mouvements.query("identifiant == @id_operateur").reset_index()
 
 mouvements.rename(columns = {'type de mouvement':'type_de_mouvement'}, inplace = True)
-typedemouvements = ['sorties/vrac','sorties/vrac_contrat','sorties/vrac_export','sorties/crd', 'sorties/factures', 'sorties/export', 'sorties/crd_acquittes', 'sorties/acq_crd','sorties/consommation']
+typedemouvements = ['sorties/vrac','sorties/crd', 'sorties/factures', 'sorties/export','sorties/acq_crd','sorties/consommation']
 mouvements = mouvements.query("type_de_mouvement in @typedemouvements").reset_index()
 
 mouvements['sorties'] = mouvements["type_de_mouvement"].str.lower().str.startswith("sorties/")

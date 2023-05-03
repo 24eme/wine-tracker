@@ -60,7 +60,9 @@ if(id_operateur):
     mouvements = mouvements.query("identifiant == @id_operateur").reset_index()
 
 mouvements.rename(columns = {'type de mouvement':'type_de_mouvement'}, inplace = True)
-typedemouvements = ['sorties/vrac','sorties/vrac_contrat','sorties/vrac_export','sorties/crd', 'sorties/factures', 'sorties/export', 'sorties/crd_acquittes', 'sorties/acq_crd','sorties/consommation']
+mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
+
+typedemouvements = ['sorties/vrac','sorties/crd', 'sorties/factures', 'sorties/export','sorties/acq_crd','sorties/consommation']
 mouvements = mouvements.query("type_de_mouvement in @typedemouvements").reset_index()
 
 
