@@ -27,7 +27,7 @@ else
     tail -n +2 data/contrats/export_bi_etablissements.csv | cut -d ';' -f7
 fi | while read ID; do
     python3 src/02_contrat/01_contrats-contractualisation-mes-clients.py "$ID"
-    python3 src/02_contrat/01_contrats-contractualisation-mes-clients-tableau-a-date.py "$ID"
-    python3 src/02_contrat/02_contrats-contractualisation-top10-5-dernieres-campagnes.py "$ID"
-    python3 src/02_contrat/03_contrats-contractualisation-comparaison-deroulement-par-campagne.py "$ID"
+    python3 src/02_contrat/02_contrats-contractualisation-mes-clients-tableau-a-date.py "$ID"
+    python3 src/02_contrat/03_contrats-contractualisation-top10-5-dernieres-campagnes.py "$ID"
+    python3 src/02_contrat/04_contrats-contractualisation-comparaison-deroulement-par-campagne.py "$ID"
 done
