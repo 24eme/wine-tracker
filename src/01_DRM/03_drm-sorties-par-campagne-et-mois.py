@@ -48,6 +48,8 @@ except:
 
 
 mouvements = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False, index_col=False)
+mouvements = mouvements[mouvements['genres'] != 'VCI']
+mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 
 lastcampagnes = mouvements['campagne'].unique()
 lastcampagnes.sort()
@@ -60,7 +62,6 @@ if(id_operateur):
     mouvements = mouvements.query("identifiant == @id_operateur").reset_index()
 
 mouvements.rename(columns = {'type de mouvement':'type_de_mouvement'}, inplace = True)
-mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 
 typedemouvements = ['sorties/vrac','sorties/crd', 'sorties/factures', 'sorties/export','sorties/acq_crd','sorties/consommation']
 mouvements = mouvements.query("type_de_mouvement in @typedemouvements").reset_index()

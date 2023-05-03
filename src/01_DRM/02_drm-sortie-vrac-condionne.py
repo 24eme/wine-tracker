@@ -41,12 +41,13 @@ except:
 
 #préparations des données de l'opérateur sans filtres
 mouvements = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False, index_col=False)
+mouvements = mouvements[mouvements['genres'] != 'VCI']
+mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 
 lastcampagnes = mouvements['campagne'].unique()
 lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-10:]
 mouvements = mouvements.query('campagne in @lastcampagnes')
-mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 
 mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = True)
 

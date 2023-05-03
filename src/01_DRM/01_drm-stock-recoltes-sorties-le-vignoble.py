@@ -35,6 +35,7 @@ lastcampagnes = drm['campagne'].unique()
 lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-10:]
 drm = drm.query('campagne in @lastcampagnes')
+drm = drm[drm['genres'] != 'VCI']
 
 
 # In[ ]:
@@ -61,7 +62,7 @@ mouvements.rename(columns = {'identifiant declarant':'identifiant','type de mouv
 mouvements = mouvements.query('identifiant in @identifiantsproducteurs')
 mouvements = mouvements.query('campagne in @lastcampagnes')
 mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
-
+mouvements = mouvements[mouvements['genres'] != 'VCI']
 #mouvements
 
 

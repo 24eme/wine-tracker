@@ -60,6 +60,8 @@ if not id_operateur:
 
 
 mouvements = pd.read_csv(csv_mouvements, sep=";",encoding="iso8859_15", low_memory=False, index_col=False)
+mouvements = mouvements[mouvements['genres'] != 'VCI']
+mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 
 lastcampagnes = mouvements['campagne'].unique()
 lastcampagnes.sort()

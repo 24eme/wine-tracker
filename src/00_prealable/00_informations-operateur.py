@@ -59,6 +59,8 @@ drm = pd.read_csv(csv, sep=";",encoding="iso-8859-1", low_memory=False, index_co
 if filter_operateur:
     drm = drm.query("identifiant == @filter_operateur")
 drm['libelle produit'] = drm['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
+drm = drm[drm['genres'] != 'VCI']
+drm = drm[drm['libelle type'] == 'Suspendu']
 
 contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
 if filter_operateur:

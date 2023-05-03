@@ -42,7 +42,7 @@ except:
 
 #préparations des données de l'opérateur sans filtres
 drm = pd.read_csv(csv, sep=";",encoding="iso8859_15",index_col=False)
-
+drm = drm[drm['genres'] != 'VCI']
 lastcampagnes = drm['campagne'].unique()
 lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-10:]
@@ -68,6 +68,9 @@ if(id_operateur):
 
 mouvements = mouvements.query('campagne in @lastcampagnes')
 mouvements = mouvements[mouvements['periode'] > '2013-12']
+mouvements = mouvements[mouvements['genres'] != 'VCI']
+mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
+
 #mouvements
 
 
@@ -90,7 +93,6 @@ drm_recolte = drm_recolte.groupby(["identifiant", "campagne","filtre_produit", "
 #SOMME SORTIES
 typedemouvementssorties = ['sorties/vrac','sorties/crd', 'sorties/factures', 'sorties/export','sorties/consommation']
 drm_sortie = mouvements.query("type_de_mouvement in @typedemouvementssorties").reset_index()
-drm_sortie = drm_sortie[drm_sortie['libelle type'] == 'Suspendu']
 drm_sortie = drm_sortie.groupby(["identifiant", "campagne","filtre_produit", "couleurs"]).sum(["volume mouvement"])[["volume mouvement"]]
 
 
