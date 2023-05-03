@@ -15,7 +15,7 @@ import collections
 
 
 path = pathlib.Path().absolute()
-path = str(path).replace("/src","").replace("/00_prealable","")
+path = str(path).replace("/src","").replace('/00_prealable','')
 dossier_graphes=path+"/graphes/"
 csv = path+"/data/drm/export_bi_drm_stock.csv"  #il manque un ; à la fin du header.
 csv_contrats = path+"/data/contrats/export_bi_contrats.csv"  #il manque un ; à la fin du header.
@@ -44,13 +44,19 @@ if not id_operateur:
 
 
 etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15", low_memory=False, index_col=False)
-etablissement = etablissements.query("identifiant == @id_operateur")
-famille = etablissement['famille'].unique()[0]
+etablissements['familles'] = etablissements['famille'].str.split(' ')
+etablissements['famille_ok'] = etablissements['familles'].apply(lambda f: f[0] != 'courtier' and ((f[0] == 'producteur') and f[1] == 'cave_particuliere') or (f[0] in ['negociant', 'cave cooperative']))
+etablissements = etablissements[etablissements['famille_ok']]
+etablissements['famille'] = etablissements['familles'].apply(lambda f: f[0])
 
-if not famille:
-    raise Exception("OPERATEUR N'EST PAS DANS LE CSV DES ETABLISSEMENT")
+etablissements = etablissements[['identifiant','famille', 'raison sociale']]
+
+vendeurs = etablissements[etablissements['famille'] == 'producteur']
+acheteurs = etablissements[etablissements['famille'] != 'producteur']
+
 
 # In[ ]:
+
 
 drm = pd.read_csv(csv, sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
 drm['libelle produit'] = drm['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
@@ -62,155 +68,92 @@ contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','
 # In[ ]:
 
 
-csv= drm.query("identifiant == @id_operateur").reset_index()
-nom = csv.nom.unique()[0]
+drm = drm[['identifiant', 'appellations', 'lieux', 'certifications', 'genres', 'mentions', 'couleurs', 'libelle produit']].drop_duplicates()
 
-csv['filtre_produits'] = csv['appellations'] + "-" + csv['lieux'] + "-" +csv['certifications']+ "-" +csv['genres']+ "-" +csv['mentions']+ "-" +csv['couleurs'].str.upper()
+drm['filtre_produits'] = drm[['appellations', 'lieux', 'certifications', 'genres', 'mentions', 'couleurs']].apply(lambda rows: '-'.join(rows.values.astype('str')).upper(), axis=1)
+drm['filtre_appellations'] = drm[['appellations', 'lieux', 'certifications', 'genres', 'mentions']].apply(lambda rows: '-'.join(rows.values.astype('str'))+'-0TOUT', axis=1)
+drm['libelle_appellations'] = drm['libelle produit'].str.split().apply(lambda libelles: ' '.join(libelles[:-1]))
 
-### CREATION DU TABLEAU ASSOCIATIF APPELLATION-LIBELLE ###
+drm_tout = pd.DataFrame()
+drm_tout['identifiant'] = drm['identifiant']
+drm_tout['filtre_produits'] = '0TOUT-TOUT'
+drm_tout['libelle produit'] = 'Toutes les appellations'
 
-produits = csv[["filtre_produits","libelle produit"]].unique()
-produits = produits.drop_duplicates()
-produits = produits.to_dict('records')
-
-d = {}
-for p in produits:
-    if p["filtre_produits"] in d.keys():
-        nb_caractere_ancien = len(d[p["filtre_produits"]])
-        nb_caractere_nouveau = len(p["libelle produit"])
-        if(nb_caractere_nouveau < nb_caractere_ancien):
-            d[p["filtre_produits"]]=p["libelle produit"]
-    else:
-        d[p["filtre_produits"]]=p["libelle produit"]
-
-
-produits = d
-
-appellations = csv['appellations'] + "-" + csv['lieux'] + "-" +csv['certifications']+ "-" +csv['genres']+ "-" +csv['mentions']
-appellations = appellations.unique()
-
-couleurs = csv['couleurs'].str.upper().unique()
-
-for element in appellations :
-    if not element+"-1" in produits.keys():
-        countNbColorForOneAppellation = 0;
-        for couleur in couleurs :
-            if(element+"-"+couleur in produits.keys()):
-                countNbColorForOneAppellation +=1
-                if(countNbColorForOneAppellation >= 2):
-                    produitLibelle = produits[element+"-"+couleur].replace('é','e')
-                    pattern = re.compile(couleur, re.IGNORECASE)
-                    appellation = pattern.sub("",produitLibelle)
-                    produits[element+"-1"] = appellation
-                    break
-
-produits = collections.OrderedDict(sorted(produits.items()))
-
-update_produits = {"TOUT-TOUT": "Toutes les appellations"}
-update_produits.update(produits)
-
-produits = update_produits
+drm_produits = pd.concat([
+    drm[['identifiant', 'filtre_produits', 'libelle produit']],
+    drm[['identifiant', 'filtre_appellations', 'libelle_appellations']].rename(columns = {'libelle_appellations': 'libelle produit', 'filtre_appellations': 'filtre_produits'}),
+    drm_tout
+]).sort_values(['identifiant', 'filtre_produits']).drop_duplicates()
+drm_produits['type'] = 'drm'
 
 
 # In[ ]:
 
 
-contrats_csv = contrats.copy()
-contrats_csv['couleur'] = contrats_csv['couleur'].str.upper()
+contrat_extract = pd.concat([
+    contrats[contrats['identifiant acheteur'].isin(acheteurs['identifiant'])][['identifiant acheteur','certification', 'genre', 'appellation', 'mention','lieu', 'couleur', 'cepage', 'libelle produit']].rename(columns = {'identifiant acheteur' : 'identifiant'}),
+    contrats[contrats['identifiant vendeur'].isin(acheteurs['identifiant'])][['identifiant vendeur','certification', 'genre', 'appellation', 'mention','lieu', 'couleur', 'cepage', 'libelle produit']].rename(columns = {'identifiant vendeur' : 'identifiant'})
+]).drop_duplicates()
 
-contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','volume propose (en hl)':'volume propose'}, inplace = True)
+contrat_extract['couleur'] = contrat_extract['couleur'].str.upper()
+contrat_extract['filtre_produits'] = contrat_extract[['appellation', 'lieu', 'certification', 'genre', 'mention', 'couleur']].apply(lambda rows: '-'.join(rows.values.astype('str')).upper(), axis=1)
+contrat_extract['filtre_appellations'] = contrat_extract[['appellation', 'lieu', 'certification', 'genre', 'mention']].apply(lambda rows: '-'.join(rows.values.astype('str'))+'-0TOUT', axis=1)
+contrat_extract['libelle_appellations'] = contrat_extract['libelle produit'].str.split().apply(lambda libelles: ' '.join(libelles[:-1]))
 
-contrats = contrats_csv.query("identifiant_vendeur == @id_operateur").reset_index()
+contrat_tout = pd.DataFrame()
+contrat_tout['identifiant'] = contrat_extract['identifiant']
+contrat_tout['filtre_produits'] = '0TOUT-TOUT'
+contrat_tout['libelle produit'] = 'Toutes les appellations'
 
-negociant = False
-if 'negociant' in famille:
-    negociant = True
-    contrats_csv.rename(columns = {'identifiant acheteur':'identifiant_acheteur'}, inplace = True)
-    contrats = contrats_csv.query("identifiant_acheteur == @id_operateur").reset_index()
-    contrats.rename(columns = { 'identifiant_acheteur' : 'identifiant_a', #temp
-                                'identifiant_vendeur' : 'identifiant_v',
-                                'nom_acheteur' : 'nom_a',
-                                ' nom vendeur' : 'nom_v'
-                                }, inplace = True)
-
-    contrats.rename(columns = { 'identifiant_a' : 'identifiant_vendeur',
-                                'identifiant_v' : 'identifiant acheteur',
-                                'nom_a' : 'nom_vendeur',
-                                'nom_v' : 'nom_acheteur'}, inplace = True)
+contrat_produits = pd.concat([
+    contrat_extract[['identifiant', 'filtre_produits', 'libelle produit']],
+    contrat_extract[['identifiant', 'filtre_appellations', 'libelle_appellations']].rename(columns = {'libelle_appellations': 'libelle produit', 'filtre_appellations': 'filtre_produits'}),
+    contrat_tout
+]
+).sort_values(['identifiant', 'filtre_produits']).drop_duplicates()
+contrat_produits['type'] = 'contrat'
 
 
 # In[ ]:
 
 
-#produits presents dans les contrats :
-
-contrats.rename(columns = {'identifiant vendeur':'identifiant_vendeur'},inplace = True)
-
-csv= contrats.query("identifiant_vendeur == @id_operateur").reset_index()
-csv['filtre_produits'] = csv['appellation'] + "-" + csv['lieu'] + "-" +csv['certification']+ "-" +csv['genre']+ "-" +csv['mention']+ "-" +csv['couleur'].str.upper()
-
-produits_contrat = csv[["filtre_produits","libelle produit"]]
-produits_contrat = produits_contrat.drop_duplicates()
-produits_contrat = produits_contrat.to_dict('records')
-
-d = {}
-for p in produits_contrat:
-    if p["filtre_produits"] in d.keys():
-        nb_caractere_ancien = len(d[p["filtre_produits"]])
-        nb_caractere_nouveau = len(p["libelle produit"])
-        if(nb_caractere_nouveau < nb_caractere_ancien):
-            d[p["filtre_produits"]]=p["libelle produit"]
-    else:
-        d[p["filtre_produits"]]=p["libelle produit"]
-
-
-produits_contrat = d
-
-appellations = csv['appellation'] + "-" + csv['lieu'] + "-" +csv['certification']+ "-" +csv['genre']+ "-" +csv['mention']
-appellations = appellations.unique()
-
-couleurs = csv['couleur'].str.upper().unique()
-
-
-for element in appellations :
-    if not element+"-1" in produits_contrat.keys():
-        countNbColorForOneAppellation = 0;
-        for couleur in couleurs :
-            if (element+"-"+couleur in produits_contrat.keys()):
-                countNbColorForOneAppellation +=1
-                if(countNbColorForOneAppellation >= 2):
-                    produitLibelle = produits_contrat[element+"-"+couleur].replace('é','e')
-                    pattern = re.compile(couleur, re.IGNORECASE)
-                    appellation = pattern.sub("",produitLibelle)
-                    produits_contrat[element+"-1"] = appellation
-                    break
-
-produits_contrat = collections.OrderedDict(sorted(produits_contrat.items()))
-produits_contrat = json.loads(json.dumps(produits_contrat))
-
-update_produits = {"TOUT-TOUT": "Toutes les appellations"}
-update_produits.update(produits_contrat)
-
-produits_contrat = update_produits
-
-### FIN CREATION DU TABLEAU ###
+produits = pd.concat([drm_produits, contrat_produits]).set_index(['identifiant'])
+produits['filtre_produits'] = produits['filtre_produits'].apply(lambda s: s.replace('0TOUT', 'TOUT'))
 
 
 # In[ ]:
 
 
 date = datetime.today().strftime('%d/%m/%Y')
-dictionary ={
-    "name" : nom,
-    "date" : date,
-    "produits": {"drm" :produits,"contrats": produits_contrat}
-}
 
+for id_operateur in produits.index.unique():
+    
+    df = produits.loc[[id_operateur]]
+    
+    drm = {}
+    for [filtre, libelle] in df[df['type'] == 'drm'][['filtre_produits', 'libelle produit']].values:
+        drm[filtre] = libelle
 
-dossier = dossier_graphes+id_operateur
-pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
-pathlib.Path(dossier).touch()
+    contrats = {}
+    for [filtre, libelle] in df[df['type'] == 'contrat'][['filtre_produits', 'libelle produit']].values:
+        contrats[filtre] = libelle
+    
+    rs = etablissements[etablissements['identifiant'] == id_operateur]['raison sociale']
+    if len(rs.values):
+        rs = rs.values[0]
+    else:
+        continue
+    
+    dictionary ={
+        "name" : rs,
+        "date" : date,
+        "produits": {"drm" : drm, "contrats": contrats}
+    }
 
-with open(dossier+"/"+id_operateur+".json", "w") as outfile:
-    json.dump(dictionary, outfile)
+    dossier = dossier_graphes+id_operateur
+    pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(dossier).touch()
+
+    with open(dossier+"/"+id_operateur+".json", "w") as outfile:
+        json.dump(dictionary, outfile)
 
