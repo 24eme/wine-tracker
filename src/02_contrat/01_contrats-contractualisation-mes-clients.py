@@ -182,13 +182,9 @@ def create_graphe(df, identifiant, appellation, couleur):
 # In[ ]:
 
 
+d = {'volume':'sum', 'prix':'sum', 'Client':'first'}
 for bloc in df_final.index.unique():
     df = df_final.loc[bloc]
+    df = df.groupby('identifiant acheteur').agg(d)
     create_graphe(df, bloc[0], bloc[1], bloc[2])
-
-
-# In[ ]:
-
-
-df_final
 
