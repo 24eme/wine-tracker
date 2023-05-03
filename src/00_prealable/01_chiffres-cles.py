@@ -78,7 +78,7 @@ mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = T
 mouvements = mouvements.query("identifiant == @id_operateur").reset_index()
 
 mouvements.rename(columns = {'type de mouvement':'type_de_mouvement'}, inplace = True)
-typedemouvements = ['sorties/vrac','sorties/vrac_contrat','sorties/vrac_export','sorties/crd', 'sorties/factures', 'sorties/export', 'sorties/crd_acquittes', 'sorties/acq_crd','sorties/consommation']
+typedemouvements = ['sorties/vrac', 'sorties/crd', 'sorties/factures', 'sorties/export','sorties/consommation']
 mouvements = mouvements.query("type_de_mouvement in @typedemouvements").reset_index()
 
 lastMonth = format(datetime.now().month-1, "02d")
@@ -120,6 +120,8 @@ if(len(sorties_all_all.index) > 0):
 #Evolution mois par rapport au mois à n-1
 campagne_courante_n_1 = lastcampagnes[-2:][0]
 sorties = mouvements.query("campagne==@campagne_courante_n_1")
+sorties = sorties[sorties['libelle type'] == 'Suspendu']
+
 sorties = sorties.groupby(["identifiant",'campagne','periode']).sum(["volume mouvement"])[["volume mouvement"]]
 sorties = sorties.reset_index()
 sorties.set_index(['identifiant'], inplace = True)
@@ -153,7 +155,7 @@ mouvements.rename(columns = {'type de mouvement':'type_de_mouvement'}, inplace =
 
 #Volume de sortie vrac hl du mois courant 
 
-typedemouvementsvracs = ['sorties/vrac','sorties/vrac_contrat','sorties/vrac_export']
+typedemouvementsvracs = ['sorties/vrac']
 vrac = mouvements.query("type_de_mouvement in @typedemouvementsvracs and campagne==@campagne_courante")
 vrac = vrac.groupby(["identifiant",'campagne','periode']).sum(["volume mouvement"])[["volume mouvement"]]
 vrac = vrac.reset_index()
@@ -202,7 +204,7 @@ if(len(vrac.index) > 0):
 
 
 #Volume sortie conditionné mois
-typedemouvementsconditionne = ['sorties/crd', 'sorties/factures', 'sorties/export', 'sorties/crd_acquittes', 'sorties/acq_crd']
+typedemouvementsconditionne = ['sorties/crd', 'sorties/factures', 'sorties/export']
 conditionne = mouvements.query("type_de_mouvement in @typedemouvementsconditionne and campagne==@campagne_courante")
 conditionne = conditionne.groupby(["identifiant",'campagne','periode']).sum(["volume mouvement"])[["volume mouvement"]]
 conditionne = conditionne.reset_index()
