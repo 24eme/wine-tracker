@@ -15,7 +15,7 @@ import pathlib
 
 
 path = pathlib.Path().absolute()
-path = str(path).replace("src","")
+path = str(path).replace("/src","").replace("/01_DRM","")
 dossier_graphes=path+"/graphes/"
 csv = path+"/data/drm/export_bi_drm_stock.csv"  #il manque un ; à la fin du header.
 source = "DRM Inter-Rhône"
@@ -99,18 +99,22 @@ drm_sortie = drm_sortie.groupby(["identifiant", "campagne","filtre_produit", "co
 drm_stock_debut = drm
 drm_stock_debut['debut_campagne'] = drm["date"].str.lower().str.endswith("08")
 drm_stock_debut = drm_stock_debut.query("debut_campagne == True")
-drm_stock_debut = drm_stock_debut.groupby(["identifiant", "campagne","filtre_produit", "couleurs"]).sum(["stock debut"])[["stock debut"]]
+drm_stock_debut = drm_stock_debut.groupby(["identifiant", "campagne","filtre_produit", "couleurs"]).first(["stock debut"])[["stock debut"]]
 
 df_final = pd.merge(drm_recolte, drm_sortie,how='outer', on=["identifiant", "campagne","filtre_produit", "couleurs"])
 df_final = pd.merge(df_final, drm_stock_debut ,how='outer', on=["identifiant", "campagne","filtre_produit", "couleurs"])
+
+
+drm_stock_sortie = drm.groupby(["identifiant", "campagne","filtre_produit", "couleurs"]).sum(["sortie"])[["sortie"]]
+df_final = pd.merge(df_final, drm_stock_sortie, how='outer', on=["identifiant", "campagne","filtre_produit", "couleurs"])
 
 df_final = df_final.reset_index()
 
 df_final['couleurs'] = df_final['couleurs'].str.upper()
 
-df_final.index = [df_final['identifiant'],df_final['filtre_produit'],df_final['couleurs']]
+df_final.index = [df_final['identifiant'],df_final['filtre_produit'],df_final['couleurs'],df_final['campagne']]
+df_final = df_final[['stock debut', 'volume mouvement_x', 'volume mouvement_y', 'sortie']]
 df_final.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Récoltes (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
-
 
 #df_final
 
@@ -118,64 +122,25 @@ df_final.rename(columns = {'stock debut': 'Stock physique en début de camp prod
 # In[ ]:
 
 
-# PAR APPELLATIONS
+couleur_group = df_final.groupby(["identifiant","campagne","filtre_produit"]).sum(['Récoltes (hl)','Sorties de chais (hl)','Stock physique en début de camp production (hl)','sortie'])
+couleur_group['couleurs'] = 'TOUT'
 
-drm_recolte_spe_all = drm_recolte.groupby(["identifiant","campagne","filtre_produit"]).sum(["volume mouvement"])[["volume mouvement"]]
-drm_sortie_spe_all = drm_sortie.groupby(["identifiant", "campagne","filtre_produit"]).sum(["volume mouvement"])[["volume mouvement"]]
-drm_stock_debut_spe_all = drm_stock_debut.groupby(["identifiant", "campagne","filtre_produit"]).sum(["stock debut"])[["stock debut"]]
+produit_group = couleur_group.groupby(["identifiant","campagne"]).sum(['Récoltes (hl)','Sorties de chais (hl)','Stock physique en début de camp production (hl)','sortie']).reset_index()
+produit_group['filtre_produit'] = 'TOUT'
+produit_group['couleurs'] = 'TOUT'
 
-drm_merge_spe_all = pd.merge(drm_recolte_spe_all, drm_sortie_spe_all,how='outer', on=["identifiant", "campagne","filtre_produit"])
-drm_merge_spe_all = pd.merge(drm_merge_spe_all, drm_stock_debut_spe_all ,how='outer', on=["identifiant", "campagne","filtre_produit"])
-
-drm_merge_spe_all = drm_merge_spe_all.reset_index()
-
-drm_merge_spe_all['couleurs'] = "TOUT"
-
-drm_merge_spe_all.index = [drm_merge_spe_all['identifiant'],drm_merge_spe_all['filtre_produit'],drm_merge_spe_all['couleurs']]
-
-drm_merge_spe_all.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Récoltes (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
-
-#drm_merge_spe_all
+df_final = pd.concat([df_final.reset_index(), couleur_group.reset_index(), produit_group.reset_index()], ignore_index=True)
+df_final.set_index(['identifiant', 'filtre_produit', 'couleurs'], inplace=True)
 
 
 # In[ ]:
 
 
-#AUCUN FILTRE TOUTES LES APPELLATIONS ET TOUTES LES COULEURS
-
-drm_recolte_all_all = drm_recolte_spe_all.groupby(["identifiant","campagne"]).sum(["volume mouvement"])[["volume mouvement"]]
-drm_sortie_all_all = drm_sortie_spe_all.groupby(["identifiant", "campagne"]).sum(["volume mouvement"])[["volume mouvement"]]
-drm_stock_debut_all_all = drm_stock_debut.groupby(["identifiant", "campagne"]).sum(["stock debut"])[["stock debut"]]
-
-
-drm_merge_all_all = pd.merge(drm_recolte_all_all, drm_sortie_all_all,how='outer', on=["identifiant", "campagne"])
-drm_merge_all_all = pd.merge(drm_merge_all_all, drm_stock_debut_all_all ,how='outer', on=["identifiant", "campagne"])
-
-drm_merge_all_all = drm_merge_all_all.reset_index()
-
-drm_merge_all_all['filtre_produit'] = "TOUT"
-drm_merge_all_all['couleurs'] = "TOUT"
-
-drm_merge_all_all.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Récoltes (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
-drm_merge_all_all.index = [drm_merge_all_all['identifiant'],drm_merge_all_all['filtre_produit'],drm_merge_all_all['couleurs']]
-
-#drm_merge_all_all
-
-
-# In[ ]:
-
-
-df_final = pd.concat([df_final, drm_merge_spe_all])
-
-df_final = pd.concat([df_final, drm_merge_all_all])
-
-df_final.drop(['identifiant','filtre_produit',"couleurs"], axis=1, inplace=True)
-
-df_final = df_final.sort_values(by=['identifiant', 'filtre_produit','couleurs'])
-
-df_final = df_final.fillna(0)
-
+df_final.fillna(0, inplace=True)
 df_final = df_final.round({'Récoltes (hl)': 0, 'Sorties de chais (hl)': 0, "Stock physique en début de camp production (hl)":0})
+
+df_final = df_final[['campagne', 'Stock physique en début de camp production (hl)','Récoltes (hl)','Sorties de chais (hl)']] #, 'sortie'
+#df_final
 
 
 # In[ ]:
@@ -184,7 +149,7 @@ df_final = df_final.round({'Récoltes (hl)': 0, 'Sorties de chais (hl)': 0, "Sto
 def create_graphique(final,identifiant,appellation,couleur):
 
     # CREATION DU GRAPHE
-    fig = px.line(final, x="campagne", y="value", color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue","green","#ea4f57"],
+    fig = px.line(final, x="campagne", y=final.columns, color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue","green","#ea4f57"],
                   title="Ma cave",height=650)
     fig.update_traces(mode="markers+lines", hovertemplate=None)
     fig.update_layout(hovermode="x")
@@ -233,15 +198,16 @@ def create_graphique(final,identifiant,appellation,couleur):
 
 for bloc in df_final.index.unique():
     df = df_final.loc[[bloc]]
-    df = df.reset_index()
+    
+    cols = df.columns
+    data = df.reset_index()[cols]
+    data.sort_values(by='campagne')
+    
+    create_graphique(data,df.index[0][0],df.index[0][1],df.index[0][2])
 
-    for campagne in lastcampagnes:
-        if campagne not in df.campagne.unique()[::-1] :
-            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne, 0, 0, 0]
-    
-    df = df.sort_values(by=['campagne'])
-    df = df.reset_index(drop=True)
-    
-    df = pd.melt(df, id_vars=['identifiant','filtre_produit','couleurs','campagne'], value_vars=['Stock physique en début de camp production (hl)','Récoltes (hl)','Sorties de chais (hl)'])
-    create_graphique(df,bloc[0],bloc[1],bloc[2])
+
+# In[ ]:
+
+
+
 
