@@ -42,7 +42,7 @@ except:
 
 etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15", low_memory=False, index_col=False)
 etablissements['familles'] = etablissements['famille'].str.split(' ')
-etablissements['famille_ok'] = etablissements['familles'].apply(lambda f: f[0] != 'courtier' and ((f[0] == 'producteur') and f[1] == 'cave_particuliere') or (f[0] in ['negociant', 'cave cooperative']))
+etablissements['famille_ok'] = etablissements['familles'].apply(lambda f: f[0] != 'courtier' and ((f[0] == 'producteur') and (f[1] == 'cave_particuliere' or f[1] == 'cave_cooperative')) or (f[0] in ['negociant', 'cave cooperative']))
 etablissements = etablissements[etablissements['famille_ok']]
 etablissements['famille'] = etablissements['familles'].apply(lambda f: f[0])
 
@@ -61,6 +61,7 @@ if filter_operateur:
 drm['libelle produit'] = drm['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
 drm = drm[drm['genres'] != 'VCI']
 drm = drm[drm['libelle type'] == 'Suspendu']
+drm = drm.loc[drm['appellations'] != "CDP"]
 
 contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
 if filter_operateur:
@@ -69,6 +70,7 @@ if filter_operateur:
         contrats[contrats['identifiant vendeur'] == filter_operateur]
     ])
 contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
+contrats = contrats.loc[contrats['appellation'] != "CDP"]
 
 
 # In[ ]:

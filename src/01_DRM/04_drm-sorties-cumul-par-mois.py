@@ -56,6 +56,7 @@ lastcampagnes = lastcampagnes[-5:]
 mouvements = mouvements.query('campagne in @lastcampagnes')
 mouvements = mouvements[mouvements['genres'] != 'VCI']
 mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
+mouvements = mouvements.query("appellation != 'CDP'")
 
 mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = True)
 

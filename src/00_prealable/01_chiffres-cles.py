@@ -77,6 +77,7 @@ mois_sort = { "Août" : "01" , "Septembre" : "02", "Octobre" : "03", "Novembre" 
 
 mouvements = mouvements.query('campagne in @lastcampagnes')
 mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = True)
+mouvements = mouvements.query("appellation != 'CDP'")
 mouvements = mouvements.query("identifiant == @id_operateur").reset_index()
 
 mouvements.rename(columns = {'type de mouvement':'type_de_mouvement'}, inplace = True)
@@ -265,6 +266,8 @@ if not famille:
 contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
 
 contrats = contrats.query("statut == 'SOLDE' or statut == 'NONSOLDE'")
+contrats = contrats.query("appellation != 'CDP'")
+
 contrats.rename(columns = {'type de vente':'type_de_vente'}, inplace = True)
 contrats = contrats.query("type_de_vente == 'vrac'")
 

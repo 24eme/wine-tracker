@@ -55,6 +55,7 @@ contrats = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False, ind
 contrats = contrats.query("statut == 'SOLDE' or statut == 'NONSOLDE'")
 contrats.rename(columns = {'type de vente':'type_de_vente','prix unitaire (en hl)':'prix'}, inplace = True)
 contrats = contrats.query("type_de_vente == 'vrac'")
+contrats = contrats.query("appellation != 'CDP'")
 
 lastcampagnes = contrats['campagne'].unique()
 lastcampagnes.sort()

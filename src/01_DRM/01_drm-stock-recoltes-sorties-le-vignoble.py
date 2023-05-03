@@ -50,6 +50,7 @@ etablissements = etablissements.query("famille in @familleproducteurs")
 identifiantsproducteurs = etablissements['identifiant'].unique()
 
 drm = drm.query('identifiant in @identifiantsproducteurs')
+drm = drm.loc[drm['appellations'] != "CDP"]
 
 
 # In[ ]:
@@ -63,6 +64,8 @@ mouvements = mouvements.query('identifiant in @identifiantsproducteurs')
 mouvements = mouvements.query('campagne in @lastcampagnes')
 mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 mouvements = mouvements[mouvements['genres'] != 'VCI']
+mouvements = mouvements.query("appellations != 'CDP'")
+
 #mouvements
 
 

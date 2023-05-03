@@ -51,6 +51,7 @@ if(id_operateur):
     drm = drm.query("identifiant == @id_operateur").reset_index()
 
 drm = drm.query('campagne in @lastcampagnes')
+drm = drm.loc[drm['appellations'] != "CDP"]
 
 
 # In[ ]:
@@ -71,6 +72,7 @@ mouvements = mouvements[mouvements['periode'] > '2013-12']
 mouvements = mouvements[mouvements['genres'] != 'VCI']
 mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 
+mouvements = mouvements.query("appellations != 'CDP'")
 #mouvements
 
 
@@ -209,10 +211,4 @@ for indexes in df_final.index.unique():
     pathlib.Path(dossier).parent.parent.touch()
     
     create_graphique(data,dossier+"/drm-stock-recoltes-sorties.html")
-
-
-# In[ ]:
-
-
-
 
