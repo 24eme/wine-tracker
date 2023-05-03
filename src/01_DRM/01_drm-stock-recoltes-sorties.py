@@ -140,7 +140,7 @@ df_final.set_index(['identifiant', 'filtre_produit', 'couleurs'], inplace=True)
 df_final.fillna(0, inplace=True)
 df_final = df_final.round({'Récoltes (hl)': 0, 'Sorties de chais (hl)': 0, "Stock physique en début de camp production (hl)":0, 'sortie': 0})
 
-df_final = df_final[['campagne', 'Stock physique en début de camp production (hl)','Récoltes (hl)','Sorties de chais (hl)', 'sortie']] #, 'sortie'
+df_final = df_final[['campagne', 'Stock physique en début de camp production (hl)','Récoltes (hl)','Sorties de chais (hl)']] #, 'sortie'
 #df_final
 
 
