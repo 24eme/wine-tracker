@@ -48,7 +48,7 @@ except:
 
 
 mouvements = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False, index_col=False)
-mouvements = mouvements[mouvements['genres'] != 'VCI']
+mouvements = mouvements[mouvements['genre'] != 'VCI']
 mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 
 lastcampagnes = mouvements['campagne'].unique()

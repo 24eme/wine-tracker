@@ -54,7 +54,7 @@ lastcampagnes = mouvements['campagne'].unique()
 lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-5:]
 mouvements = mouvements.query('campagne in @lastcampagnes')
-mouvements = mouvements[mouvements['genres'] != 'VCI']
+mouvements = mouvements[mouvements['genre'] != 'VCI']
 mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 mouvements = mouvements.query("appellation != 'CDP'")
 
