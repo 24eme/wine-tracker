@@ -190,7 +190,7 @@ def create_graphique(final,appellation,couleur):
                         'xanchor': 'center',
                         'yanchor': 'top'},
                       title_font_size=24,
-                      title_font_color="grey",
+                      title_font_color="#a3a3a3",
                       xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,
