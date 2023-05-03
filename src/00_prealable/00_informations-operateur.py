@@ -45,7 +45,7 @@ if not id_operateur:
 
 etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15", low_memory=False, index_col=False)
 etablissements['familles'] = etablissements['famille'].str.split(' ')
-etablissements['famille_ok'] = etablissements['familles'].apply(lambda f: f[0] != 'courtier' and ((f[0] == 'producteur') and f[1] == 'cave_particuliere') or (f[0] in ['negociant', 'cave cooperative']))
+etablissements['famille_ok'] = etablissements['familles'].apply(lambda f: f[0] != 'courtier' and ((f[0] == 'producteur') and (f[1] == 'cave_particuliere' or f[1] == 'cave_cooperative')) or (f[0] in ['negociant', 'cave cooperative']))
 etablissements = etablissements[etablissements['famille_ok']]
 etablissements['famille'] = etablissements['familles'].apply(lambda f: f[0])
 
