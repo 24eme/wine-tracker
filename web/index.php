@@ -217,7 +217,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         <div class="col-md-6 mt-4 graph-container graph-container-ma-cave">
                                             <?php include_with_debug($drm_graph_path."/drm-stock-recoltes-sorties.html");?>
                                         </div>
-                                        <div class="col-md-6 mt-4 graph-container">
+                                        <div class="col-md-6 mt-4 graph-container graph-container-le-vignoble">
                                             <?php include_with_debug($drm_graph_le_vignoble_path."/drm-stock-recoltes-sorties.html");?>
                                         </div>
                                         <div class="col-xs-12">
@@ -238,7 +238,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                                 </div>
                                             <?php endif;?>
                                         </div>
-                                        <div class="col-md-6 mt-4 graph-container">
+                                        <div class="col-md-6 mt-4 graph-container graph-container-le-vignoble">
                                             <?php include_with_debug($drm_graph_le_vignoble_path."/drm-sortie-vrac-condionne.html");?>
                                         </div>
                                         <div class="col-xs-12">
@@ -258,7 +258,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                                 </div>
                                             <?php endif;?>
                                         </div>
-                                        <div class="col-md-6 mt-4 graph-container">
+                                        <div class="col-md-6 mt-4 graph-container graph-container-le-vignoble">
                                             <?php include_with_debug($drm_graph_le_vignoble_path."/drm-sorties-par-campagne-et-mois.html");?>
                                         </div>
                                         <div class="col-xs-12">

@@ -136,6 +136,12 @@ header nav a.active {
     color: black;
 }
 
-.graph-container-ma-cave{
+.graph-container-ma-cave .plotly{
   border: #F7BD5F55 solid 2px;
+  width:100.6%;
+}
+
+.graph-container-le-vignoble .plotly{
+  border: #A3A3A355 solid 2px;
+  width:100.6%;
 }
