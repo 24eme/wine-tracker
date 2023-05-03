@@ -25,19 +25,16 @@ csv_etablissements = path+"/data/contrats/export_bi_etablissements.csv" #il manq
 # In[ ]:
 
 
-id_operateur=None
+filter_operateur=None
 
 parser = argparse.ArgumentParser()
-parser.add_argument("id_operateur", help="Identifiant opérateur", default=id_operateur, nargs='?')
+parser.add_argument("filter_operateur", help="Identifiant opérateur", default=filter_operateur, nargs='?')
 
 try:
     args = parser.parse_args()
-    id_operateur = args.id_operateur
+    filter_operateur = args.id_operateur
 except:
-    print("Arguments pas défaut")
-
-if not id_operateur:
-    raise Exception("manque id_operateur")
+    True
 
 
 # In[ ]:
@@ -59,9 +56,16 @@ acheteurs = etablissements[etablissements['famille'] != 'producteur']
 
 
 drm = pd.read_csv(csv, sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
+if filter_operateur:
+    drm = drm.query("identifiant == @filter_operateur")
 drm['libelle produit'] = drm['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
 
 contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
+if filter_operateur:
+    contrats = pd.concat([
+        contrats[contrats['identifiant acheteur'] == filter_operateur],
+        contrats[contrats['identifiant vendeur'] == filter_operateur]
+    ])
 contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
 
 
@@ -109,8 +113,7 @@ contrat_produits = pd.concat([
     contrat_extract[['identifiant', 'filtre_produits', 'libelle produit']],
     contrat_extract[['identifiant', 'filtre_appellations', 'libelle_appellations']].rename(columns = {'libelle_appellations': 'libelle produit', 'filtre_appellations': 'filtre_produits'}),
     contrat_tout
-]
-).sort_values(['identifiant', 'filtre_produits']).drop_duplicates()
+]).sort_values(['identifiant', 'filtre_produits']).drop_duplicates()
 contrat_produits['type'] = 'contrat'
 
 
@@ -156,4 +159,10 @@ for id_operateur in produits.index.unique():
 
     with open(dossier+"/"+id_operateur+".json", "w") as outfile:
         json.dump(dictionary, outfile)
+
+
+# In[ ]:
+
+
+
 
