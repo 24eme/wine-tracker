@@ -67,7 +67,7 @@ if(id_operateur):
     mouvements = mouvements.query("identifiant == @id_operateur").reset_index()
 
 mouvements = mouvements.query('campagne in @lastcampagnes')
-
+mouvements = mouvements[mouvements['periode'] > '2013-12']
 #mouvements
 
 
@@ -88,8 +88,9 @@ drm_recolte = mouvements.query("type_de_mouvement == 'entrees/recolte'")
 drm_recolte = drm_recolte.groupby(["identifiant", "campagne","filtre_produit", "couleurs"]).sum(["volume mouvement"])[["volume mouvement"]]
 
 #SOMME SORTIES
-typedemouvementssorties = ['sorties/vrac','sorties/vrac_contrat','sorties/vrac_export','sorties/crd', 'sorties/factures', 'sorties/export', 'sorties/crd_acquittes', 'sorties/acq_crd','sorties/consommation']
+typedemouvementssorties = ['sorties/vrac','sorties/crd', 'sorties/factures', 'sorties/export','sorties/consommation']
 drm_sortie = mouvements.query("type_de_mouvement in @typedemouvementssorties").reset_index()
+drm_sortie = drm_sortie[drm_sortie['libelle type'] == 'Suspendu']
 drm_sortie = drm_sortie.groupby(["identifiant", "campagne","filtre_produit", "couleurs"]).sum(["volume mouvement"])[["volume mouvement"]]
 
 
@@ -137,7 +138,7 @@ df_final.set_index(['identifiant', 'filtre_produit', 'couleurs'], inplace=True)
 
 
 df_final.fillna(0, inplace=True)
-df_final = df_final.round({'Récoltes (hl)': 0, 'Sorties de chais (hl)': 0, "Stock physique en début de camp production (hl)":0})
+df_final = df_final.round({'Récoltes (hl)': 0, 'Sorties de chais (hl)': 0, "Stock physique en début de camp production (hl)":0, 'sortie': 0})
 
 df_final = df_final[['campagne', 'Stock physique en début de camp production (hl)','Récoltes (hl)','Sorties de chais (hl)']] #, 'sortie'
 #df_final
