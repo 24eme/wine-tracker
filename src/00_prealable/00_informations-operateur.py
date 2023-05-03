@@ -15,7 +15,7 @@ import collections
 
 
 path = pathlib.Path().absolute()
-path = str(path).replace("src","")
+path = str(path).replace("/src","").replace("/00_prealable","")
 dossier_graphes=path+"/graphes/"
 csv = path+"/data/drm/export_bi_drm_stock.csv"  #il manque un ; à la fin du header.
 csv_contrats = path+"/data/contrats/export_bi_contrats.csv"  #il manque un ; à la fin du header.
@@ -199,3 +199,4 @@ pathlib.Path(dossier).touch()
 
 with open(dossier+"/"+id_operateur+".json", "w") as outfile:
     json.dump(dictionary, outfile)
+
