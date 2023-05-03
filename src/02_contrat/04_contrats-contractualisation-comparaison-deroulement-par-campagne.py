@@ -171,7 +171,8 @@ def create_graphe(df,identifiant,appellation,couleur):
                           legend=dict(orientation="h",xanchor = "center",x = 0.5, y= -0.3),
                           legend_itemdoubleclick=False,
                           legend_title=None,
-                          legend_font_size=15
+                          legend_font_size=15,
+                          legend_traceorder="reversed"
                          )
     fig.for_each_xaxis(lambda x: x.update(showgrid=False))
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
