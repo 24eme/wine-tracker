@@ -195,7 +195,7 @@ def create_graphique(final,identifiant,appellation,couleur):
                         'xanchor': 'center',
                         'yanchor': 'top'},
                       title_font_size=24,
-                      title_font_color="#f7bb58",
+                      title_font_color='#f7bb58',
                       xaxis_title=None,
                       yaxis_title=None,
                       legend_title=None,
@@ -203,6 +203,7 @@ def create_graphique(final,identifiant,appellation,couleur):
                       plot_bgcolor = "white",
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False,
+                      legend_font_size=15
                      )
 
     fig.update_yaxes(tickformat=",")
