@@ -87,7 +87,7 @@ h4, h5 {
 #nav-tab a {
     text-decoration: none;
     font-weight: bold;
-    font-size : 20px;
+    font-size : 1.75em;
 }
 #nav-tab a .nav-link{
     color: #f7bb58;
