@@ -123,12 +123,12 @@ $list_produits_contrats = $data['produits']['contrats'];
             </div>
         </div>
 
-        <div class="row g-5">
+        <div class="g-5">
             <div class="col-3 offset-9 text-muted">
                 Dernière mise à jour : <?php echo $data["date"];?>
             </div>
             <h2 class="mx-3 mb-5">
-                <?php echo $data["name"];?> : statistiques et graphiques
+                <?php echo $data["name"];?> : </br>statistiques et graphiques
                 <?php
                 if ($debug) {
                     echo "<span style='color:red;'>DEBUG</span>";
@@ -141,7 +141,7 @@ $list_produits_contrats = $data['produits']['contrats'];
             <div class="container">
                 <div class="content">
                     <div>
-                        <div class="row  text-end">
+                        <div class="text-end">
                             <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
                                 <?php if ($chiffres["cumul_sortie_campagne_en_cours"]): ?>
                                     <div class="col">
@@ -183,7 +183,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                     <span id="drm"></span>
                     <span id="contrats"></span>
 
-                    <nav class="mt-5">
+                    <nav class="row mt-5">
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                             <?php if (count($ls_dossier_drm)): ?><a href="#drm"><button class="nav-link active" id="nav-drm-tab" data-onglet="drm" data-bs-toggle="tab" data-bs-target="#nav-drm" type="button" role="tab" aria-controls="nav-drm" aria-selected="true">DRM</button></a><?php endif; ?>
                             <?php if (count($ls_dossier_contrats)): ?><a href="#contrats"><button class="nav-link" id="nav-contrats-tab" data-onglet="contrats" data-bs-toggle="tab" data-bs-target="#nav-contrats" type="button" role="tab" aria-controls="nav-contrats" aria-selected="false">CONTRATS</button></a><?php endif; ?>
@@ -210,7 +210,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     </div>
                                 </div>
 
-                                <div class="mt-5 row">
+                                <div class="mt-5">
                                     <div class="row shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 entete"><span>Stocks, récoltes et sorties</span></h3>
                                         <div class="col-xs-4"></div>
@@ -299,7 +299,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     </select>
                                 </div>
                             </div>
-                            <div class="mt-5 row">
+                            <div class="mt-5">
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html")): ?>
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Contractualisation moyenne</span></h3>

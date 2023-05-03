@@ -15,7 +15,7 @@ import collections
 
 
 path = pathlib.Path().absolute()
-path = str(path).replace("/src","").replace('/00_prealable','')
+path = str(path).replace("/src","").replace("/00_prealable","")
 dossier_graphes=path+"/graphes/"
 csv = path+"/data/drm/export_bi_drm_stock.csv"  #il manque un ; à la fin du header.
 csv_contrats = path+"/data/contrats/export_bi_contrats.csv"  #il manque un ; à la fin du header.
