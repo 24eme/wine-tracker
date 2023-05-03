@@ -214,7 +214,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     <div class="row shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 entete"><span>Stocks, récoltes et sorties</span></h3>
                                         <div class="col-xs-4"></div>
-                                        <div class="col-md-6 mt-4 graph-container">
+                                        <div class="col-md-6 mt-4 graph-container graph-container-ma-cave">
                                             <?php include_with_debug($drm_graph_path."/drm-stock-recoltes-sorties.html");?>
                                         </div>
                                         <div class="col-md-6 mt-4 graph-container">
@@ -229,7 +229,7 @@ $list_produits_contrats = $data['produits']['contrats'];
 
                                     <div class="mt-3 row shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Sorties de chais VRAC/Conditionné</span></h3>
-                                        <div class="col-md-6 mt-4 graph-container">
+                                        <div class="col-md-6 mt-4 graph-container graph-container-ma-cave">
                                             <?php if(file_exists($drm_graph_path."/drm-sortie-vrac-condionne.html")): ?>
                                                 <?php include_with_debug($drm_graph_path."/drm-sortie-vrac-condionne.html");?>
                                             <?php else: ?>
@@ -249,7 +249,7 @@ $list_produits_contrats = $data['produits']['contrats'];
 
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Sorties mensuelles</span></h3>
-                                        <div class="col-md-6 mt-4 graph-container">
+                                        <div class="col-md-6 mt-4 graph-container graph-container-ma-cave">
                                             <?php if(file_exists($drm_graph_path."/drm-sorties-par-campagne-et-mois.html")): ?>
                                                 <?php include_with_debug($drm_graph_path."/drm-sorties-par-campagne-et-mois.html");?>
                                             <?php else: ?>
@@ -270,7 +270,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Cumul des sorties de chais</span></h3>
                                         <h4 class="col-xs-12 text-center fw-bold">MA CAVE</h4>
-                                        <div class="col-md-12 graph-container" style="height: 500px;">
+                                        <div class="col-md-12 graph-container graph-container-ma-cave" style="height: 510px;">
                                             <?php include_with_debug($drm_graph_path."/drm-sorties-cumul-par-mois.html");?>
                                         </div>
                                         <div class="col-xs-12">
@@ -311,7 +311,9 @@ $list_produits_contrats = $data['produits']['contrats'];
                                             <label class="btn btn-light" for="btn-radio-prix">en €</label>
                                           </div>
                                           <div id="pie-volume" class="d-block">
-                                            <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html");?>
+                                            <div class="m-2 graph-container-ma-cave">
+                                              <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html");?>
+                                            </div>
                                             <div class="col-xs-12">
                                                 <p class="text-muted text-end fs-6">
                                                     En hl. Sources: Contrats Inter-Rhône
@@ -322,7 +324,9 @@ $list_produits_contrats = $data['produits']['contrats'];
                                             </div>
                                           </div>
                                           <div id="pie-prix" class="d-none">
-                                            <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-en-euros.html");?>
+                                            <div class="m-2 graph-container-ma-cave">
+                                              <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-en-euros.html");?>
+                                            </div>
                                             <div class="col-xs-12">
                                                 <p class="text-muted text-end fs-6">
                                                     En €. Sources: Contrats Inter-Rhône
@@ -339,7 +343,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Top 10</span></h3>
                                         <div class="col-md-12 graph-container">
-                                            <div class="col-xs-10">
+                                            <div class="col-xs-10 graph-container-ma-cave">
                                                 <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html");?>
                                             </div>
                                             <p class="text-muted text-end fs-6">
@@ -371,7 +375,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Déroulement de la campagne</span></h3>
                                         <div class="col-md-12 graph-container">
-                                            <div class="col-xs-10">
+                                            <div class="col-xs-10 graph-container-ma-cave">
                                                 <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html");?>
                                             </div>
                                             <p class="text-muted text-end fs-6">

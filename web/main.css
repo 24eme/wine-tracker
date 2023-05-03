@@ -135,3 +135,7 @@ header nav a.active {
     padding: 15px 5px;
     color: black;
 }
+
+.graph-container-ma-cave{
+  border: #F7BD5F55 solid 2px;
+}
