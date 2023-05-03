@@ -128,7 +128,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                 Dernière mise à jour : <?php echo $data["date"];?>
             </div>
             <h2 class="mx-3 mb-5">
-                <?php echo $data["name"];?> : statistiques et graphiques
+                <?php echo $data["name"];?> : </br>statistiques et graphiques
                 <?php
                 if ($debug) {
                     echo "<span style='color:red;'>DEBUG</span>";

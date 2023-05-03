@@ -69,6 +69,7 @@ h2 {
     font-weight: bold;
     max-width: 95% !important;
     color: black;
+    font-size: 2.5rem;
 }
 h3.entete {
     text-align: center;
@@ -86,6 +87,7 @@ h4, h5 {
 #nav-tab a {
     text-decoration: none;
     font-weight: bold;
+    font-size : 20px;
 }
 #nav-tab a .nav-link{
     color: #f7bb58;
@@ -127,11 +129,9 @@ header nav a.active {
     background-color: white;
 }
 .explications {
-    font-weight: bold;
     text-align: center;
     width: 80%;
-    margin: 50px auto;
+    margin: 10px auto;
     padding: 15px 5px;
-    border-top: 5px solid #ffb93f;
-    text-transform: uppercase;
+    color: black;
 }
