@@ -15,7 +15,7 @@ import pathlib
 
 
 path = pathlib.Path().absolute()
-path = str(path).replace("src","")
+path = str(path).replace("/src","").replace("/01_DRM","")
 dossier_graphes=path+"/graphes/"
 csv = path+"/data/drm/export_bi_drm_stock.csv"  #il manque un ; à la fin du header.
 csv_etablissements = path+"/data/contrats/export_bi_etablissements.csv"
