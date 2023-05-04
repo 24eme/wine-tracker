@@ -153,7 +153,9 @@ for id_operateur in produits.index.unique():
     dictionary ={
         "name" : rs,
         "date" : date,
-        "produits": {"drm" : drm, "contrats": contrats}
+        "produits": {"drm" : drm, "contrats": contrats},
+        "is_producteur": not id_operateur in acheteurs.index,
+        "is_negociant": id_operateur in acheteurs.index
     }
 
     dossier = dossier_graphes+id_operateur
