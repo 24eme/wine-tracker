@@ -147,13 +147,13 @@ df_final["Chiffre d'affaire"] = round(df_final["Chiffre d'affaire"]/len(lastcamp
 
 
 def create_graphe(df, identifiant, appellation, couleur):
-
-    fig = px.pie(df, values='volume', names='Client',custom_data=['Client','volume'], color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
+    fig = px.pie(df, values='volume', names='Client',custom_data=['Client','volume','commune'], color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
     fig.update_traces(textposition='inside', textinfo='label+text', text=df['volume'].map("{:} hl".format))
     fig.update_layout(legend_font_size=15)
     fig.update_traces(
     hovertemplate="<br>".join([
         "%{customdata[0][0]}",
+        "%{customdata[0][2]}",
         "%{customdata[0][1]} hl",
         "%{percent}"
     ])
@@ -167,13 +167,14 @@ def create_graphe(df, identifiant, appellation, couleur):
 
     fig.write_html(dossier+"/contrats-contractualisation-mes-clients-en-hl.html",include_plotlyjs=False)
 
-    fig = px.pie(df, values="Chiffre d'affaire", names='Client',custom_data=['Client', "Chiffre d'affaire"], color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
+    fig = px.pie(df, values="Chiffre d'affaire", names='Client',custom_data=['Client', "Chiffre d'affaire",'commune'], color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
     fig.update_traces(textposition='inside', textinfo='label+text', text=df["Chiffre d'affaire"].map("{:} €".format))
     fig.update_layout(legend_font_size=15)
 
     fig.update_traces(
     hovertemplate="<br>".join([
         "%{customdata[0][0]}",
+        "%{customdata[0][2]}",
         "%{customdata[0][1]} €",
         "%{percent}"
     ])
@@ -187,9 +188,15 @@ def create_graphe(df, identifiant, appellation, couleur):
 # In[ ]:
 
 
-d = {'volume':'sum', "Chiffre d'affaire":'sum', 'Client':'first'}
+etablissements.rename(columns = {'identifiant':'identifiant acheteur','siege.commune':'commune'}, inplace = True)
+dfcommune = etablissements[['commune','identifiant acheteur']]
+dfcommune.set_index(['identifiant acheteur'], inplace = True)
+
+d = {'volume':'sum', "Chiffre d'affaire":'sum', 'Client':'first','commune':'first'}
 for bloc in df_final.index.unique():
     df = df_final.loc[bloc]
+    #AJOUT DE LA COMMUNE
+    df = pd.merge(df, dfcommune, how='left', on=['identifiant acheteur'])
     df = df.groupby('identifiant acheteur').agg(d)
     create_graphe(df, bloc[0], bloc[1], bloc[2])
 
