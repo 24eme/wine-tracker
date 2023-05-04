@@ -99,7 +99,7 @@ drm_produits['type'] = 'drm'
 
 contrat_extract = pd.concat([
     contrats[contrats['identifiant acheteur'].isin(acheteurs['identifiant'])][['identifiant acheteur','certification', 'genre', 'appellation', 'mention','lieu', 'couleur', 'cepage', 'libelle produit']].rename(columns = {'identifiant acheteur' : 'identifiant'}),
-    contrats[contrats['identifiant vendeur'].isin(acheteurs['identifiant'])][['identifiant vendeur','certification', 'genre', 'appellation', 'mention','lieu', 'couleur', 'cepage', 'libelle produit']].rename(columns = {'identifiant vendeur' : 'identifiant'})
+    contrats[contrats['identifiant vendeur'].isin(vendeurs['identifiant'])][['identifiant vendeur','certification', 'genre', 'appellation', 'mention','lieu', 'couleur', 'cepage', 'libelle produit']].rename(columns = {'identifiant vendeur' : 'identifiant'})
 ]).drop_duplicates()
 
 contrat_extract['couleur'] = contrat_extract['couleur'].str.upper()
