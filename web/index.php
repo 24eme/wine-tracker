@@ -302,7 +302,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                             <div class="mt-5">
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html")): ?>
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-12 entete"><span>Contractualisation moyenne</span></h3>
+                                        <h3 class="col-xs-12 entete"><span>Contractualisation moyenne par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?></span></h3>
                                         <div class="col-md-12 graph-container">
                                           <div class="col-2 btn-group mx-5 mt-5" role="group">
                                             <input type="radio" class="radio-btn-contrats btn-check" name="btnradio" id="btn-radio-volume" autocomplete="off" checked onclick="changeRadioValue(this)" data-toshow="pie-volume" data-tohide="pie-prix">
@@ -319,7 +319,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                                     En hl. Sources: Contrats Inter-Rhône
                                                 </p>
                                                 <p class="explications">
-                                                    Moyenne sur 5 ans des volumes contractualisés en hectolitres par tiers.
+                                                    Moyenne sur 5 ans des volumes contractualisés en hectolitres par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?>.
                                                 </p>
                                             </div>
                                           </div>
@@ -332,7 +332,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                                     En €. Sources: Contrats Inter-Rhône
                                                 </p>
                                                 <p class="explications">
-                                                    Moyenne sur 5 ans des prix des contracts réalisés en euros par tiers.
+                                                    Moyenne sur 5 ans des prix des contracts réalisés en euros par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?>.
                                                 </p>
                                             </div>
                                           </div>
@@ -341,7 +341,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html")): ?>
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Top 10</span></h3>
+                                        <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Top 10 des <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?></span></h3>
                                         <div class="col-md-12 graph-container">
                                             <div class="col-xs-10 graph-container-ma-cave">
                                                 <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html");?>
@@ -350,14 +350,14 @@ $list_produits_contrats = $data['produits']['contrats'];
                                                 En hl. Sources: Contrats Inter-Rhône
                                             </p>
                                             <p class="explications">
-                                                Top 10 des volumes contractualisés par tiers sur 5 ans. Les volumes sont exprimés en hectolitres. Les données proviennent des contrats visés par Inter-Rhône.
+                                                Top 10 des volumes contractualisés par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?> sur 5 ans. Les volumes sont exprimés en hectolitres. Les données proviennent des contrats visés par Inter-Rhône.
                                             </p>
                                         </div>
                                     </div>
                                 <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html")): ?>
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-8 pt-4 text-center fw-bold entete"><span>Contractualisations à date</span></h3>
+                                        <h3 class="col-xs-8 pt-4 text-center fw-bold entete"><span>Contractualisations des <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?> à date</span></h3>
                                         <div class="col-md-12 graph-container">
                                             <div class="col-xs-10 mt-5">
                                                 <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html");?>
