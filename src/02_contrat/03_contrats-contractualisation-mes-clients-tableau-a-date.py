@@ -279,6 +279,6 @@ def create_table(df, identifiant, appellation, couleur):
 
 
 for bloc in df_final.index.unique():
-    df = df_final.loc[bloc]
+    df = df_final.loc[[bloc]]
     create_table(df, bloc[0], bloc[1], bloc[2])
 
