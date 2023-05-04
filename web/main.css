@@ -93,7 +93,7 @@ h4, h5 {
     font-size : 1.75em;
 }
 #nav-tab a .nav-link{
-    color: #f7bb58;
+    color: #5555;
 }
 a.link-declarvins:hover {
     background-color: #86005b !important;
@@ -147,4 +147,7 @@ header nav a.active {
 .graph-container-le-vignoble .plotly{
   border: #A3A3A355 solid 2px;
   width:100.6%;
+}
+#nav-tab {
+    padding-left: 40px;
 }
