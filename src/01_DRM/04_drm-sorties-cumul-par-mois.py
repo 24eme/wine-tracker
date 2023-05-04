@@ -151,7 +151,13 @@ def create_graphe(final,identifiant,appellation,couleur):
                  color='campagne', barmode='group',
                  height=500,
                  color_discrete_sequence=couleurs)
-    fig.update_layout(title_font_size=24,
+    fig.update_layout(title={
+                        'text': "<b>MA CAVE</b>",
+                        'y':0.98,
+                        'x':0.489,
+                        'xanchor': 'center',
+                        'yanchor': 'top'},
+                      title_font_size=24,
                       title_font_color="#f7bb58",
                       xaxis_title=None,
                       yaxis_title=None,
