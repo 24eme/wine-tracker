@@ -225,11 +225,12 @@ nom_col_5_DA = '<p class="text-end">Moyenne 5 dernières campagnes complètes</p
 df_final[nom_col_n_1] = ((df_final["n"] - df_final['n-1']) / df_final['n-1'])*100
 df_final[nom_col_5_DA] = ((df_final["n"] - df_final['5 DA']) / df_final['5 DA'])*100
 
+
 df_final = df_final.round(1)
 
 def addSign(v):
     if(v == float("inf")):
-        return ""
+        return "Ø"
     if(v >= 0):
         return "<span class='text-success'>"+'+'+str(v)+"%"
     else:

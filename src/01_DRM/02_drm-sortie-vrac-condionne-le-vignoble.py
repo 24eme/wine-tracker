@@ -62,13 +62,7 @@ conditionne = conditionne.groupby(["filtre_produit","couleur","campagne"]).sum([
 conditionne.rename(columns = {'volume mouvement':'Conditionné'}, inplace = True)
 
 
-#LES AUTRES
-autres = mouvements.query("type_de_mouvement == 'sorties/consommation'").reset_index()
-autres = autres.groupby(["filtre_produit","couleur","campagne"]).sum(["volume mouvement"])[["volume mouvement"]]
-autres.rename(columns = {'volume mouvement':'Autres'}, inplace = True)
-
 df_final_spe_spe = pd.concat([vrac, conditionne],axis=1)
-df_final_spe_spe = pd.concat([df_final_spe_spe, autres],axis=1)
 df_final_spe_spe = df_final_spe_spe.sort_values(by=['filtre_produit','couleur'])
 
 df_final_spe_spe = df_final_spe_spe.reset_index()
@@ -89,11 +83,8 @@ vrac_spe_all = vrac.groupby(["filtre_produit","campagne"]).sum(["Vrac"])[["Vrac"
 #les CONDITIONNE
 conditionne_spe_all = conditionne.groupby(["filtre_produit","campagne"]).sum(["Conditionné"])[["Conditionné"]]
 
-#LES AUTRES
-autres_spe_all = autres.groupby(["filtre_produit","campagne"]).sum(["Autres"])[["Autres"]]
 
 df_final_spe_all = pd.concat([vrac_spe_all, conditionne_spe_all],axis=1)
-df_final_spe_all = pd.concat([df_final_spe_all, autres_spe_all],axis=1)
 df_final_spe_all = df_final_spe_all.sort_values(by=['filtre_produit'])
 
 df_final_spe_all['couleur'] = "TOUT"
@@ -113,11 +104,8 @@ df_final_spe_all.set_index(['filtre_produit','couleur'], inplace = True)
 vrac_all_all = vrac.groupby(["campagne"]).sum(["Vrac"])[["Vrac"]]
 #les CONDITIONNE
 conditionne_all_all = conditionne.groupby(["campagne"]).sum(["Conditionné"])[["Conditionné"]]
-#LES AUTRES
-autres_all_all = autres.groupby(["campagne"]).sum(["Autres"])[["Autres"]]
 
 df_final_all_all = pd.concat([vrac_all_all, conditionne_all_all],axis=1)
-df_final_all_all = pd.concat([df_final_all_all, autres_all_all],axis=1)
 
 df_final_all_all['couleur'] = "TOUT"
 df_final_all_all['filtre_produit'] = "TOUT"
@@ -136,7 +124,7 @@ df_final = pd.concat([df_final_spe_spe, df_final_spe_all])
 df_final = pd.concat([df_final, df_final_all_all])
 df_final = df_final.sort_values(by=['filtre_produit','couleur','campagne'])
 df_final = df_final.fillna(0)
-df_final = df_final.round({'Vrac': 0, 'Conditionné': 0, "Autres":0})
+df_final = df_final.round({'Vrac': 0, 'Conditionné': 0})
 #df_final
 
 
@@ -144,7 +132,7 @@ df_final = df_final.round({'Vrac': 0, 'Conditionné': 0, "Autres":0})
 
 
 def create_graphe(final,appellation,couleur):
-    fig = px.bar(final, x="campagne", y="volume", color="variable",color_discrete_sequence=["#ea4f57","#f2969c","#f7bb58"],
+    fig = px.bar(final, x="campagne", y="volume", color="variable",color_discrete_sequence=["#ea4f57","#f7bb58"],
                  text_auto=True,
                  title="Le vignoble",height=650)
     fig.update_layout(title={
@@ -194,12 +182,12 @@ for bloc in df_final.index.unique():
     df = df.reset_index()
     for campagne in lastcampagnes:
         if campagne not in df.campagne.unique()[::-1] :
-            df.loc[len(df)] = [bloc[0], bloc[1], campagne, 0, 0, 0]
+            df.loc[len(df)] = [bloc[0], bloc[1], campagne, 0, 0]
 
     df = df.sort_values(by=['campagne'])
     df = df.reset_index(drop=True)
     
-    df = pd.melt(df, id_vars=['filtre_produit','couleur','campagne'], value_vars=['Vrac','Conditionné','Autres'])
+    df = pd.melt(df, id_vars=['filtre_produit','couleur','campagne'], value_vars=['Vrac','Conditionné'])
     df.rename(columns = {'value':'volume'}, inplace = True)
     create_graphe(df,bloc[0],bloc[1])
 

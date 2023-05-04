@@ -13,8 +13,7 @@ function include_with_debug($f) {
 
 $args = [
     'id' => FILTER_SANITIZE_STRING,
-    'filtre' => FILTER_SANITIZE_STRING,
-    'bis' => FILTER_SANITIZE_STRING
+    'filtre' => FILTER_SANITIZE_STRING
 ];
 
 $GET = filter_input_array(INPUT_GET, $args, true);
