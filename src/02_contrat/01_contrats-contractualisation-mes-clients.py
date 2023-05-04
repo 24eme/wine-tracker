@@ -53,7 +53,11 @@ if not famille:
 contrats = pd.read_csv(csv, sep=";",encoding="iso8859_15", low_memory=False, index_col=False)
 
 contrats = contrats.query("statut == 'SOLDE' or statut == 'NONSOLDE'")
-contrats.rename(columns = {'type de vente':'type_de_vente','prix unitaire (en hl)':'prix'}, inplace = True)
+contrats["Chiffre d'affaire"] = contrats['prix unitaire (en hl)'] * contrats['volume propose (en hl)']
+
+contrats.rename(columns = {'type de vente':'type_de_vente'}, inplace = True)
+
+
 contrats = contrats.query("type_de_vente == 'vrac'")
 contrats = contrats.query("appellation != 'CDP'")
 
@@ -93,7 +97,7 @@ if 'negociant' in famille:
 
 contrats['filtre_produit'] = contrats['appellation'] + "-" + contrats['lieu'] + "-" +contrats['certification']+ "-" +contrats['genre']+ "-" +contrats['mention']
 
-contrats_spe_spe = contrats.groupby(["identifiant_vendeur","filtre_produit", "couleur","identifiant acheteur","nom_acheteur"]).sum(["volume propose","prix"])[["volume propose","prix"]]
+contrats_spe_spe = contrats.groupby(["identifiant_vendeur","filtre_produit", "couleur","identifiant acheteur","nom_acheteur"]).sum(["volume propose","Chiffre d'affaire"])[["volume propose","Chiffre d'affaire"]]
 
 contrats_spe_spe = contrats_spe_spe.reset_index(level='identifiant acheteur')
 contrats_spe_spe = contrats_spe_spe.reset_index(level='nom_acheteur')
@@ -103,7 +107,7 @@ contrats_spe_spe = contrats_spe_spe.reset_index(level='nom_acheteur')
 # PAR APPELLATIONS
 
 
-contrats_spe_all = contrats_spe_spe.groupby(["identifiant_vendeur","filtre_produit",'identifiant acheteur',"nom_acheteur"]).sum(["volume propose","prix"])[["volume propose","prix"]]
+contrats_spe_all = contrats_spe_spe.groupby(["identifiant_vendeur","filtre_produit",'identifiant acheteur',"nom_acheteur"]).sum(["volume propose","Chiffre d'affaire"])[["volume propose","Chiffre d'affaire"]]
 contrats_spe_all["couleur"] = "TOUT"
 contrats_spe_all = contrats_spe_all.reset_index()
 contrats_spe_all.set_index(['identifiant_vendeur','filtre_produit','couleur'], inplace = True)
@@ -113,7 +117,7 @@ contrats_spe_all.set_index(['identifiant_vendeur','filtre_produit','couleur'], i
 #AUCUN FILTRE TOUTES LES APPELLATIONS ET TOUTES LES COULEURS
 
 
-contrats_all_all = contrats_spe_spe.groupby(["identifiant_vendeur",'identifiant acheteur',"nom_acheteur"]).sum(["volume propose","prix"])[["volume propose","prix"]]
+contrats_all_all = contrats_spe_spe.groupby(["identifiant_vendeur",'identifiant acheteur',"nom_acheteur"]).sum(["volume propose","Chiffre d'affaire"])[["volume propose","Chiffre d'affaire"]]
 contrats_all_all["couleur"] = "TOUT"
 contrats_all_all["filtre_produit"] = "TOUT"
 contrats_all_all = contrats_all_all.reset_index()
@@ -134,7 +138,7 @@ df_final.rename(columns = {'nom_acheteur':"Client"}, inplace = True)
 
 
 df_final['volume'] = round(df_final['volume']/len(lastcampagnes)).astype(int)
-df_final['prix'] = round(df_final['prix']/len(lastcampagnes)).astype(int)
+df_final["Chiffre d'affaire"] = round(df_final["Chiffre d'affaire"]/len(lastcampagnes)).astype(int)
 
 #df_final
 
@@ -163,8 +167,8 @@ def create_graphe(df, identifiant, appellation, couleur):
 
     fig.write_html(dossier+"/contrats-contractualisation-mes-clients-en-hl.html",include_plotlyjs=False)
 
-    fig = px.pie(df, values='prix', names='Client',custom_data=['Client', 'prix'], color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
-    fig.update_traces(textposition='inside', textinfo='label+text', text=df['prix'].map("{:} €".format))
+    fig = px.pie(df, values="Chiffre d'affaire", names='Client',custom_data=['Client', "Chiffre d'affaire"], color_discrete_sequence=px.colors.sequential.Agsunset, width=1200, height=650)
+    fig.update_traces(textposition='inside', textinfo='label+text', text=df["Chiffre d'affaire"].map("{:} €".format))
     fig.update_layout(legend_font_size=15)
 
     fig.update_traces(
@@ -183,7 +187,7 @@ def create_graphe(df, identifiant, appellation, couleur):
 # In[ ]:
 
 
-d = {'volume':'sum', 'prix':'sum', 'Client':'first'}
+d = {'volume':'sum', "Chiffre d'affaire":'sum', 'Client':'first'}
 for bloc in df_final.index.unique():
     df = df_final.loc[bloc]
     df = df.groupby('identifiant acheteur').agg(d)
