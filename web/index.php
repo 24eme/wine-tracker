@@ -66,7 +66,7 @@ $chiffres = json_decode($json_chiffre, true);
 
 
 if (json_last_error() !== JSON_ERROR_NONE) {
-    die('Erreur dans la lecture des données : '.json_last_error_msg());
+    die('Pas de données concernant cet opérateur.');
 }
 
 $list_produits_drm = $data['produits']['drm'];
