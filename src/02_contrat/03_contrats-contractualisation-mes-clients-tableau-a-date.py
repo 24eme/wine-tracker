@@ -219,8 +219,8 @@ df_final["n-1"] = round(df_final["n-1"].fillna(0)).astype(int)
 df_final["5 DA"] = df_final["5 DA"]/5
 df_final["5 DA"] = round(df_final["5 DA"].fillna(0)).astype(int)
 
-nom_col_n_1 = '<p class="text-end">Campagne '+lastcampagnes[-2:][0]+'</p>'
-nom_col_5_DA = '<p class="text-end">Moyenne 5 dernières campagnes complètes</p>'
+nom_col_n_1 = '<p class="text-end">Évolution avec la campagne '+lastcampagnes[-2:][0]+'</p>'
+nom_col_5_DA = '<p class="text-end">Évolution avec la moyenne 5 dernières campagnes complètes</p>'
 
 df_final[nom_col_n_1] = ((df_final["n"] - df_final['n-1']) / df_final['n-1'])*100
 df_final[nom_col_5_DA] = ((df_final["n"] - df_final['5 DA']) / df_final['5 DA'])*100
