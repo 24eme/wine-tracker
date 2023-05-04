@@ -154,7 +154,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php if ($chiffres["cumul_sortie_campagne_en_cours"]): ?>
                                     <div class="col">
                                         <div class="chiffre">
-                                            <h3 class="mb-0"><?php echo number_format($chiffres["cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_cumul_sortie_campagne_en_cours"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> %</span></h3>
+                                            <h3 class="mb-0"><?php echo number_format($chiffres["cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à la campagne précédente" class="fs-6 badge <?php if($chiffres["evolution_cumul_sortie_campagne_en_cours"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> %</span></h3>
                                             <p>Cumul volume de sortie de la campagne courante</p>
                                         </div>
                                     </div>
@@ -162,8 +162,8 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php if ($chiffres["volume_contractualisation"]): ?>
                                     <div class="col">
                                         <div class="chiffre">
-                                            <h3 class="mb-0"><?php echo number_format($chiffres["volume_contractualisation"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à l'année précédente" class="fs-6 badge <?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></h2>
-                                            <p>Volume contractualisation depuis le début de la campagne</p>
+                                            <h3 class="mb-0"><?php echo number_format($chiffres["volume_contractualisation"], 0, ',', '&nbsp;'); ?> hl <span title="Evolution par rapport à la campagne précédente" class="fs-6 badge <?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></h2>
+                                            <p>Volume contractualisé depuis le début de la campagne</p>
                                         </div>
                                     </div>
                                 <?php endif; ?>
