@@ -41,32 +41,27 @@ drm = drm[drm['genres'] != 'VCI']
 # In[ ]:
 
 
-#SEULEMENT DONNEES SUR LES DRM PRODUCTEURS
+#pour les volumes récoltés :
+csv_mouvements = path+"/data/drm/export_bi_mouvements.csv"  #il manque un ; à la fin du header.
+mouvements = pd.read_csv(csv_mouvements, sep=";",encoding="iso8859_15",index_col=False)
+mouvements.rename(columns = {'identifiant declarant':'identifiant','type de mouvement':'type_de_mouvement','certification':'certifications','genre':'genres','appellation':'appellations','mention':'mentions','lieu':'lieux','couleur':'couleurs'}, inplace = True)
+mouvements = mouvements.query('campagne in @lastcampagnes')
+mouvements = mouvements.loc[mouvements['famille DRM'] == 'producteur']
+mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
+mouvements = mouvements[mouvements['genres'] != 'VCI']
+mouvements = mouvements.query("appellations != 'CDP'")
 
-etablissements = pd.read_csv(csv_etablissements, sep=";",encoding="iso8859_15",index_col=False)
-familleproducteurs = ['producteur cave_cooperative','producteur cave_particuliere','producteur vendeur_raisin']
-etablissements = etablissements.query("famille in @familleproducteurs")
-
-identifiantsproducteurs = etablissements['identifiant'].unique()
-
-drm = drm.query('identifiant in @identifiantsproducteurs')
-drm = drm.loc[drm['appellations'] != "CDP"]
+identifiantsproducteurs = mouvements['identifiant'].unique()
+#mouvements
 
 
 # In[ ]:
 
 
-#pour les volumes récoltés :
-csv_mouvements = path+"/data/drm/export_bi_mouvements.csv"  #il manque un ; à la fin du header.
-mouvements = pd.read_csv(csv_mouvements, sep=";",encoding="iso8859_15",index_col=False)
-mouvements.rename(columns = {'identifiant declarant':'identifiant','type de mouvement':'type_de_mouvement','certification':'certifications','genre':'genres','appellation':'appellations','mention':'mentions','lieu':'lieux','couleur':'couleurs'}, inplace = True)
-mouvements = mouvements.query('identifiant in @identifiantsproducteurs')
-mouvements = mouvements.query('campagne in @lastcampagnes')
-mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
-mouvements = mouvements[mouvements['genres'] != 'VCI']
-mouvements = mouvements.query("appellations != 'CDP'")
+#SEULEMENT DONNEES SUR LES DRM PRODUCTEURS
 
-#mouvements
+drm = drm.loc[drm['appellations'] != "CDP"]
+drm = drm.query('identifiant in @identifiantsproducteurs')
 
 
 # In[ ]:
