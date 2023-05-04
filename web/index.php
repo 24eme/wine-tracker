@@ -78,6 +78,7 @@ $list_produits_contrats = $data['produits']['contrats'];
     <link href="main.css" rel="stylesheet">
     <title>Statistiques personnalisées pour <?php echo $data["name"];?></title>
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="jquery-3.6.4.slim.min.js"></script>
     <script src="plotly-2.18.0.min.js"></script>
 </head>
 <body>
@@ -213,7 +214,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <div class="mt-5">
                                     <div class="row shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 entete"><span>Stocks, récoltes et sorties</span></h3>
-                                        <p class="explications">Évolution des stocks physiques de production en début de campagne, des récoltes et des sorties de chais (hors replis et déclassement) sur 10 campagnes. Les données, exprimées en hl, sont issues des DRM Inter-Rhône.</p>
+                                        <p class="explications">Évolution des stocks physiques de production en début de campagne, des récoltes et des sorties de chais (hors replis et déclassement) sur 10 campagnes.</p>
                                         <div class="col-xs-4"></div>
                                         <div class="col-md-6 mt-4 graph-container graph-container-ma-cave">
                                             <?php include_with_debug($drm_graph_path."/drm-stock-recoltes-sorties.html");?>
@@ -228,7 +229,7 @@ $list_produits_contrats = $data['produits']['contrats'];
 
                                     <div class="mt-3 row shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Sorties de chais VRAC/Conditionné</span></h3>
-                                        <p class="explications mt-5">Évolution des sorties de chais vrac (france et export), conditionné (crd france et export) et autres volumes (consommation perso) sur 10 camapgne. Les volumes sont exprimés en hectolitres. Les données proviennent des DRM Inter-Rhone.</p>
+                                        <p class="explications mt-5">Évolution des sorties de chais vrac (france et export), conditionné (crd france et export) et autres volumes (consommation perso) sur 10 camapgne. Les volumes sont exprimés en hectolitres.</p>
                                         <div class="col-md-6 mt-4 graph-container graph-container-ma-cave">
                                             <?php if(file_exists($drm_graph_path."/drm-sortie-vrac-condionne.html")): ?>
                                                 <?php include_with_debug($drm_graph_path."/drm-sortie-vrac-condionne.html");?>
@@ -248,7 +249,7 @@ $list_produits_contrats = $data['produits']['contrats'];
 
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Sorties mensuelles</span></h3>
-                                        <p class="explications">Évolution des sorties (vrac, contrat, exports, crd, factures et consommations personnelles) par mois et par campagne sur 3 ans. Les données sont issues des DRM Inter-Rhône et sont exprimées en hectolitres.</p>
+                                        <p class="explications">Évolution des sorties (vrac, contrat, exports, crd, factures et consommations personnelles) par mois et par campagne sur 3 ans.</p>
                                         <div class="col-md-6 mt-4 graph-container graph-container-ma-cave">
                                             <?php if(file_exists($drm_graph_path."/drm-sorties-par-campagne-et-mois.html")): ?>
                                                 <?php include_with_debug($drm_graph_path."/drm-sorties-par-campagne-et-mois.html");?>
@@ -268,7 +269,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php if(file_exists($drm_graph_path."/drm-sorties-cumul-par-mois.html")): ?>
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Cumul des sorties de chais</span></h3>
-                                        <p class="explications mt-5">Cumul de campagne des sorties (vrac, contrat, exports, crd, factures et consommations personnelles) par mois sur 5 campagnes et la campagne en cours. Les données sont issues des DRM Inter-Rhône et sont exprimées en hectolitres.</p>
+                                        <p class="explications mt-5">Cumul de campagne des sorties (vrac, contrat, exports, crd, factures et consommations personnelles) par mois sur 5 campagnes et la campagne en cours.</p>
                                         <div class="col-md-12 graph-container graph-container-ma-cave" style="height: 510px;">
                                             <?php include_with_debug($drm_graph_path."/drm-sorties-cumul-par-mois.html");?>
                                         </div>
@@ -301,6 +302,16 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html")): ?>
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Contractualisation moyenne par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?></span></h3>
+                                        <div class="pie-volume d-block">
+                                          <p class="explications">
+                                              Moyenne sur 5 ans des volumes contractualisés en hectolitres par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?>.
+                                          </p>
+                                        </div>
+                                        <div class="pie-prix d-none">
+                                          <p class="explications">
+                                              Moyenne sur 5 ans des prix des contracts réalisés en euros par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?>.
+                                          </p>
+                                        </div>
                                         <div class="col-md-12 graph-container">
                                           <div class="col-2 btn-group mx-5 mt-5" role="group">
                                             <input type="radio" class="radio-btn-contrats btn-check" name="btnradio" id="btn-radio-volume" autocomplete="off" checked onclick="changeRadioValue(this)" data-toshow="pie-volume" data-tohide="pie-prix">
@@ -308,10 +319,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                             <input type="radio" class="radio-btn-contrats btn-check" name="btnradio" id="btn-radio-prix" autocomplete="off" onclick="changeRadioValue(this)" data-toshow="pie-prix" data-tohide="pie-volume">
                                             <label class="btn btn-light" for="btn-radio-prix">en €</label>
                                           </div>
-                                          <div id="pie-volume" class="d-block">
-                                            <p class="explications">
-                                                Moyenne sur 5 ans des volumes contractualisés en hectolitres par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?>.
-                                            </p>
+                                          <div class="pie-volume d-block">
                                             <div class="m-2 graph-container-ma-cave">
                                               <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html");?>
                                             </div>
@@ -321,10 +329,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                                 </p>
                                             </div>
                                           </div>
-                                          <div id="pie-prix" class="d-none">
-                                            <p class="explications">
-                                                Moyenne sur 5 ans des prix des contracts réalisés en euros par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?>.
-                                            </p>
+                                          <div class="pie-prix d-none">
                                             <div class="m-2 graph-container-ma-cave">
                                               <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-en-euros.html");?>
                                             </div>
@@ -341,7 +346,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Top 10 des <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?></span></h3>
                                         <p class="explications">
-                                            Top 10 des volumes contractualisés par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?> sur 5 ans. Les volumes sont exprimés en hectolitres. Les données proviennent des contrats visés par Inter-Rhône.
+                                            Top 10 des volumes contractualisés par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?> sur 5 ans. Les volumes sont exprimés en hectolitres.
                                         </p>
                                         <div class="col-md-12 graph-container">
                                             <div class="col-xs-10 graph-container-ma-cave">

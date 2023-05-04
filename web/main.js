@@ -57,9 +57,8 @@ function changeFilter(filtre){
 }
 
 function changeRadioValue(choix){
-  document.getElementById(choix.dataset.toshow).classList.remove("d-none");
-  document.getElementById(choix.dataset.toshow).classList.add("d-block");
-
-  document.getElementById(choix.dataset.tohide).classList.remove("d-block");
-  document.getElementById(choix.dataset.tohide).classList.add("d-none");
+    $('.'+choix.dataset.toshow).removeClass("d-none");
+    $('.'+choix.dataset.toshow).addClass("d-block");
+    $('.'+choix.dataset.tohide).removeClass("d-block");
+    $('.'+choix.dataset.tohide).addClass("d-none");
 }
