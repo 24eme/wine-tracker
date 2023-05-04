@@ -74,8 +74,22 @@ mouvements['mois'] = mouvements['periode'].apply(lambda x: (int(x.split('-')[1])
 # In[ ]:
 
 
-#Sorties du cumul campagne (peut être annualisé sur 12 mois)
+#Sorties du cumul campagne complete
 chiffres = pd.DataFrame()
+campagne_n_1 = lastcampagnes[-2]
+sorties = mouvements.query("campagne==@campagne_n_1")
+sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum})
+mois_en_cours = pd.DataFrame()
+mois_en_cours['mois'] = sorties['periode'].apply(lambda x: (int(x.split('-')[1]) + 4) % 12)
+mois_en_cours.reset_index(inplace=True)
+chiffres['cumul_sortie_campagne_n_1'] = sorties['volume mouvement']
+
+
+# In[ ]:
+
+
+#Sorties du cumul campagne actuelle
+
 campagne_courante = lastcampagnes[-1]
 sorties = mouvements.query("campagne==@campagne_courante")
 sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum})
@@ -83,38 +97,7 @@ mois_en_cours = pd.DataFrame()
 mois_en_cours['mois'] = sorties['periode'].apply(lambda x: (int(x.split('-')[1]) + 4) % 12)
 mois_en_cours.reset_index(inplace=True)
 chiffres['cumul_sortie_campagne_en_cours'] = sorties['volume mouvement']
-chiffres.reset_index(inplace=True)
-chiffres.set_index(['identifiant'], inplace=True)
-
-#Evolution mois par rapport au mois à n-1
-chiffres['evolution_mois_par_rapport_a_n_1'] = chiffres['cumul_sortie_campagne_en_cours'] * 0
-
-
-# In[ ]:
-
-
-#Volume de sortie vrac hl du mois courant 
-
-typedemouvementsvracs = ['sorties/vrac']
-vrac = mouvements.query("type_de_mouvement in @typedemouvementsvracs and campagne==@campagne_courante")
-vrac = vrac.groupby(["identifiant",'campagne']).agg({"volume mouvement": sum, 'periode': max})
-vrac.reset_index(inplace=True)
-vrac.set_index(['identifiant'], inplace=True)
-chiffres['volume_de_sortie_vrac'] = vrac['volume mouvement']
-chiffres['evolution_sorite_vrac_mois_par_rapport_a_n_1'] = vrac['volume mouvement'] * 0
-
-
-# In[ ]:
-
-
-#Volume sortie conditionné mois
-typedemouvementsconditionne = ['sorties/crd', 'sorties/factures', 'sorties/export']
-conditionne = mouvements.query("type_de_mouvement in @typedemouvementsconditionne and campagne==@campagne_courante")
-conditionne = conditionne.groupby(["identifiant",'campagne']).agg({"volume mouvement": sum})
-conditionne.reset_index(inplace=True)
-conditionne.set_index(['identifiant'], inplace = True)
-chiffres['volume_sortie_conditionne_mois'] = conditionne['volume mouvement']
-chiffres['evolution_sortie_conditionne_du_mois'] = conditionne['volume mouvement'] * 0
+chiffres['evolution_cumul_sortie_campagne_en_cours'] = (sorties['volume mouvement'] - chiffres['cumul_sortie_campagne_n_1']) * 100 / chiffres['cumul_sortie_campagne_n_1']
 
 
 # In[ ]:
@@ -171,4 +154,10 @@ for id_operateur in chiffres.index:
     with open(dossier+"/"+id_operateur+"_chiffre.json", "w") as outfile:
         outfile.write(chiffres.loc[id_operateur].to_json())
         outfile.close()
+
+
+# In[ ]:
+
+
+
 
