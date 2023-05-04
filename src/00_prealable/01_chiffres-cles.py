@@ -125,11 +125,11 @@ contrats.rename(columns = {'type de vente':'type_de_vente'}, inplace = True)
 contrats = contrats.query("type_de_vente == 'vrac'")
 contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
 contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
-contrats = contrats.query('campagne in @lastcampagnes')
+contrats = contrats.query('campagne == @campagne_courante')
 
 contrat_extract = pd.concat([
     contrats[contrats['identifiant acheteur'].isin(acheteurs['identifiant'])][['identifiant acheteur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant acheteur' : 'identifiant'}),
-    contrats[contrats['identifiant vendeur'].isin(acheteurs['identifiant'])][['identifiant vendeur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant vendeur' : 'identifiant'})
+    contrats[contrats['identifiant vendeur'].isin(vendeurs['identifiant'])][['identifiant vendeur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant vendeur' : 'identifiant'})
 ]).drop_duplicates()
 
 
