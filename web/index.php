@@ -269,7 +269,6 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php if(file_exists($drm_graph_path."/drm-sorties-cumul-par-mois.html")): ?>
                                     <div class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Cumul des sorties de chais</span></h3>
-                                        <h4 class="col-xs-12 text-center fw-bold">MA CAVE</h4>
                                         <div class="col-md-12 graph-container graph-container-ma-cave" style="height: 510px;">
                                             <?php include_with_debug($drm_graph_path."/drm-sorties-cumul-par-mois.html");?>
                                         </div>
