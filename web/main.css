@@ -5,7 +5,10 @@ body{
 .chiffre{
   max-width: 85%;
 }
-
+.chiffre .badge {
+    position: relative;
+    top: -6px;
+}
 .table td:first-child {
     text-align: left;
 }​
