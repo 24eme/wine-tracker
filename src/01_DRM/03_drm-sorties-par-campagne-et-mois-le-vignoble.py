@@ -183,7 +183,7 @@ def create_graphe(final,appellation,couleur):
     )
     for tick in range(len(final)):
         if tick % 12 == 0:
-            fig.add_vline(tick, annotation_text="Campagne "+final['campagne'][tick])
+            fig.add_vline(tick, annotation_text=final['campagne'][tick])
             
     #fig.show()
     

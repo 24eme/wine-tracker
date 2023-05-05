@@ -165,9 +165,3 @@ for id_operateur in produits.index.unique():
     with open(dossier+"/"+id_operateur+".json", "w") as outfile:
         json.dump(dictionary, outfile)
 
-
-# In[ ]:
-
-
-
-
