@@ -248,9 +248,9 @@ df_final['n'] = df_final['n'].map('{:,.0f}'.format).replace(',', ' ', regex=True
 df_final.rename(columns = {'n': '<p class="text-end">Campagne courante</p>' }, inplace = True)
 
 if(negociant):
-    df_final.rename(columns = {'nom_acheteur':'<p>Fournisseur</p>'}, inplace = True)
+    df_final.rename(columns = {'nom_acheteur':'<p>Fournisseur(s)</p>'}, inplace = True)
 else :
-    df_final.rename(columns = {'nom_acheteur':'<p>Acheteur</p>'}, inplace = True)
+    df_final.rename(columns = {'nom_acheteur':'<p>Client(s)</p>'}, inplace = True)
 
 df_final = df_final.sort_values(by=['identifiant_vendeur','filtre_produit','couleur'])
 
