@@ -5,9 +5,19 @@ body{
 .chiffre{
   max-width: 85%;
 }
+.chiffre-minor{
+    opacity: 0.6;
+}
+.chiffre h3 {
+    text-transform: initial;
+    color: black;
+    position: relative;
+    left: 80px;
+}
 .chiffre .badge {
     position: relative;
     top: -6px;
+    min-width: 70px;
 }
 .table td:first-child {
     text-align: left;
@@ -150,7 +160,4 @@ header nav a.active {
 }
 #nav-tab {
     padding-left: 40px;
-}
-.disable-uppercase {
-    text-transform: initial;
 }
