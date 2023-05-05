@@ -3,12 +3,28 @@ body{
 }
 
 .chiffre{
-  max-width: 85%;
+    padding-right: 65px;
+    margin-left: 30px;
+}
+.chiffre-minor{
+    opacity: 0.6;
+}
+.chiffre h3 {
+    text-transform: initial;
+    color: black;
+    position: relative;
+    left: 80px;
 }
 .chiffre .badge {
     position: relative;
     top: -6px;
+    min-width: 70px;
 }
+
+.left-border {
+    border-left: 1px solid #ddd;
+}
+
 .table td:first-child {
     text-align: left;
 }​
