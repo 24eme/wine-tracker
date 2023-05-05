@@ -151,3 +151,6 @@ header nav a.active {
 #nav-tab {
     padding-left: 40px;
 }
+.disable-uppercase {
+    text-transform: initial;
+}
