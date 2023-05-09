@@ -47,13 +47,24 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   });
 
+  slide = href.searchParams.get('slide');
+  if(slide){
+    $([document.documentElement, document.body]).animate({scrollTop: $("#"+slide).offset().top});
+  }
+
+  $(window).load(function() {
+      $(".loader").fadeOut(2000);
+  });
 });
 
 // quand on change de filtre l'url est mis à jour et la page est rechargée.
 function changeFilter(filtre){
   var href = new URL(window.location.href);
+  var slide = filtre.dataset['slide'];
   href.searchParams.set('filtre',filtre.value);
-  window.location = href;
+  href.searchParams.set('slide',slide);
+  $(".loader").fadeIn(2000);
+  setTimeout(() => window.location = href, 1000);
 }
 
 function changeRadioValue(choix){

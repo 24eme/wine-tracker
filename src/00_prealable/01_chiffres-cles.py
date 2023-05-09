@@ -17,6 +17,14 @@ import collections
 # In[ ]:
 
 
+date = datetime.today()
+#date = datetime(2023, 7, 31)
+date = date.replace(year=date.year - 1)
+
+
+# In[ ]:
+
+
 path = pathlib.Path().absolute()
 path = str(path).replace("/src","").replace("/00_prealable","")
 dossier_graphes=path+"/graphes/"
@@ -78,11 +86,17 @@ mouvements['mois'] = mouvements['periode'].apply(lambda x: (int(x.split('-')[1])
 chiffres = pd.DataFrame()
 campagne_n_1 = lastcampagnes[-2]
 sorties = mouvements.query("campagne==@campagne_n_1")
+
+sorties["a_date"] = (pd.to_datetime(sorties['date mouvement']) <= date)
+sorties = sorties.query("a_date==True")
+
 sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum})
+
 mois_en_cours = pd.DataFrame()
 mois_en_cours['mois'] = sorties['periode'].apply(lambda x: (int(x.split('-')[1]) + 4) % 12)
 mois_en_cours.reset_index(inplace=True)
 chiffres['cumul_sortie_campagne_n_1'] = sorties['volume mouvement']
+chiffres['cumul_sortie_campagne_n_1']
 
 
 # In[ ]:
@@ -97,6 +111,7 @@ mois_en_cours = pd.DataFrame()
 mois_en_cours['mois'] = sorties['periode'].apply(lambda x: (int(x.split('-')[1]) + 4) % 12)
 mois_en_cours.reset_index(inplace=True)
 chiffres['cumul_sortie_campagne_en_cours'] = sorties['volume mouvement']
+
 chiffres['evolution_cumul_sortie_campagne_en_cours'] = (sorties['volume mouvement'] - chiffres['cumul_sortie_campagne_n_1']) * 100 / chiffres['cumul_sortie_campagne_n_1']
 
 
@@ -125,16 +140,32 @@ contrats.rename(columns = {'type de vente':'type_de_vente'}, inplace = True)
 contrats = contrats.query("type_de_vente == 'vrac'")
 contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
 contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
-contrats = contrats.query('campagne == @campagne_courante')
 
+#TOUTE LA CAMPAGNE PRECEDENTE JUSQU'A DATE
+
+date = pd.to_datetime(date.strftime('%d/%m/%Y'))
+contrats["a_date"] = (contrats['date de validation'] < date.tz_localize('utc'))
+
+contrat_passe = contrats.query('campagne == @campagne_n_1 and a_date==True')
+contrat_extract = pd.concat([
+    contrat_passe[contrat_passe['identifiant acheteur'].isin(acheteurs['identifiant'])][['identifiant acheteur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant acheteur' : 'identifiant'}),
+    contrat_passe[contrat_passe['identifiant vendeur'].isin(vendeurs['identifiant'])][['identifiant vendeur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant vendeur' : 'identifiant'})
+]).drop_duplicates()
+
+chiffres['volume_contractualisation_n_1'] = contrat_extract.groupby(['identifiant'])['volume propose (en hl)'].sum()
+
+
+#CAMPAGNE ACTUELLE
+contrats = contrats.query('campagne==@campagne_courante')
 contrat_extract = pd.concat([
     contrats[contrats['identifiant acheteur'].isin(acheteurs['identifiant'])][['identifiant acheteur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant acheteur' : 'identifiant'}),
     contrats[contrats['identifiant vendeur'].isin(vendeurs['identifiant'])][['identifiant vendeur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant vendeur' : 'identifiant'})
 ]).drop_duplicates()
 
-
 chiffres['volume_contractualisation'] = contrat_extract.groupby(['identifiant'])['volume propose (en hl)'].sum()
-chiffres['evolution_par_rapport_a_n_1'] = contrat_extract.groupby(['identifiant'])['volume propose (en hl)'].sum() * 0
+
+
+chiffres['evolution_par_rapport_a_n_1'] = (chiffres['volume_contractualisation'] - chiffres['volume_contractualisation_n_1']) * 100 / chiffres['volume_contractualisation_n_1']
 
 
 # In[ ]:
@@ -154,10 +185,4 @@ for id_operateur in chiffres.index:
     with open(dossier+"/"+id_operateur+"_chiffre.json", "w") as outfile:
         outfile.write(chiffres.loc[id_operateur].to_json())
         outfile.close()
-
-
-# In[ ]:
-
-
-
 

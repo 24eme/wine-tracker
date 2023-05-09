@@ -77,7 +77,7 @@ $list_produits_contrats = $data['produits']['contrats'];
     <link href="main.css" rel="stylesheet">
     <title>Statistiques personnalisées pour <?php echo $data["name"];?></title>
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="jquery-3.6.4.slim.min.js"></script>
+    <script src="jquery-1.9.1.min.js"></script>
     <script src="plotly-2.18.0.min.js"></script>
 </head>
 <body>
@@ -114,8 +114,12 @@ $list_produits_contrats = $data['produits']['contrats'];
         </div>
       </div>
     </header>
-
     <main class="container">
+        <div class="d-flex justify-content-center">
+          <div class="loader spinner-border m-5" role="status">
+            <span class="sr-only"></span>
+          </div>
+        </div>
         <div class="p-4 p-md-5 mb-4 text-white bg-vvr-main">
             <div class="col-md-6 px-0">
                 <h1 class="display-4 text-uppercase">Espace de statistiques personnalisées</h1>
@@ -197,7 +201,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                             <div class="tab-pane fade show active" id="nav-drm" role="tabpanel" aria-labelledby="nav-drm-tab" tabindex="0" class="onglets d-block">
                                 <div class="mt-3 d-flex align-items-end flex-column">
                                     <div class="col-md-5 shadow bg-white rounded">
-                                        <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)">
+                                        <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)" data-slide="nav-drm-tab">
                                         <?php
                                             foreach($list_produits_drm as $filtre => $libelle):
                                                 if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_drm))://si le dossier existe on l'affiche ?>
@@ -212,10 +216,25 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 </div>
 
                                 <div class="mt-5">
-                                    <div class="row shadow bg-white p-1 graphs-container">
+                                    <div id="slide-1" class="row shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 entete"><span>Stocks, récoltes et sorties</span></h3>
                                         <p class="explications">Évolution des stocks physiques de production en début de campagne, des récoltes et des sorties de chais (hors replis et déclassement) sur 10 campagnes.</p>
                                         <div class="col-xs-4"></div>
+                                        <div class="mt-3 d-flex align-items-end flex-column">
+                                            <div class="col-md-5 shadow bg-white rounded">
+                                                <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-1">
+                                                <?php
+                                                    foreach($list_produits_drm as $filtre => $libelle):
+                                                        if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_drm))://si le dossier existe on l'affiche ?>
+                                                            <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"
+                                                            <?php if (str_replace('-1', '-TOUT', $filtre) === $GET['filtre']) { echo "selected"; } ?>
+                                                            ><?php echo $libelle;?></option>
+                                                        <?php endif;
+                                                    endforeach;
+                                                ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-md-6 mt-4 graph-container graph-container-ma-cave">
                                             <?php include_with_debug($drm_graph_path."/drm-stock-recoltes-sorties.html");?>
                                         </div>
@@ -227,9 +246,24 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         </div>
                                     </div>
 
-                                    <div class="mt-3 row shadow bg-white p-1 graphs-container">
+                                    <div id="slide-2" class="mt-3 row shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Sorties de chais VRAC/Conditionné</span></h3>
-                                        <p class="explications mt-5">Évolution des sorties de chais vrac (france et export), conditionné (crd france et export) et autres volumes (consommation perso) sur 10 campagnes. Les volumes sont exprimés en hectolitres.</p>
+                                        <p class="explications mt-5">Évolution des sorties de chais vrac (france et export), conditionné (crd france et export) et autres volumes (consommation perso) sur 10 campagne. Les volumes sont exprimés en hectolitres.</p>
+                                        <div class="mt-3 d-flex align-items-end flex-column">
+                                            <div class="col-md-5 shadow bg-white rounded">
+                                                <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-2">
+                                                <?php
+                                                    foreach($list_produits_drm as $filtre => $libelle):
+                                                        if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_drm))://si le dossier existe on l'affiche ?>
+                                                            <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"
+                                                            <?php if (str_replace('-1', '-TOUT', $filtre) === $GET['filtre']) { echo "selected"; } ?>
+                                                            ><?php echo $libelle;?></option>
+                                                        <?php endif;
+                                                    endforeach;
+                                                ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-md-6 mt-4 graph-container graph-container-ma-cave">
                                             <?php if(file_exists($drm_graph_path."/drm-sortie-vrac-condionne.html")): ?>
                                                 <?php include_with_debug($drm_graph_path."/drm-sortie-vrac-condionne.html");?>
@@ -247,9 +281,24 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         </div>
                                     </div>
 
-                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
+                                    <div id="slide-3" class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Sorties mensuelles</span></h3>
                                         <p class="explications">Évolution des sorties (vrac, contrat, exports, crd, factures et consommations personnelles) par mois et par campagne sur 3 ans.</p>
+                                        <div class="mt-3 d-flex align-items-end flex-column">
+                                            <div class="col-md-5 shadow bg-white rounded">
+                                                <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-3">
+                                                <?php
+                                                    foreach($list_produits_drm as $filtre => $libelle):
+                                                        if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_drm))://si le dossier existe on l'affiche ?>
+                                                            <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"
+                                                            <?php if (str_replace('-1', '-TOUT', $filtre) === $GET['filtre']) { echo "selected"; } ?>
+                                                            ><?php echo $libelle;?></option>
+                                                        <?php endif;
+                                                    endforeach;
+                                                ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-md-6 mt-4 graph-container graph-container-ma-cave">
                                             <?php if(file_exists($drm_graph_path."/drm-sorties-par-campagne-et-mois.html")): ?>
                                                 <?php include_with_debug($drm_graph_path."/drm-sorties-par-campagne-et-mois.html");?>
@@ -267,10 +316,25 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         </div>
                                     </div>
                                 <?php if(file_exists($drm_graph_path."/drm-sorties-cumul-par-mois.html")): ?>
-                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
+                                    <div id="slide-4" class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Cumul des sorties de chais</span></h3>
                                         <p class="explications mt-5">Cumul de campagne des sorties (vrac, contrat, exports, crd, factures et consommations personnelles) par mois sur 5 campagnes et la campagne en cours.</p>
-                                        <div class="col-md-12 graph-container graph-container-ma-cave" style="height: 510px;">
+                                        <div class="mt-3 d-flex align-items-end flex-column">
+                                            <div class="col-md-5 shadow bg-white rounded">
+                                                <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-4">
+                                                <?php
+                                                    foreach($list_produits_drm as $filtre => $libelle):
+                                                        if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_drm))://si le dossier existe on l'affiche ?>
+                                                            <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"
+                                                            <?php if (str_replace('-1', '-TOUT', $filtre) === $GET['filtre']) { echo "selected"; } ?>
+                                                            ><?php echo $libelle;?></option>
+                                                        <?php endif;
+                                                    endforeach;
+                                                ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mt-4 graph-container graph-container-ma-cave" style="height: 510px;">
                                             <?php include_with_debug($drm_graph_path."/drm-sorties-cumul-par-mois.html");?>
                                         </div>
                                         <div class="col-xs-12">
@@ -293,7 +357,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                         <div class="tab-pane fade" id="nav-contrats" role="tabpanel" aria-labelledby="nav-contrats-tab" tabindex="0" class="onglets mt-5 d-none">
                             <div class="mt-3 d-flex align-items-end flex-column">
                                 <div class="col-md-5 shadow bg-white rounded">
-                                    <select id="filtre-contrats" name="filtre-contrats" class="form-select form-control" onchange="changeFilter(this)">
+                                    <select id="filtre-contrats" name="filtre-contrats" class="form-select form-control" onchange="changeFilter(this)" data-slide="nav-contrats-tab">
                                         <?php
                                         foreach($list_produits_contrats as $filtre => $libelle):
                                             if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_contrats))://si le dossier existe on l'affiche ?>
@@ -307,7 +371,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                             </div>
                             <div class="mt-5">
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html")): ?>
-                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
+                                    <div id="slide-5" class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Contractualisation moyenne par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?></span></h3>
                                         <div class="pie-volume d-block">
                                           <p class="explications">
@@ -320,13 +384,27 @@ $list_produits_contrats = $data['produits']['contrats'];
                                           </p>
                                         </div>
                                         <div class="col-md-12 graph-container">
-                                          <div class="col-2 btn-group mx-5 mt-5" role="group">
+                                          <div class="col-2 btn-group mx-5 mt-3" role="group">
                                             <input type="radio" class="radio-btn-contrats btn-check" name="btnradio" id="btn-radio-volume" autocomplete="off" checked onclick="changeRadioValue(this)" data-toshow="pie-volume" data-tohide="pie-prix">
                                             <label class="btn btn-light" for="btn-radio-volume">en hl</label>
                                             <input type="radio" class="radio-btn-contrats btn-check" name="btnradio" id="btn-radio-prix" autocomplete="off" onclick="changeRadioValue(this)" data-toshow="pie-prix" data-tohide="pie-volume">
                                             <label class="btn btn-light" for="btn-radio-prix">en €</label>
                                           </div>
-                                          <div class="pie-volume d-block">
+                                          <div class="d-flex align-items-end flex-column" style="margin-top: -40px;">
+                                              <div class="col-md-5 shadow bg-white rounded">
+                                                  <select id="filtre-contrats" name="filtre-contrats" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-5">
+                                                      <?php
+                                                      foreach($list_produits_contrats as $filtre => $libelle):
+                                                          if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_contrats))://si le dossier existe on l'affiche ?>
+                                                          <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"
+                                                              <?php if (str_replace('-1', '-TOUT', $filtre) === $GET['filtre']) { echo "selected"; } ?>
+                                                              ><?php echo $libelle;?></option>
+                                                          <?php endif;
+                                                      endforeach; ?>
+                                                  </select>
+                                              </div>
+                                          </div>
+                                          <div class="mt-3 pie-volume d-block">
                                             <div class="m-2 graph-container-ma-cave">
                                               <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html");?>
                                             </div>
@@ -336,7 +414,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                                 </p>
                                             </div>
                                           </div>
-                                          <div class="pie-prix d-none">
+                                          <div class="mt-3 pie-prix d-none">
                                             <div class="m-2 graph-container-ma-cave">
                                               <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-en-euros.html");?>
                                             </div>
@@ -350,12 +428,26 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     </div>
                                 <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html")): ?>
-                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
+                                    <div id="slide-6" class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Top 10 des <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?></span></h3>
                                         <p class="explications">
                                             Top 10 des volumes contractualisés par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?> sur 5 ans. Les volumes sont exprimés en hectolitres.
                                         </p>
-                                        <div class="col-md-12 graph-container">
+                                        <div class="mt-5 d-flex align-items-end flex-column">
+                                            <div class="col-md-5 shadow bg-white rounded">
+                                                <select id="filtre-contrats" name="filtre-contrats" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-6">
+                                                    <?php
+                                                    foreach($list_produits_contrats as $filtre => $libelle):
+                                                        if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_contrats))://si le dossier existe on l'affiche ?>
+                                                        <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"
+                                                            <?php if (str_replace('-1', '-TOUT', $filtre) === $GET['filtre']) { echo "selected"; } ?>
+                                                            ><?php echo $libelle;?></option>
+                                                        <?php endif;
+                                                    endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 graph-container mt-3">
                                             <div class="col-xs-10 graph-container-ma-cave">
                                                 <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html");?>
                                             </div>
@@ -366,11 +458,25 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     </div>
                                 <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html")): ?>
-                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
+                                    <div id="slide-7" class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 pt-4 text-center fw-bold entete"><span>Contractualisations des <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?> à date</span></h3>
                                         <p class="explications pb-0">Volumes contractualisés de la campagne en cours comparées à la campagne précédente et à la moyenne des 5 dernières campagnes. Les volumes sont exprimés en hectolitres.</p>
+                                        <div class="mt-5 d-flex align-items-end flex-column">
+                                            <div class="col-md-5 shadow bg-white rounded">
+                                                <select id="filtre-contrats" name="filtre-contrats" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-7">
+                                                    <?php
+                                                    foreach($list_produits_contrats as $filtre => $libelle):
+                                                        if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_contrats))://si le dossier existe on l'affiche ?>
+                                                        <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"
+                                                            <?php if (str_replace('-1', '-TOUT', $filtre) === $GET['filtre']) { echo "selected"; } ?>
+                                                            ><?php echo $libelle;?></option>
+                                                        <?php endif;
+                                                    endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-md-12 graph-container">
-                                            <div class="col-xs-10 mt-5">
+                                            <div class="col-xs-10 mt-3">
                                                 <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html");?>
                                             </div>
                                             <p class="text-muted text-end fs-6 mt-3">
@@ -380,12 +486,26 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     </div>
                                 <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html")): ?>
-                                    <div class="row mt-3 shadow bg-white p-1 graphs-container">
+                                    <div id="slide-8" class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Déroulement de la campagne</span></h3>
                                         <p class="explications">
                                             Comparaison du cumul de campagne des volumes contractualisés de la campagne en cours (en rouge) avec les 4 dernières campagnes. Les volumes sont en hectolitres. Les données proviennent des contrats visés par Inter-Rhône.
                                         </p>
-                                        <div class="col-md-12 graph-container">
+                                        <div class="mt-5 d-flex align-items-end flex-column">
+                                            <div class="col-md-5 shadow bg-white rounded">
+                                                <select id="filtre-contrats" name="filtre-contrats" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-8">
+                                                    <?php
+                                                    foreach($list_produits_contrats as $filtre => $libelle):
+                                                        if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_contrats))://si le dossier existe on l'affiche ?>
+                                                        <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"
+                                                            <?php if (str_replace('-1', '-TOUT', $filtre) === $GET['filtre']) { echo "selected"; } ?>
+                                                            ><?php echo $libelle;?></option>
+                                                        <?php endif;
+                                                    endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3 col-md-12 graph-container">
                                             <div class="col-xs-10 graph-container-ma-cave">
                                                 <?php include_with_debug($contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html");?>
                                             </div>

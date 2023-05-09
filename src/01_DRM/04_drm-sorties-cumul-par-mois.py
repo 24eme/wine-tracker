@@ -207,13 +207,15 @@ df_final.sort_values(by=["identifiant",'filtre_produit','couleur',"ordre_mois","
 currentMonth = format(datetime.now().month, "02d")
 
 annees = sorted(df_final['annee'].unique())
+
+annees.append(str(int(annees[0])-1))
+annees = sorted(annees)
 les_mois = sorted(sorties["m"].unique())
 
 for bloc in df_final.index.unique():
 
     df = df_final.loc[[bloc]]
     df = df.reset_index()
-
     for a in annees:
         for m in les_mois:
             if(a == annees[0] and int(m) < 8): #si la première annees ne pas prendre de 0 à 8
@@ -229,7 +231,6 @@ for bloc in df_final.index.unique():
 
     df = df.sort_values(by=["identifiant",'filtre_produit','couleur',"ordre_mois","campagne"])
     df['volume cumule'] = df.groupby(["identifiant","filtre_produit", "couleur","campagne"])['volume'].cumsum()
-
     df = df.reset_index(drop=True)
     create_graphe(df,bloc[0],bloc[1],bloc[2])
 
