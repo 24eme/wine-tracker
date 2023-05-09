@@ -194,7 +194,7 @@ $list_produits_contrats = $data['produits']['contrats'];
 
                     <div class="tab-content" id="nav-tabContent">
                         <?php if (count($ls_dossier_drm)): ?>
-                            <div class="tab-pane fade show active" id="nav-drm" role="tabpanel" aria-labelledby="nav-drm-tab" tabindex="0" id="drm" class="onglets d-block">
+                            <div class="tab-pane fade show active" id="nav-drm" role="tabpanel" aria-labelledby="nav-drm-tab" tabindex="0" class="onglets d-block">
                                 <div class="mt-3 d-flex align-items-end flex-column">
                                     <div class="col-md-5 shadow bg-white rounded">
                                         <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)">
@@ -279,11 +279,18 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     </div>
                                 <?php endif;?>
                             </div>
+                            <?php if (count($ls_dossier_drm)): ?>
+                            <div class="btn-footer mt-5">
+                                <div class="col-12 text-center">
+                                    <a class="btn btn-primary btn-lg" onclick="$('#nav-contrats-tab').click();return false;" >Accéder à mes stats Contrat</a>
+                                </div>
+                            </div>
+                            <?php endif; ?>
                         </div>
                     <?php endif; ?>
 
                     <?php if (count($ls_dossier_contrats)): ?>
-                        <div class="tab-pane fade" id="nav-contrats" role="tabpanel" aria-labelledby="nav-contrats-tab" tabindex="0" id="contrats" class="onglets mt-5 d-none">
+                        <div class="tab-pane fade" id="nav-contrats" role="tabpanel" aria-labelledby="nav-contrats-tab" tabindex="0" class="onglets mt-5 d-none">
                             <div class="mt-3 d-flex align-items-end flex-column">
                                 <div class="col-md-5 shadow bg-white rounded">
                                     <select id="filtre-contrats" name="filtre-contrats" class="form-select form-control" onchange="changeFilter(this)">
@@ -389,6 +396,13 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     </div>
                                 <?php endif;?>
                             </div>
+                            <?php if (count($ls_dossier_contrats)): ?>
+                            <div class="mt-5 btn-footer">
+                                <div class="col-12 text-center">
+                                    <a class="btn btn-primary btn-lg" onclick="$('#nav-drm-tab').click();return false;" >Accéder à mes stats DRM</a>
+                                </div>
+                            </div>
+                            <?php endif; ?>
                         </div>
                     <?php endif; ?>
                 </div>

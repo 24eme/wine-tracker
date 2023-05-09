@@ -167,3 +167,7 @@ header nav a.active {
 #nav-tab {
     padding-left: 40px;
 }
+
+.btn-footer .btn-primary, .btn-footer .btn-primary:active {
+    color: #800000;border-color: #ffb93f;background-color: #ffb93f; font-weight: bold;
+}
