@@ -51,6 +51,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
   if(slide){
     $([document.documentElement, document.body]).animate({scrollTop: $("#"+slide).offset().top});
   }
+
+  $(window).load(function() {
+      $(".loader").fadeOut(2000);
+  });
 });
 
 // quand on change de filtre l'url est mis à jour et la page est rechargée.

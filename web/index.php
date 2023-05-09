@@ -77,7 +77,7 @@ $list_produits_contrats = $data['produits']['contrats'];
     <link href="main.css" rel="stylesheet">
     <title>Statistiques personnalisées pour <?php echo $data["name"];?></title>
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="jquery-3.4.1.min.js"></script>
+    <script src="jquery-1.9.1.min.js"></script>
     <script src="plotly-2.18.0.min.js"></script>
 </head>
 <body>
@@ -116,6 +116,11 @@ $list_produits_contrats = $data['produits']['contrats'];
     </header>
 
     <main class="container">
+        <div class="d-flex justify-content-center">
+            <div class="loader spinner-border m-5" role="status">
+              <span class="sr-only"></span>
+            </div>
+        </div>
         <div class="p-4 p-md-5 mb-4 text-white bg-vvr-main">
             <div class="col-md-6 px-0">
                 <h1 class="display-4 text-uppercase">Espace de statistiques personnalisées</h1>
