@@ -60,10 +60,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 // quand on change de filtre l'url est mis à jour et la page est rechargée.
 function changeFilter(filtre){
   var href = new URL(window.location.href);
-  var ancre = filtre.dataset['slide'];
+  var slide = filtre.dataset['slide'];
   href.searchParams.set('filtre',filtre.value);
-  href.searchParams.set('slide',ancre);
-  window.location = href;
+  href.searchParams.set('slide',slide);
+  $(".loader").fadeIn(2000);
+  setTimeout(() => window.location = href, 1000);
 }
 
 function changeRadioValue(choix){

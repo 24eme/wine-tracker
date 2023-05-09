@@ -114,12 +114,11 @@ $list_produits_contrats = $data['produits']['contrats'];
         </div>
       </div>
     </header>
-
     <main class="container">
         <div class="d-flex justify-content-center">
-            <div class="loader spinner-border m-5" role="status">
-              <span class="sr-only"></span>
-            </div>
+          <div class="loader spinner-border m-5" role="status">
+            <span class="sr-only"></span>
+          </div>
         </div>
         <div class="p-4 p-md-5 mb-4 text-white bg-vvr-main">
             <div class="col-md-6 px-0">
