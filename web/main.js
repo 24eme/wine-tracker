@@ -47,12 +47,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   });
 
+  slide = href.searchParams.get('slide');
+  if(slide){
+    $([document.documentElement, document.body]).animate({scrollTop: $("#"+slide).offset().top});
+  }
 });
 
 // quand on change de filtre l'url est mis à jour et la page est rechargée.
 function changeFilter(filtre){
   var href = new URL(window.location.href);
+  var ancre = filtre.dataset['slide'];
   href.searchParams.set('filtre',filtre.value);
+  href.searchParams.set('slide',ancre);
   window.location = href;
 }
 
