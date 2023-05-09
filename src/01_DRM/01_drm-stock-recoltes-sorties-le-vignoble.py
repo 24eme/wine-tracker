@@ -104,7 +104,7 @@ df_final_spe_spe['couleurs'] = df_final_spe_spe['couleurs'].str.upper()
 df_final_spe_spe.index = [df_final_spe_spe['filtre_produit'],df_final_spe_spe['couleurs']]
 df_final_spe_spe.drop(['filtre_produit','couleurs'], axis=1, inplace=True)
 
-df_final_spe_spe.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Récoltes (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
+df_final_spe_spe.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Entrées revendication (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
 
 #df_final_spe_spe
 
@@ -129,7 +129,7 @@ drm_merge_spe_all['couleurs'] = "TOUT"
 drm_merge_spe_all.index = [drm_merge_spe_all['filtre_produit'],drm_merge_spe_all['couleurs']]
 drm_merge_spe_all.drop(['filtre_produit','couleurs'], axis=1, inplace=True)
 
-drm_merge_spe_all.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Récoltes (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
+drm_merge_spe_all.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Entrées revendication (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
 
 
 #drm_merge_spe_all
@@ -156,7 +156,7 @@ drm_merge_all_all['couleurs'] = "TOUT"
 drm_merge_all_all.index = [drm_merge_all_all['filtre_produit'],drm_merge_all_all['couleurs']]
 drm_merge_all_all.drop(['filtre_produit','couleurs'], axis=1, inplace=True)
 
-drm_merge_all_all.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Récoltes (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
+drm_merge_all_all.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Entrées revendication (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
 
 
 #drm_merge_all_all
@@ -170,7 +170,7 @@ df_final = pd.concat([df_final_spe_spe, drm_merge_spe_all])
 df_final = pd.concat([df_final, drm_merge_all_all])
 df_final = df_final.sort_values(by=['filtre_produit','couleurs'])
 df_final = df_final.fillna(0)
-df_final = df_final.round({'Récoltes (hl)': 0, 'Sorties de chais (hl)': 0, "Stock physique en début de camp production (hl)":0})
+df_final = df_final.round({'Entrées revendication (hl)': 0, 'Sorties de chais (hl)': 0, "Stock physique en début de camp production (hl)":0})
 #df_final
 
 
@@ -241,6 +241,6 @@ for bloc in df_final.index.unique():
     df = df.reset_index(drop=True)
 
 
-    df = pd.melt(df, id_vars=['filtre_produit','couleurs','campagne'], value_vars=['Stock physique en début de camp production (hl)','Récoltes (hl)','Sorties de chais (hl)'])
+    df = pd.melt(df, id_vars=['filtre_produit','couleurs','campagne'], value_vars=['Stock physique en début de camp production (hl)','Entrées revendication (hl)','Sorties de chais (hl)'])
     create_graphique(df,bloc[0],bloc[1])
 
