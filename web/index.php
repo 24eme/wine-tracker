@@ -491,7 +491,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         <p class="explications">
                                             Comparaison du cumul de campagne des volumes contractualisés de la campagne en cours (en rouge) avec les 4 dernières campagnes. Les volumes sont en hectolitres. Les données proviennent des contrats visés par Inter-Rhône.
                                         </p>
-                                        <div class="mt-5 d-flex align-items-end flex-column">
+                                        <div class="d-flex align-items-end flex-column">
                                             <div class="col-md-5 shadow bg-white rounded">
                                                 <select id="filtre-contrats" name="filtre-contrats" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-8">
                                                     <?php
