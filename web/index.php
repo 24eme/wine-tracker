@@ -229,7 +229,7 @@ $list_produits_contrats = $data['produits']['contrats'];
 
                                     <div class="mt-3 row shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Sorties de chais VRAC/Conditionné</span></h3>
-                                        <p class="explications mt-5">Évolution des sorties de chais vrac (france et export), conditionné (crd france et export) et autres volumes (consommation perso) sur 10 camapgne. Les volumes sont exprimés en hectolitres.</p>
+                                        <p class="explications mt-5">Évolution des sorties de chais vrac (france et export), conditionné (crd france et export) et autres volumes (consommation perso) sur 10 campagnes. Les volumes sont exprimés en hectolitres.</p>
                                         <div class="col-md-6 mt-4 graph-container graph-container-ma-cave">
                                             <?php if(file_exists($drm_graph_path."/drm-sortie-vrac-condionne.html")): ?>
                                                 <?php include_with_debug($drm_graph_path."/drm-sortie-vrac-condionne.html");?>
