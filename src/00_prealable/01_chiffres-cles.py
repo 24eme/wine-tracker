@@ -87,16 +87,35 @@ chiffres = pd.DataFrame()
 campagne_n_1 = lastcampagnes[-2]
 sorties = mouvements.query("campagne==@campagne_n_1")
 
-sorties["a_date"] = (pd.to_datetime(sorties['date mouvement']) <= date)
-sorties = sorties.query("a_date==True")
-
 sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum})
 
 mois_en_cours = pd.DataFrame()
 mois_en_cours['mois'] = sorties['periode'].apply(lambda x: (int(x.split('-')[1]) + 4) % 12)
 mois_en_cours.reset_index(inplace=True)
 chiffres['cumul_sortie_campagne_n_1'] = sorties['volume mouvement']
-chiffres['cumul_sortie_campagne_n_1']
+
+
+# In[ ]:
+
+
+#Sorties du cumul de la campagne précédente à date
+sorties = mouvements.query("campagne==@campagne_n_1")
+
+
+# In[ ]:
+
+
+#Sorties du cumul de la campagne précédente à date
+sorties = mouvements.query("campagne==@campagne_n_1")
+
+sorties["a_date"] = (pd.to_datetime(sorties['date mouvement'], errors='coerce') <= date)
+sorties = sorties.query("a_date==True")
+sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum})
+
+mois_en_cours = pd.DataFrame()
+mois_en_cours['mois'] = sorties['periode'].apply(lambda x: (int(x.split('-')[1]) + 4) % 12)
+mois_en_cours.reset_index(inplace=True)
+chiffres['cumul_sortie_campagne_n_1_a_date'] = sorties['volume mouvement']
 
 
 # In[ ]:
@@ -112,7 +131,8 @@ mois_en_cours['mois'] = sorties['periode'].apply(lambda x: (int(x.split('-')[1])
 mois_en_cours.reset_index(inplace=True)
 chiffres['cumul_sortie_campagne_en_cours'] = sorties['volume mouvement']
 
-chiffres['evolution_cumul_sortie_campagne_en_cours'] = (sorties['volume mouvement'] - chiffres['cumul_sortie_campagne_n_1']) * 100 / chiffres['cumul_sortie_campagne_n_1']
+#Evolution à date
+chiffres['evolution_cumul_sortie_campagne_en_cours'] = (sorties['volume mouvement'] - chiffres['cumul_sortie_campagne_n_1_a_date']) * 100 / chiffres['cumul_sortie_campagne_n_1_a_date']
 
 
 # In[ ]:
@@ -136,34 +156,31 @@ acheteurs = etablissements[etablissements['famille'] != 'producteur']
 contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
 contrats = contrats.query("statut == 'SOLDE' or statut == 'NONSOLDE'")
 contrats = contrats.query("appellation != 'CDP'")
-contrats.rename(columns = {'type de vente':'type_de_vente'}, inplace = True)
+contrats.rename(columns = {'type de vente':'type_de_vente','date de validation':'date_validation'}, inplace = True)
 contrats = contrats.query("type_de_vente == 'vrac'")
 contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
-contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
+contrats['date_validation'] = pd.to_datetime(contrats['date_validation'], utc=True)
+contrats['date_validation'] = contrats['date_validation'].map(datetime.date) 
 
 #TOUTE LA CAMPAGNE PRECEDENTE JUSQU'A DATE
+date = pd.to_datetime(date.strftime('%m/%d/%Y'))
 
-date = pd.to_datetime(date.strftime('%d/%m/%Y'))
-contrats["a_date"] = (contrats['date de validation'] < date.tz_localize('utc'))
-
-contrat_passe = contrats.query('campagne == @campagne_n_1 and a_date==True')
+contrat_passe = contrats.query('campagne == @campagne_n_1 and date_validation<=@date')
 contrat_extract = pd.concat([
     contrat_passe[contrat_passe['identifiant acheteur'].isin(acheteurs['identifiant'])][['identifiant acheteur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant acheteur' : 'identifiant'}),
     contrat_passe[contrat_passe['identifiant vendeur'].isin(vendeurs['identifiant'])][['identifiant vendeur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant vendeur' : 'identifiant'})
-]).drop_duplicates()
+])
 
 chiffres['volume_contractualisation_n_1'] = contrat_extract.groupby(['identifiant'])['volume propose (en hl)'].sum()
-
 
 #CAMPAGNE ACTUELLE
 contrats = contrats.query('campagne==@campagne_courante')
 contrat_extract = pd.concat([
     contrats[contrats['identifiant acheteur'].isin(acheteurs['identifiant'])][['identifiant acheteur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant acheteur' : 'identifiant'}),
     contrats[contrats['identifiant vendeur'].isin(vendeurs['identifiant'])][['identifiant vendeur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant vendeur' : 'identifiant'})
-]).drop_duplicates()
+])
 
 chiffres['volume_contractualisation'] = contrat_extract.groupby(['identifiant'])['volume propose (en hl)'].sum()
-
 
 chiffres['evolution_par_rapport_a_n_1'] = (chiffres['volume_contractualisation'] - chiffres['volume_contractualisation_n_1']) * 100 / chiffres['volume_contractualisation_n_1']
 
