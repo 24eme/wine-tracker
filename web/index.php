@@ -121,24 +121,22 @@ $list_produits_contrats = $data['produits']['contrats'];
           </div>
         </div>
         <div class="p-4 p-md-5 mb-4 text-white bg-vvr-main">
-            <div class="col-md-6 px-0">
-                <h1 class="display-4 text-uppercase">Espace de statistiques personnalisées</h1>
-                <p class="lead my-3">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+            <div class="col-md-7 px-0">
+                <h4><?php echo $data["name"];?></h4>
+                <h1 class="display-4 text-uppercase">Mes statistiques personnalisées</h1>
+                <p class="lead my-3">Retrouvez ici les statistiques personnalisées issues de vos données de DRM et contrats. Les chiffres clés, ainsi que différents tableaux de bords dynamiques, vous permettront d’obtenir une vue d’ensemble de votre activité. Comparez les différentes campagnes, ou vos tendances avec l’ensemble du vignoble. Que cela soit en volume ou en valeur, les informations essentielles sur votre activité se trouvent dans les pages ci-après.</p>
             </div>
         </div>
 
         <div class="g-5">
+            <?php if ($debug): ?>
+            <div class="col-9">
+                    <h4 style='color:red;'>DEBUG</h4>
+            </div>
+            <?php endif; ?>
             <div class="col-3 offset-9 text-muted">
                 Dernière mise à jour : <?php echo $data["date"];?>
             </div>
-            <h2 class="mx-3 mb-5">
-                <?php echo $data["name"];?> : </br>statistiques et graphiques
-                <?php
-                if ($debug) {
-                    echo "<span style='color:red;'>DEBUG</span>";
-                }
-                ?>
-            </h2>
         </div>
 
         <article class="blog-post">
@@ -147,6 +145,9 @@ $list_produits_contrats = $data['produits']['contrats'];
                     <div>
                         <div class="text-end">
                             <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
+                                <div class="col-12 entete text-center mb-4">
+                                    <h3>Mes chiffres clés</h3>
+                                </div>
                                 <?php if ($chiffres["cumul_sortie_campagne_n_1"]): ?>
                                     <div class="col">
                                         <div class="chiffre chiffre-minor">
@@ -248,7 +249,7 @@ $list_produits_contrats = $data['produits']['contrats'];
 
                                     <div id="slide-2" class="mt-3 row shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Sorties de chais VRAC/Conditionné</span></h3>
-                                        <p class="explications mt-5">Évolution des sorties de chais vrac (france et export), conditionné (crd france et export) et autres volumes (consommation perso) sur 10 campagne. Les volumes sont exprimés en hectolitres.</p>
+                                        <p class="explications mt-5">Évolution des sorties de chais vrac (france et export), conditionné (crd france et export).</p>
                                         <div class="mt-3 d-flex align-items-end flex-column">
                                             <div class="col-md-5 shadow bg-white rounded">
                                                 <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-2">
@@ -283,7 +284,7 @@ $list_produits_contrats = $data['produits']['contrats'];
 
                                     <div id="slide-3" class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Sorties mensuelles</span></h3>
-                                        <p class="explications">Évolution des sorties (vrac, contrat, exports, crd, factures et consommations personnelles) par mois et par campagne sur 3 ans.</p>
+                                        <p class="explications">Évolution des sorties vrac (france et export), conditionné (crd france et export).</p>
                                         <div class="mt-3 d-flex align-items-end flex-column">
                                             <div class="col-md-5 shadow bg-white rounded">
                                                 <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-3">
@@ -318,7 +319,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php if(file_exists($drm_graph_path."/drm-sorties-cumul-par-mois.html")): ?>
                                     <div id="slide-4" class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Cumul des sorties de chais</span></h3>
-                                        <p class="explications mt-5">Cumul de campagne des sorties (vrac, contrat, exports, crd, factures et consommations personnelles) par mois sur 5 campagnes et la campagne en cours.</p>
+                                        <p class="explications mt-5">Cumul de campagne sorties de chais vrac (france et export), conditionné (crd france et export).</p>
                                         <div class="mt-3 d-flex align-items-end flex-column">
                                             <div class="col-md-5 shadow bg-white rounded">
                                                 <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-4">
@@ -380,7 +381,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         </div>
                                         <div class="pie-prix d-none">
                                           <p class="explications">
-                                              Moyenne sur 5 ans des prix des contracts réalisés en euros par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?>.
+                                              Chiffre d'affaires annuel moyen réalisé par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?> sur 5 ans
                                           </p>
                                         </div>
                                         <div class="col-md-12 graph-container">
@@ -489,7 +490,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     <div id="slide-8" class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Déroulement de la campagne</span></h3>
                                         <p class="explications">
-                                            Comparaison du cumul de campagne des volumes contractualisés de la campagne en cours (en rouge) avec les 4 dernières campagnes. Les volumes sont en hectolitres. Les données proviennent des contrats visés par Inter-Rhône.
+                                            Cumul des volumes contractualisés par campagne (en rouge la campagne en cours) puis les 4 dernières campagnes
                                         </p>
                                         <div class="d-flex align-items-end flex-column">
                                             <div class="col-md-5 shadow bg-white rounded">
