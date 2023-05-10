@@ -61,6 +61,9 @@ drm = drm.loc[drm['appellations'] != "CDP"]
 
 csv_mouvements = path+"/data/drm/export_bi_mouvements.csv"  #il manque un ; à la fin du header.
 mouvements = pd.read_csv(csv_mouvements, sep=";",encoding="iso8859_15",index_col=False)
+mouvements = mouvements[mouvements['periode'] > '2013-12']
+
+all_campagne = mouvements['campagne'].unique()
 
 mouvements.rename(columns = {'identifiant declarant':'identifiant','type de mouvement':'type_de_mouvement','certification':'certifications','genre':'genres','appellation':'appellations','mention':'mentions','lieu':'lieux','couleur':'couleurs'}, inplace = True)
 
@@ -68,7 +71,6 @@ if(id_operateur):
     mouvements = mouvements.query("identifiant == @id_operateur").reset_index()
 
 mouvements = mouvements.query('campagne in @lastcampagnes')
-mouvements = mouvements[mouvements['periode'] > '2013-12']
 mouvements = mouvements[mouvements['genres'] != 'VCI']
 mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 
@@ -141,11 +143,24 @@ df_final.set_index(['identifiant', 'filtre_produit', 'couleurs'], inplace=True)
 # In[ ]:
 
 
-df_final.fillna(0, inplace=True)
 df_final = df_final.round({'Entrées revendication (hl)': 0, 'Sorties de chais (hl)': 0, "Stock physique en début de camp production (hl)":0, 'sortie': 0})
 
 df_final = df_final[['campagne', 'Stock physique en début de camp production (hl)','Entrées revendication (hl)','Sorties de chais (hl)']] #, 'sortie'
 #df_final
+
+
+# In[ ]:
+
+
+all = pd.DataFrame()
+index = df_final.reset_index().set_index(['identifiant', 'filtre_produit', 'couleurs']).index
+i = pd.DataFrame(index=index)
+for c in all_campagne:
+    i['campagne'] = c
+    all = pd.concat([all, i])
+all.reset_index().set_index(['identifiant', 'filtre_produit', 'couleurs', 'campagne'])
+df_final = pd.concat([all, df_final])
+df_final.sort_index(inplace=True)
 
 
 # In[ ]:
