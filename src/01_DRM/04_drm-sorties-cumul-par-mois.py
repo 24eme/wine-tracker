@@ -208,8 +208,10 @@ currentMonth = format(datetime.now().month, "02d")
 
 annees = sorted(df_final['annee'].unique())
 
-annees.append(str(int(annees[0])-1))
-annees = sorted(annees)
+if(len(annees)<6):
+    annees.append(str(int(annees[0])-1))
+    annees = sorted(annees)
+
 les_mois = sorted(sorties["m"].unique())
 
 for bloc in df_final.index.unique():
