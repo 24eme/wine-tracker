@@ -6,7 +6,7 @@ if [ -n "$IDENTIFIANT" ]; then echo "$IDENTIFIANT"; else echo "TOUS"; fi
 
 
 python3 src/00_prealable/01_chiffres-cles.py "$IDENTIFIANT"
-python3 src/00_prealable/00_informations-operateur.py "$IDENTIFIANT"
+python3 -W ignore src/00_prealable/00_informations-operateur.py "$IDENTIFIANT"
 
 python3 src/01_DRM/01_drm-stock-recoltes-sorties.py "$IDENTIFIANT"
 python3 src/01_DRM/02_drm-sortie-vrac-condionne.py "$IDENTIFIANT"
