@@ -119,7 +119,7 @@ df_final['couleurs'] = df_final['couleurs'].str.upper()
 
 df_final.index = [df_final['identifiant'],df_final['filtre_produit'],df_final['couleurs'],df_final['campagne']]
 df_final = df_final[['stock debut', 'volume mouvement_x', 'volume mouvement_y', 'sortie']]
-df_final.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Récoltes (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
+df_final.rename(columns = {'stock debut': 'Stock physique en début de camp production (hl)','volume mouvement_x' : 'Entrées revendication (hl)', 'volume mouvement_y' : 'Sorties de chais (hl)'}, inplace = True)
 
 #df_final
 
@@ -127,10 +127,10 @@ df_final.rename(columns = {'stock debut': 'Stock physique en début de camp prod
 # In[ ]:
 
 
-couleur_group = df_final.groupby(["identifiant","campagne","filtre_produit"]).sum(['Récoltes (hl)','Sorties de chais (hl)','Stock physique en début de camp production (hl)','sortie'])
+couleur_group = df_final.groupby(["identifiant","campagne","filtre_produit"]).sum(['Entrées revendication (hl)','Sorties de chais (hl)','Stock physique en début de camp production (hl)','sortie'])
 couleur_group['couleurs'] = 'TOUT'
 
-produit_group = couleur_group.groupby(["identifiant","campagne"]).sum(['Récoltes (hl)','Sorties de chais (hl)','Stock physique en début de camp production (hl)','sortie']).reset_index()
+produit_group = couleur_group.groupby(["identifiant","campagne"]).sum(['Entrées revendication (hl)','Sorties de chais (hl)','Stock physique en début de camp production (hl)','sortie']).reset_index()
 produit_group['filtre_produit'] = 'TOUT'
 produit_group['couleurs'] = 'TOUT'
 
@@ -142,9 +142,9 @@ df_final.set_index(['identifiant', 'filtre_produit', 'couleurs'], inplace=True)
 
 
 df_final.fillna(0, inplace=True)
-df_final = df_final.round({'Récoltes (hl)': 0, 'Sorties de chais (hl)': 0, "Stock physique en début de camp production (hl)":0, 'sortie': 0})
+df_final = df_final.round({'Entrées revendication (hl)': 0, 'Sorties de chais (hl)': 0, "Stock physique en début de camp production (hl)":0, 'sortie': 0})
 
-df_final = df_final[['campagne', 'Stock physique en début de camp production (hl)','Récoltes (hl)','Sorties de chais (hl)']] #, 'sortie'
+df_final = df_final[['campagne', 'Stock physique en début de camp production (hl)','Entrées revendication (hl)','Sorties de chais (hl)']] #, 'sortie'
 #df_final
 
 

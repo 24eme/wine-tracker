@@ -79,7 +79,8 @@ drm = drm[['identifiant', 'appellations', 'lieux', 'certifications', 'genres', '
 
 drm['filtre_produits'] = drm[['appellations', 'lieux', 'certifications', 'genres', 'mentions', 'couleurs']].apply(lambda rows: '-'.join(rows.values.astype('str')).upper(), axis=1)
 drm['filtre_appellations'] = drm[['appellations', 'lieux', 'certifications', 'genres', 'mentions']].apply(lambda rows: '-'.join(rows.values.astype('str'))+'-0TOUT', axis=1)
-drm['libelle_appellations'] = drm['libelle produit'].str.split().apply(lambda libelles: ' '.join(libelles[:-1]))
+drm['libelle_appellations'] = drm['libelle produit'].str.split().apply(lambda libelles: re.sub(r' (rouge|blanc|rosé).*', '', ' '.join(libelles), flags=re.I))
+drm['libelle produit'] = drm['libelle produit'].apply(lambda libelle: re.sub(r' (rouge|blanc|rosé).*', r' \g<1>', libelle, flags=re.I))
 
 drm_tout = pd.DataFrame()
 drm_tout['identifiant'] = drm['identifiant']
@@ -93,6 +94,12 @@ drm_produits = pd.concat([
 ]).sort_values(['identifiant', 'filtre_produits']).drop_duplicates()
 drm_produits['type'] = 'drm'
 
+drm_produits = drm_produits.set_index(['identifiant', 'filtre_produits', 'libelle produit'])
+drm_produits['nb_produits'] = drm.set_index(['identifiant', 'appellations', 'lieux', 'certifications', 'genres', 'mentions', 'couleurs']).groupby(['identifiant','filtre_appellations','libelle_appellations'])[['filtre_produits']].count().reset_index().rename(columns={'filtre_produits': 'nb_produits', 'filtre_appellations': 'filtre_produits', 'libelle_appellations': 'libelle produit'}).set_index(['identifiant', 'filtre_produits', 'libelle produit'])
+drm_produits.fillna(0, inplace=True)
+
+drm_produits = drm_produits[drm_produits['nb_produits'] != 1][['type']].reset_index()
+
 
 # In[ ]:
 
@@ -105,7 +112,8 @@ contrat_extract = pd.concat([
 contrat_extract['couleur'] = contrat_extract['couleur'].str.upper()
 contrat_extract['filtre_produits'] = contrat_extract[['appellation', 'lieu', 'certification', 'genre', 'mention', 'couleur']].apply(lambda rows: '-'.join(rows.values.astype('str')).upper(), axis=1)
 contrat_extract['filtre_appellations'] = contrat_extract[['appellation', 'lieu', 'certification', 'genre', 'mention']].apply(lambda rows: '-'.join(rows.values.astype('str'))+'-0TOUT', axis=1)
-contrat_extract['libelle_appellations'] = contrat_extract['libelle produit'].str.split().apply(lambda libelles: ' '.join(libelles[:-1]))
+contrat_extract['libelle_appellations'] = contrat_extract['libelle produit'].str.split().apply(lambda libelles: re.sub(r' (rouge|blanc|rosé).*', '', ' '.join(libelles), flags=re.I))
+contrat_extract['libelle produit'] = contrat_extract['libelle produit'].apply(lambda libelle: re.sub(r' (rouge|blanc|rosé).*', r' \g<1>', libelle, flags=re.I))
 
 contrat_tout = pd.DataFrame()
 contrat_tout['identifiant'] = contrat_extract['identifiant']
@@ -118,6 +126,12 @@ contrat_produits = pd.concat([
     contrat_tout
 ]).sort_values(['identifiant', 'filtre_produits']).drop_duplicates()
 contrat_produits['type'] = 'contrat'
+
+contrat_produits = contrat_produits.set_index(['identifiant', 'filtre_produits', 'libelle produit'])
+contrat_produits['nb_produits'] = contrat_extract.set_index(['identifiant', 'appellation', 'lieu', 'certification', 'genre', 'mention', 'couleur']).groupby(['identifiant','filtre_appellations','libelle_appellations'])[['filtre_produits']].count().reset_index().rename(columns={'filtre_produits': 'nb_produits', 'filtre_appellations': 'filtre_produits', 'libelle_appellations': 'libelle produit'}).set_index(['identifiant', 'filtre_produits', 'libelle produit'])
+contrat_produits.fillna(0, inplace=True)
+
+contrat_produits = contrat_produits[contrat_produits['nb_produits'] != 1][['type']].reset_index()
 
 
 # In[ ]:
@@ -164,4 +178,10 @@ for id_operateur in produits.index.unique():
 
     with open(dossier+"/"+id_operateur+".json", "w") as outfile:
         json.dump(dictionary, outfile)
+
+
+# In[ ]:
+
+
+
 
