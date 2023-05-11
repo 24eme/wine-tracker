@@ -216,3 +216,9 @@ for indexes in df_final.index.unique():
     
     create_graphique(data,dossier+"/drm-stock-recoltes-sorties.html")
 
+
+# In[ ]:
+
+
+
+
