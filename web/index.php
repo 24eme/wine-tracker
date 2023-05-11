@@ -60,13 +60,13 @@ $contrat_le_vignoble_graph_path = $path_vignoble."/contrat/".$GET['filtre'];
 $json = file_get_contents($path_cave."/".$identifiant.".json");
 $data = json_decode($json, true);
 
-$json_chiffre = file_get_contents($path_cave."/".$identifiant."_chiffre.json");
-$chiffres = json_decode($json_chiffre, true);
-
-
 if (json_last_error() !== JSON_ERROR_NONE) {
     die('Pas de données concernant cet opérateur.');
 }
+
+$json_chiffre = file_get_contents($path_cave."/".$identifiant."_chiffre.json");
+$chiffres = json_decode($json_chiffre, true);
+
 
 $list_produits_drm = $data['produits']['drm'];
 $list_produits_contrats = $data['produits']['contrats'];
@@ -142,6 +142,7 @@ $list_produits_contrats = $data['produits']['contrats'];
         <article class="blog-post">
             <div class="container">
                 <div class="content">
+                  <?php if($json_chiffre): ?>
                     <div>
                         <div class="text-end">
                             <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
@@ -184,7 +185,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                             </div>
                         </div>
                     </div>
-
+                  <?php endif; ?>
 
                     <span id="drm"></span>
                     <span id="contrats"></span>
