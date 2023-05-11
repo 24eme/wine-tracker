@@ -329,7 +329,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     </div>
                                 <?php endif;?>
                             </div>
-                            <?php if (count($ls_dossier_drm)): ?>
+                            <?php if(count($ls_dossier_contrats)): ?>
                             <div class="btn-footer mt-5">
                                 <div class="col-12 text-center">
                                     <a class="btn btn-primary btn-lg" onclick="$('#nav-contrats-tab').click();return false;" >Accéder à mes stats Contrat</a>
