@@ -208,7 +208,7 @@ currentMonth = format(datetime.now().month, "02d")
 
 annees = sorted(df_final['annee'].unique())
 
-if(len(annees)<6):
+if(len(annees)<6 and annees):
     annees.append(str(int(annees[0])-1))
     annees = sorted(annees)
 
