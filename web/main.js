@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
 
   slide = href.searchParams.get('slide');
-  if(slide){
+  if(slide && document.getElementById("#"+slide)){
     $([document.documentElement, document.body]).animate({scrollTop: $("#"+slide).offset().top});
   }
 
