@@ -73,7 +73,7 @@ mouvements = mouvements.query('campagne in @lastcampagnes')
 mouvements = mouvements.query("appellation != 'CDP'")
 
 mouvements.rename(columns = {'type de mouvement':'type_de_mouvement'}, inplace = True)
-typedemouvements = ['sorties/vrac', 'sorties/crd', 'sorties/factures', 'sorties/export','sorties/consommation']
+typedemouvements = ['sorties/vrac','sorties/crd', 'sorties/factures', 'sorties/export','sorties/acq_crd','sorties/consommation']
 mouvements = mouvements.query("type_de_mouvement in @typedemouvements").reset_index()
 
 mouvements['mois'] = mouvements['periode'].apply(lambda x: (int(x.split('-')[1]) + 4) % 12)

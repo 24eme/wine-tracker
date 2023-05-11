@@ -8,6 +8,7 @@ import pandas as pd
 import plotly.express as px
 import argparse
 import pathlib
+from datetime import datetime
 
 
 # In[ ]:
@@ -199,7 +200,20 @@ def create_graphe(final,appellation,couleur):
 # In[ ]:
 
 
+current_month = str(datetime.today().month).zfill(2)
+current_month_order = mois_sort[mois[current_month]]
+
 for bloc in df_final.index.unique():
     df = df_final.loc[[bloc]]
+    for m in mois_sort.keys():
+        for campagne in lastcampagnes:
+            if(m+'-'+campagne not in df.periode.values):
+                if(campagne == lastcampagnes[-1] and mois_sort[m] > current_month_order):
+                    continue
+                tmp = { "campagne": campagne, "mois": m, "volume" : 0, "ordre-mois" : mois_sort[m],"campagne-ordre-mois":campagne+'-'+mois_sort[m], "periode":m+'-'+campagne}
+                tmp = pd.DataFrame(data=tmp, index=[bloc])
+                df= pd.concat([df, tmp], axis=0).sort_index()
+
+    df = df.sort_values(by=['campagne','ordre-mois'])
     create_graphe(df,bloc[0],bloc[1])
 

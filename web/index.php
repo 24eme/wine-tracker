@@ -200,22 +200,6 @@ $list_produits_contrats = $data['produits']['contrats'];
                     <div class="tab-content" id="nav-tabContent">
                         <?php if (count($ls_dossier_drm)): ?>
                             <div class="tab-pane fade show active" id="nav-drm" role="tabpanel" aria-labelledby="nav-drm-tab" tabindex="0" class="onglets d-block">
-                                <div class="mt-3 d-flex align-items-end flex-column">
-                                    <div class="col-md-5 shadow bg-white rounded">
-                                        <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)" data-slide="nav-drm-tab">
-                                        <?php
-                                            foreach($list_produits_drm as $filtre => $libelle):
-                                                if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_drm))://si le dossier existe on l'affiche ?>
-                                                    <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"
-                                                    <?php if (str_replace('-1', '-TOUT', $filtre) === $GET['filtre']) { echo "selected"; } ?>
-                                                    ><?php echo $libelle;?></option>
-                                                <?php endif;
-                                            endforeach;
-                                        ?>
-                                        </select>
-                                    </div>
-                                </div>
-
                                 <div class="mt-5">
                                     <div id="slide-1" class="row shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 entete"><span>Stocks, récoltes et sorties</span></h3>
@@ -356,20 +340,6 @@ $list_produits_contrats = $data['produits']['contrats'];
 
                     <?php if (count($ls_dossier_contrats)): ?>
                         <div class="tab-pane fade" id="nav-contrats" role="tabpanel" aria-labelledby="nav-contrats-tab" tabindex="0" class="onglets mt-5 d-none">
-                            <div class="mt-3 d-flex align-items-end flex-column">
-                                <div class="col-md-5 shadow bg-white rounded">
-                                    <select id="filtre-contrats" name="filtre-contrats" class="form-select form-control" onchange="changeFilter(this)" data-slide="nav-contrats-tab">
-                                        <?php
-                                        foreach($list_produits_contrats as $filtre => $libelle):
-                                            if(in_array(str_replace("-1","-TOUT",$filtre),$ls_dossier_contrats))://si le dossier existe on l'affiche ?>
-                                            <option value="<?php echo str_replace("-1","-TOUT",$filtre);?>"
-                                                <?php if (str_replace('-1', '-TOUT', $filtre) === $GET['filtre']) { echo "selected"; } ?>
-                                                ><?php echo $libelle;?></option>
-                                            <?php endif;
-                                        endforeach; ?>
-                                    </select>
-                                </div>
-                            </div>
                             <div class="mt-5">
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html")): ?>
                                     <div id="slide-5" class="row mt-3 shadow bg-white p-1 graphs-container">

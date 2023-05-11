@@ -61,9 +61,6 @@ drm = drm.loc[drm['appellations'] != "CDP"]
 
 csv_mouvements = path+"/data/drm/export_bi_mouvements.csv"  #il manque un ; à la fin du header.
 mouvements = pd.read_csv(csv_mouvements, sep=";",encoding="iso8859_15",index_col=False)
-mouvements = mouvements[mouvements['periode'] > '2013-12']
-
-all_campagne = mouvements['campagne'].unique()
 
 mouvements.rename(columns = {'identifiant declarant':'identifiant','type de mouvement':'type_de_mouvement','certification':'certifications','genre':'genres','appellation':'appellations','mention':'mentions','lieu':'lieux','couleur':'couleurs'}, inplace = True)
 
@@ -152,27 +149,12 @@ df_final = df_final[['campagne', 'Stock physique en début de camp production (h
 # In[ ]:
 
 
-all = pd.DataFrame()
-index = df_final.reset_index().set_index(['identifiant', 'filtre_produit', 'couleurs']).index
-i = pd.DataFrame(index=index)
-for c in all_campagne:
-    i['campagne'] = c
-    all = pd.concat([all, i])
-all.reset_index().set_index(['identifiant', 'filtre_produit', 'couleurs', 'campagne'])
-df_final = pd.concat([all, df_final])
-df_final.sort_index(inplace=True)
-
-
-# In[ ]:
-
-
 def create_graphique(data,graph_filename):
 
     # CREATION DU GRAPHE
     fig = px.line(data, x="campagne", y=data.columns, color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue","green","#ea4f57"],
                   title="Ma cave",height=650)
     fig.update_traces(mode="markers+lines", hovertemplate=None)
-    fig.update_layout(hovermode="x")
     fig.update_layout(title={
                         'text': "<b>MA CAVE</b>",
                         'y':0.9,
@@ -217,9 +199,15 @@ for indexes in df_final.index.unique():
     
     cols = df.columns
     data = df.reset_index()[cols]
-    data.sort_values(by='campagne')
-    
-    
+
+    #AJOUT DES CAMPAGNES MANQUANTES
+    for campagne in lastcampagnes:
+        if(campagne not in data.campagne.values):
+            data.loc[-1] = [campagne, np.nan, np.nan,np.nan]
+            data.index = data.index + 1
+
+    data = data.sort_values(by='campagne')
+
     [identifiant, appellation, couleur] = indexes
     dossier = dossier_graphes+"/"+identifiant+"/drm/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
