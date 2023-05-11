@@ -249,7 +249,7 @@ $list_produits_contrats = $data['produits']['contrats'];
 
                                     <div id="slide-2" class="mt-3 row shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Sorties de chais VRAC/Conditionné</span></h3>
-                                        <p class="explications mt-5">Évolution des sorties de chais vrac (france et export), conditionné (crd france et export).</p>
+                                        <p class="explications">Évolution des sorties de chais vrac (france et export), conditionné (crd france et export).</p>
                                         <div class="mt-3 d-flex align-items-end flex-column">
                                             <div class="col-md-5 shadow bg-white rounded">
                                                 <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-2">
@@ -319,7 +319,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php if(file_exists($drm_graph_path."/drm-sorties-cumul-par-mois.html")): ?>
                                     <div id="slide-4" class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-12 entete"><span>Cumul des sorties de chais</span></h3>
-                                        <p class="explications mt-5">Cumul de campagne sorties de chais vrac (france et export), conditionné (crd france et export).</p>
+                                        <p class="explications">Cumul de campagne sorties de chais vrac (france et export), conditionné (crd france et export).</p>
                                         <div class="mt-3 d-flex align-items-end flex-column">
                                             <div class="col-md-5 shadow bg-white rounded">
                                                 <select id="filtre-drm" name="filtre-drm" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-4">
@@ -373,7 +373,9 @@ $list_produits_contrats = $data['produits']['contrats'];
                             <div class="mt-5">
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-en-hl.html")): ?>
                                     <div id="slide-5" class="row mt-3 shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-12 entete"><span>Contractualisation moyenne par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?></span></h3>
+                                        <h3 class="col-xs-12 entete">
+                                            Contractualisation moyenne par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?>
+                                        </h3>
                                         <div class="pie-volume d-block">
                                           <p class="explications">
                                               Moyenne sur 5 ans des volumes contractualisés en hectolitres par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?>.
@@ -384,7 +386,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                               Chiffre d'affaires annuel moyen réalisé par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?> sur 5 ans
                                           </p>
                                         </div>
-                                        <div class="col-md-12 graph-container">
+                                        <div class="col-md-12 graph-container mt-3">
                                           <div class="col-2 btn-group mx-5 mt-3" role="group">
                                             <input type="radio" class="radio-btn-contrats btn-check" name="btnradio" id="btn-radio-volume" autocomplete="off" checked onclick="changeRadioValue(this)" data-toshow="pie-volume" data-tohide="pie-prix">
                                             <label class="btn btn-light" for="btn-radio-volume">en hl</label>
@@ -430,11 +432,13 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-top-10-5-dernieres-campagnes.html")): ?>
                                     <div id="slide-6" class="row mt-3 shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Top 10 des <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?></span></h3>
+                                        <h3 class="col-xs-8 entete">
+                                            Top 10 des <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?>
+                                        </h3>
                                         <p class="explications">
-                                            Top 10 des volumes contractualisés par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?> sur 5 ans. Les volumes sont exprimés en hectolitres.
+                                            Top 10 du volume total contractualisé par <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?> sur les 5 dernières campagnes complètes.
                                         </p>
-                                        <div class="mt-5 d-flex align-items-end flex-column">
+                                        <div class="mt-3 d-flex align-items-end flex-column">
                                             <div class="col-md-5 shadow bg-white rounded">
                                                 <select id="filtre-contrats" name="filtre-contrats" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-6">
                                                     <?php
@@ -461,8 +465,8 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-mes-clients-tableau-a-date.html")): ?>
                                     <div id="slide-7" class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 pt-4 text-center fw-bold entete"><span>Contractualisations des <?php echo ($data['is_producteur']) ? 'clients' : 'fournisseurs'; ?> à date</span></h3>
-                                        <p class="explications pb-0">Volumes contractualisés de la campagne en cours comparées à la campagne précédente et à la moyenne des 5 dernières campagnes. Les volumes sont exprimés en hectolitres.</p>
-                                        <div class="mt-5 d-flex align-items-end flex-column">
+                                        <p class="explications">Volumes contractualisés de la campagne en cours comparées à la campagne précédente et à la moyenne des 5 dernières campagnes. Les volumes sont exprimés en hectolitres.</p>
+                                        <div class="mt-3 d-flex align-items-end flex-column">
                                             <div class="col-md-5 shadow bg-white rounded">
                                                 <select id="filtre-contrats" name="filtre-contrats" class="form-select form-control" onchange="changeFilter(this)" data-slide="slide-7">
                                                     <?php
@@ -490,7 +494,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     <div id="slide-8" class="row mt-3 shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Déroulement de la campagne</span></h3>
                                         <p class="explications">
-                                            Cumul des volumes contractualisés par campagne (en rouge la campagne en cours) puis les 4 dernières campagnes
+                                            Comparaison du cumul courant hebdomadaire des volumes contractualisés sur les 5 dernières campagnes.
                                         </p>
                                         <div class="d-flex align-items-end flex-column">
                                             <div class="col-md-5 shadow bg-white rounded">
