@@ -146,15 +146,31 @@ df_final["Chiffre d'affaire"] = round(df_final["Chiffre d'affaire"]/len(lastcamp
 # In[ ]:
 
 
+def format_hl(x):
+    x = "{:,.0f}".format(x)
+    x = str(x).replace(","," ")+" hl"
+    return x
+
+def format_euro(x):
+    x = "{:,.0f}".format(x)
+    x = str(x).replace(","," ")+" hl"
+    return x
+
+
+# In[ ]:
+
+
 def create_graphe(df, identifiant, appellation, couleur):
     fig = px.pie(df, values='volume', names='Client',custom_data=['Client','volume','commune'], color_discrete_sequence=px.colors.sequential.Agsunset, width=1250, height=650)
-    fig.update_traces(textposition='inside', textinfo='label+text', text=df['volume'].map("{:} hl".format))
+    fig.update_traces(textposition='inside', textinfo='label+text', text=(df['volume'].map(format_hl)))
     fig.update_layout(legend_font_size=15)
+    fig.update_yaxes(tickformat=",")
+    fig.update_layout(separators=". .*")
     fig.update_traces(
     hovertemplate="<br>".join([
         "%{customdata[0][0]}",
         "%{customdata[0][2]}",
-        "%{customdata[0][1]} hl",
+        "%{customdata[0][1]:,} hl",
         "%{percent}"
     ])
     )
@@ -168,14 +184,15 @@ def create_graphe(df, identifiant, appellation, couleur):
     fig.write_html(dossier+"/contrats-contractualisation-mes-clients-en-hl.html",include_plotlyjs=False)
 
     fig = px.pie(df, values="Chiffre d'affaire", names='Client',custom_data=['Client', "Chiffre d'affaire",'commune'], color_discrete_sequence=px.colors.sequential.Agsunset, width=1250, height=650)
-    fig.update_traces(textposition='inside', textinfo='label+text', text=df["Chiffre d'affaire"].map("{:} €".format))
+    fig.update_traces(textposition='inside', textinfo='label+text', text=(df["Chiffre d'affaire"].map(format_euro)))
+    fig.update_yaxes(tickformat=",")
+    fig.update_layout(separators=". .*")
     fig.update_layout(legend_font_size=15)
-
     fig.update_traces(
     hovertemplate="<br>".join([
         "%{customdata[0][0]}",
         "%{customdata[0][2]}",
-        "%{customdata[0][1]} €",
+        "%{customdata[0][1]:,} €",
         "%{percent}"
     ])
     )
