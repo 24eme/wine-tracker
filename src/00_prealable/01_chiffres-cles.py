@@ -62,12 +62,12 @@ mouvements = mouvements[mouvements['genre'] != 'VCI']
 mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = True)
 
-if filtre_operateur:
-    mouvements = mouvements.query("identifiant == @filtre_operateur").reset_index()
-
 lastcampagnes = mouvements['campagne'].unique()
 lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-2:]
+
+if filtre_operateur:
+    mouvements = mouvements.query("identifiant == @filtre_operateur").reset_index()
 
 mouvements = mouvements.query('campagne in @lastcampagnes')
 mouvements = mouvements.query("appellation != 'CDP'")
@@ -86,7 +86,6 @@ mouvements['mois'] = mouvements['periode'].apply(lambda x: (int(x.split('-')[1])
 chiffres = pd.DataFrame()
 campagne_n_1 = lastcampagnes[-2]
 sorties = mouvements.query("campagne==@campagne_n_1")
-
 sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum})
 
 mois_en_cours = pd.DataFrame()
