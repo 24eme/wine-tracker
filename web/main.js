@@ -63,7 +63,7 @@ function changeFilter(filtre){
   var slide = filtre.dataset['slide'];
   href.searchParams.set('filtre',filtre.value);
   href.searchParams.set('slide',slide);
-  $(".loader").fadeIn(2000);
+  $(".loader").fadeIn(1);
   setTimeout(() => window.location = href, 1000);
 }
 
