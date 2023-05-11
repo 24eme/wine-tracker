@@ -155,7 +155,6 @@ def create_graphique(data,graph_filename):
     fig = px.line(data, x="campagne", y=data.columns, color='variable', markers=True, symbol="variable",color_discrete_sequence=["blue","green","#ea4f57"],
                   title="Ma cave",height=650)
     fig.update_traces(mode="markers+lines", hovertemplate=None)
-    fig.update_layout(hovermode="x")
     fig.update_layout(title={
                         'text': "<b>MA CAVE</b>",
                         'y':0.9,
@@ -215,10 +214,4 @@ for indexes in df_final.index.unique():
     pathlib.Path(dossier).parent.parent.touch()
     
     create_graphique(data,dossier+"/drm-stock-recoltes-sorties.html")
-
-
-# In[ ]:
-
-
-
 
