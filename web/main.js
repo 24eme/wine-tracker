@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var onglet = url.hash;
   var href = new URL(url.href);
 
-  if(onglet == "#drm" || onglet == "#contrats"){
+  if((onglet == "#drm" || onglet == "#contrats") && document.getElementById("nav-"+onglet.replace('#', '')+"-tab")){
     document.getElementById("nav-"+onglet.replace('#', '')+"-tab").click()
   }
 
