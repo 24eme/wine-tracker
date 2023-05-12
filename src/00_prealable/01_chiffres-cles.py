@@ -83,8 +83,15 @@ mouvements['mois'] = mouvements['periode'].apply(lambda x: (int(x.split('-')[1])
 # In[ ]:
 
 
+#Forcer le tableau de sorties à avoir tous les opérateurs
+chiffres['identifiant_mouvements'] = mouvements.identifiant.unique()
+chiffres.set_index('identifiant_mouvements', inplace = True)
+
+
+# In[ ]:
+
+
 #Sorties du cumul campagne complete
-chiffres = pd.DataFrame()
 campagne_n_1 = lastcampagnes[-2]
 sorties = mouvements.query("campagne==@campagne_n_1")
 sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum})
@@ -93,13 +100,6 @@ mois_en_cours = pd.DataFrame()
 mois_en_cours['mois'] = sorties['periode'].apply(lambda x: (int(x.split('-')[1]) + 4) % 12)
 mois_en_cours.reset_index(inplace=True)
 chiffres['cumul_sortie_campagne_n_1'] = sorties['volume mouvement']
-
-
-# In[ ]:
-
-
-#Sorties du cumul de la campagne précédente à date
-sorties = mouvements.query("campagne==@campagne_n_1")
 
 
 # In[ ]:
@@ -125,7 +125,7 @@ chiffres['cumul_sortie_campagne_n_1_a_date'] = sorties['volume mouvement']
 
 campagne_courante = lastcampagnes[-1]
 sorties = mouvements.query("campagne==@campagne_courante")
-sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum})
+sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum, 'date mouvement' : max})
 mois_en_cours = pd.DataFrame()
 mois_en_cours['mois'] = sorties['periode'].apply(lambda x: (int(x.split('-')[1]) + 4) % 12)
 mois_en_cours.reset_index(inplace=True)
@@ -133,6 +133,9 @@ chiffres['cumul_sortie_campagne_en_cours'] = sorties['volume mouvement']
 
 #Evolution à date
 chiffres['evolution_cumul_sortie_campagne_en_cours'] = (sorties['volume mouvement'] - chiffres['cumul_sortie_campagne_n_1_a_date']) * 100 / chiffres['cumul_sortie_campagne_n_1_a_date']
+
+#date de la dernière validation de mouvement du tableau.
+chiffres['last_date_validation_campagne_en_cours'] = sorties['date mouvement'].map(lambda f: pd.to_datetime(f).strftime('%d/%m/%Y'))
 
 
 # In[ ]:
@@ -194,6 +197,7 @@ chiffres['evolution_par_rapport_a_n_1'] = (chiffres['volume_contractualisation']
 
 
 chiffres.fillna(0, inplace=True)
+#chiffres
 
 
 # In[ ]:

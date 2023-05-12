@@ -165,7 +165,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         <div class="chiffre">
                                             <h3 class="mb-0">
                                                 <?php echo number_format($chiffres["cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> hl
-                                                <span title="Evolution par rapport à la campagne précédente <?php echo "\n(".number_format($chiffres["cumul_sortie_campagne_n_1_a_date"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo $data["date"].")"; ?> " class="fs-6 badge <?php if($chiffres["evolution_cumul_sortie_campagne_en_cours"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> %</span>
+                                                <span title="Evolution par rapport à la campagne précédente <?php echo "\n(".number_format($chiffres["cumul_sortie_campagne_n_1_a_date"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo $chiffres['last_date_validation_campagne_en_cours'].")"; ?> " class="fs-6 badge <?php if($chiffres["evolution_cumul_sortie_campagne_en_cours"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> %</span>
                                             </h3>
                                             <p>Cumul volume de sortie de la campagne courante</p>
                                         </div>
