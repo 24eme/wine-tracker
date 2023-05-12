@@ -107,7 +107,7 @@ sorties = mouvements.query("campagne==@campagne_n_1")
 #Sorties du cumul de la campagne précédente à date
 sorties = mouvements.query("campagne==@campagne_n_1")
 
-sorties["a_date"] = (pd.to_datetime(sorties['date mouvement'], errors='coerce') <= date)
+sorties["a_date"] = (pd.to_datetime(sorties['date mouvement']) <= date)
 sorties = sorties.query("a_date==True")
 sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum})
 
