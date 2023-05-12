@@ -19,7 +19,7 @@ import collections
 
 date = datetime.today()
 #date = datetime(2023, 7, 31)
-date = date.replace(year=date.year - 1)
+date = date.replace(year=date.year - 1).isoformat()
 
 
 # In[ ]:
@@ -108,7 +108,7 @@ sorties = mouvements.query("campagne==@campagne_n_1")
 #Sorties du cumul de la campagne précédente à date
 sorties = mouvements.query("campagne==@campagne_n_1")
 
-sorties["a_date"] = (pd.to_datetime(sorties['date mouvement'], errors='coerce') <= date)
+sorties["a_date"] = (sorties['date mouvement'] <= date)
 sorties = sorties.query("a_date==True")
 sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum})
 
@@ -159,12 +159,8 @@ contrats = contrats.query("appellation != 'CDP'")
 contrats.rename(columns = {'type de vente':'type_de_vente','date de validation':'date_validation'}, inplace = True)
 contrats = contrats.query("type_de_vente == 'vrac'")
 contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
-contrats['date_validation'] = pd.to_datetime(contrats['date_validation'], utc=True)
-contrats['date_validation'] = contrats['date_validation'].map(datetime.date) 
 
 #TOUTE LA CAMPAGNE PRECEDENTE JUSQU'A DATE
-date = pd.to_datetime(date.strftime('%m/%d/%Y'))
-
 contrat_passe = contrats.query('campagne == @campagne_n_1 and date_validation<=@date')
 contrat_extract = pd.concat([
     contrat_passe[contrat_passe['identifiant acheteur'].isin(acheteurs['identifiant'])][['identifiant acheteur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant acheteur' : 'identifiant'}),
