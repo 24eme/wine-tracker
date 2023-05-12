@@ -222,7 +222,7 @@ for bloc in df_final.index.unique():
         for m in les_mois:
             if(a == annees[0] and int(m) < 8): #si la première annees ne pas prendre de 0 à 8
                 continue
-            if(a == annees[len(annees)-1] and int(m) > int(currentMonth)): #si la dernière annee ne pas prendre de 0 à 8
+            if(a == annees[len(annees)-1] and int(m) >= int(currentMonth)): #si la dernière annee ne pas prendre de 0 à 8
                 continue
             p = a+'-'+m
             campagne = str(a)+'-'+str(int(a)+1)
