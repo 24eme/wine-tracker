@@ -147,7 +147,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                         <div class="text-end">
                             <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
                                 <div class="col-12 entete text-center mb-4">
-                                    <h3>Mes chiffres clés</h3>
+                                    <h3>Mes indicateurs globaux</h3>
                                 </div>
                                 <?php if ($chiffres["cumul_sortie_campagne_n_1"]): ?>
                                     <div class="col">
