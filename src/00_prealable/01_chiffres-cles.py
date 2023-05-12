@@ -12,6 +12,7 @@ from datetime import datetime
 import json
 import re
 import collections
+from dateutil.relativedelta import relativedelta
 
 
 # In[ ]:
@@ -155,11 +156,16 @@ acheteurs = etablissements[etablissements['famille'] != 'producteur']
 contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
 contrats = contrats.query("statut == 'SOLDE' or statut == 'NONSOLDE'")
 contrats = contrats.query("appellation != 'CDP'")
+
 contrats.rename(columns = {'type de vente':'type_de_vente','date de validation':'date_validation'}, inplace = True)
 contrats = contrats.query("type_de_vente == 'vrac'")
 contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
 contrats['date_validation'] = pd.to_datetime(contrats['date_validation'], utc=True)
-contrats['date_validation'] = contrats['date_validation'].map(datetime.date) 
+contrats['date_validation'] = contrats['date_validation'].map(datetime.date)
+
+#changement de la campagne en fonction de la date de validation
+contrats['campagne']  = contrats['date_validation'].apply(lambda v: str((v - relativedelta(months=7)).year)+"-"+str((v - relativedelta(months=7)).year+1) )
+
 
 #TOUTE LA CAMPAGNE PRECEDENTE JUSQU'A DATE
 date = pd.to_datetime(date.strftime('%m/%d/%Y'))
