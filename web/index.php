@@ -121,9 +121,9 @@ $list_produits_contrats = $data['produits']['contrats'];
           </div>
         </div>
         <div class="p-4 p-md-5 mb-4 text-white bg-vvr-main">
-            <div class="col-md-7 px-0">
-                <h4><?php echo $data["name"];?></h4>
-                <h1 class="display-4 text-uppercase">Mes statistiques personnalisées</h1>
+            <div class="col-md-8 px-0">
+                <h4><?php echo $data["name"];?> :</h4>
+                <h1 class="text-uppercase" style="font-size: 2.5em;font-weight: normal;">Statistiques personnalisées</h1>
                 <p class="lead my-3">Retrouvez ici les statistiques personnalisées issues de vos données de DRM et contrats. Les chiffres clés, ainsi que différents tableaux de bords dynamiques, vous permettront d’obtenir une vue d’ensemble de votre activité. Comparez les différentes campagnes, ou vos tendances avec l’ensemble du vignoble. Que cela soit en volume ou en valeur, les informations essentielles sur votre activité se trouvent dans les pages ci-après.</p>
             </div>
         </div>
