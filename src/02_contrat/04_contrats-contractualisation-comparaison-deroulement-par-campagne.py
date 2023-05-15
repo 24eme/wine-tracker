@@ -63,7 +63,7 @@ contrats = contrats.query("type_de_vente == 'vrac'")
 contrats = contrats.query("appellation != 'CDP'")
 
 contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
-contrats['semaine'] = contrats['date de validation'].dt.isocalendar().week
+contrats['semaine'] = contrats['date de validation'].dt.isocalendar().week.apply(lambda x: int(x))
 contrats['annee'] = contrats['date de validation'].dt.isocalendar().year
 contrats['A-WS'] = contrats['annee'].apply(str)+'-W'+contrats['semaine'].apply(str)+ '-1'
 contrats['firstdayoftheweek'] = contrats['A-WS'].map(lambda x: dt.datetime.strptime(x, "%G-W%V-%u"))
