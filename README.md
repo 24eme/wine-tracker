@@ -33,10 +33,10 @@ Mettre les CSV d'entrées issus de Déclarvins dans le dossier data/
 
 Pour générer les .py: `cd src/ && make`
 
-Pour générer tous les graphes : `bash src/generate_all.sh`
+Pour générer tous les graphes : `bash bin/generate_all.sh`
 
-Pour générer tous les graphes du "vignoble" : `bash src/generate_levignoble.sh`
+Pour générer tous les graphes du "vignoble" : `bash bin/generate_levignoble.sh`
 
-Pour générer tous les graphes de "ma cave" pour tous les opérateurs : `bash src/generate_macave.sh`
+Pour générer tous les graphes de "ma cave" pour tous les opérateurs : `bash bin/generate_macave.sh`
 
-Pour générer tous les graphes de "ma cave" pour 1 opérateur : `bash src/generate_macave.sh $id_compte`
+Pour générer tous les graphes de "ma cave" pour 1 opérateur : `bash bin/generate_macave.sh $id_compte`
