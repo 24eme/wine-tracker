@@ -29,9 +29,9 @@ date = date.replace(year=date.year - 1).isoformat()
 path = pathlib.Path().absolute()
 path = str(path).replace("/src","").replace("/00_prealable","")
 dossier_graphes=path+"/graphes/"
-csv_contrats = path+"/data/contrats/export_bi_contrats.csv"  #il manque un ; à la fin du header.
-csv_etablissements = path+"/data/contrats/export_bi_etablissements.csv" #il manque un ; à la fin du header.
-csv_mouvements = path+"/data/drm/export_bi_mouvements.csv"
+csv_contrats = path+"/data/contrats/export_bi_contrats_demo.csv"  #il manque un ; à la fin du header.
+csv_etablissements = path+"/data/contrats/export_bi_etablissements_demo.csv" #il manque un ; à la fin du header.
+csv_mouvements = path+"/data/drm/export_bi_mouvements_demo.csv"
 
 
 # In[ ]:
@@ -108,12 +108,6 @@ chiffres['cumul_sortie_campagne_n_1'] = sorties['volume mouvement']
 #Sorties du cumul de la campagne précédente à date
 sorties = mouvements.query("campagne==@campagne_n_1")
 
-# In[ ]:
-
-
-#Sorties du cumul de la campagne précédente à date
-sorties = mouvements.query("campagne==@campagne_n_1")
-
 sorties["a_date"] = (sorties['date mouvement'] <= date)
 sorties = sorties.query("a_date==True")
 sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum})
@@ -169,15 +163,12 @@ contrats = contrats.query("appellation != 'CDP'")
 contrats.rename(columns = {'type de vente':'type_de_vente','date de validation':'date_validation'}, inplace = True)
 contrats = contrats.query("type_de_vente == 'vrac'")
 contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
-<<<<<<< HEAD
-=======
 contrats['date_validation'] = pd.to_datetime(contrats['date_validation'], utc=True)
 contrats['date_validation'] = contrats['date_validation'].map(datetime.date)
 
 #changement de la campagne en fonction de la date de validation
 contrats['campagne']  = contrats['date_validation'].apply(lambda v: str((v - relativedelta(months=7)).year)+"-"+str((v - relativedelta(months=7)).year+1) )
 
->>>>>>> 8988254dfc350a1553dde9adcac128f23163390a
 
 #TOUTE LA CAMPAGNE PRECEDENTE JUSQU'A DATE
 contrat_passe = contrats.query('campagne == @campagne_n_1 and date_validation<=@date')
