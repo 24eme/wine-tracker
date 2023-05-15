@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var onglet = url.hash;
   var href = new URL(url.href);
 
-  if(onglet == "#drm" || onglet == "#contrats"){
+  if((onglet == "#drm" || onglet == "#contrats") && document.getElementById("nav-"+onglet.replace('#', '')+"-tab")){
     document.getElementById("nav-"+onglet.replace('#', '')+"-tab").click()
   }
 
@@ -48,13 +48,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
 
   slide = href.searchParams.get('slide');
-  if(slide && document.getElementById("#"+slide)){
+  if(slide && $("#"+slide).offset()){
     $([document.documentElement, document.body]).animate({scrollTop: $("#"+slide).offset().top});
   }
+  $(window).on('load', function(){$(".loader").fadeOut(2000);});
 
-  $(window).load(function() {
-      $(".loader").fadeOut(2000);
-  });
 });
 
 // quand on change de filtre l'url est mis à jour et la page est rechargée.

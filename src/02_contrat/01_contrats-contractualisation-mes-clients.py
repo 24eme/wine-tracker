@@ -153,7 +153,7 @@ def format_hl(x):
 
 def format_euro(x):
     x = "{:,.0f}".format(x)
-    x = str(x).replace(","," ")+" hl"
+    x = str(x).replace(","," ")+" €"
     return x
 
 

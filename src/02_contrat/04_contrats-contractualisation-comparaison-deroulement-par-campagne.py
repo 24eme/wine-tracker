@@ -10,6 +10,7 @@ import argparse
 import pathlib
 from datetime import datetime
 import datetime as dt
+from dateutil.relativedelta import relativedelta
 
 path = pathlib.Path().absolute()
 path = str(path).replace("/src","").replace("/02_contrat","")
@@ -82,6 +83,10 @@ contrats_csv['couleur'] = contrats_csv['couleur'].str.upper()
 contrats_csv.rename(columns = {'identifiant vendeur':'identifiant_vendeur','volume propose (en hl)':'volume propose'}, inplace = True)
 
 contrats = contrats_csv.query("identifiant_vendeur == @id_operateur").reset_index()
+
+#changement de la campagne en fonction de la date de validation
+contrats['campagne']  = contrats['date de validation'].apply(lambda v: str((v - relativedelta(months=7)).year)+"-"+str((v - relativedelta(months=7)).year+1) )
+
 
 negociant = False
 if 'negociant' in famille:

@@ -60,13 +60,13 @@ $contrat_le_vignoble_graph_path = $path_vignoble."/contrat/".$GET['filtre'];
 $json = file_get_contents($path_cave."/".$identifiant.".json");
 $data = json_decode($json, true);
 
-$json_chiffre = file_get_contents($path_cave."/".$identifiant."_chiffre.json");
-$chiffres = json_decode($json_chiffre, true);
-
-
 if (json_last_error() !== JSON_ERROR_NONE) {
     die('Pas de données concernant cet opérateur.');
 }
+
+$json_chiffre = file_get_contents($path_cave."/".$identifiant."_chiffre.json");
+$chiffres = json_decode($json_chiffre, true);
+
 
 $list_produits_drm = $data['produits']['drm'];
 $list_produits_contrats = $data['produits']['contrats'];
@@ -77,7 +77,7 @@ $list_produits_contrats = $data['produits']['contrats'];
     <link href="main.css" rel="stylesheet">
     <title>Statistiques personnalisées pour <?php echo $data["name"];?></title>
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="jquery-1.9.1.min.js"></script>
+    <script src="jquery-3.2.1.min.js"></script>
     <script src="plotly-2.18.0.min.js"></script>
 </head>
 <body>
@@ -142,11 +142,12 @@ $list_produits_contrats = $data['produits']['contrats'];
         <article class="blog-post">
             <div class="container">
                 <div class="content">
+                  <?php if($json_chiffre): ?>
                     <div>
                         <div class="text-end">
                             <div class="row shadow bg-white rounded p-4 pt-5 pb-5">
                                 <div class="col-12 entete text-center mb-4">
-                                    <h3>Mes chiffres clés</h3>
+                                    <h3>Mes indicateurs globaux</h3>
                                 </div>
                                 <?php if ($chiffres["cumul_sortie_campagne_n_1"]): ?>
                                     <div class="col">
@@ -164,7 +165,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         <div class="chiffre">
                                             <h3 class="mb-0">
                                                 <?php echo number_format($chiffres["cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> hl
-                                                <span title="Evolution par rapport à la campagne précédente <?php echo "\n(".number_format($chiffres["cumul_sortie_campagne_n_1_a_date"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo $data["date"].")"; ?> " class="fs-6 badge <?php if($chiffres["evolution_cumul_sortie_campagne_en_cours"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> %</span>
+                                                <span title="Evolution par rapport à la campagne précédente <?php echo "\n(".number_format($chiffres["cumul_sortie_campagne_n_1_a_date"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo $chiffres['last_date_validation_campagne_en_cours'].")"; ?> " class="fs-6 badge <?php if($chiffres["evolution_cumul_sortie_campagne_en_cours"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> %</span>
                                             </h3>
                                             <p>Cumul volume de sortie de la campagne courante</p>
                                         </div>
@@ -184,7 +185,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                             </div>
                         </div>
                     </div>
-
+                  <?php endif; ?>
 
                     <span id="drm"></span>
                     <span id="contrats"></span>
@@ -328,7 +329,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                     </div>
                                 <?php endif;?>
                             </div>
-                            <?php if (count($ls_dossier_drm)): ?>
+                            <?php if(count($ls_dossier_contrats)): ?>
                             <div class="btn-footer mt-5">
                                 <div class="col-12 text-center">
                                     <a class="btn btn-primary btn-lg" onclick="$('#nav-contrats-tab').click();return false;" >Accéder à mes stats Contrat</a>

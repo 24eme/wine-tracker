@@ -12,6 +12,7 @@ from datetime import datetime
 import json
 import re
 import collections
+from dateutil.relativedelta import relativedelta
 
 
 # In[ ]:
@@ -62,12 +63,12 @@ mouvements = mouvements[mouvements['genre'] != 'VCI']
 mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 mouvements.rename(columns = {'identifiant declarant':'identifiant'}, inplace = True)
 
-if filtre_operateur:
-    mouvements = mouvements.query("identifiant == @filtre_operateur").reset_index()
-
 lastcampagnes = mouvements['campagne'].unique()
 lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-2:]
+
+if filtre_operateur:
+    mouvements = mouvements.query("identifiant == @filtre_operateur").reset_index()
 
 mouvements = mouvements.query('campagne in @lastcampagnes')
 mouvements = mouvements.query("appellation != 'CDP'")
@@ -82,11 +83,17 @@ mouvements['mois'] = mouvements['periode'].apply(lambda x: (int(x.split('-')[1])
 # In[ ]:
 
 
+#Forcer le tableau de sorties à avoir tous les opérateurs
+chiffres['identifiant_mouvements'] = mouvements.identifiant.unique()
+chiffres.set_index('identifiant_mouvements', inplace = True)
+
+
+# In[ ]:
+
+
 #Sorties du cumul campagne complete
-chiffres = pd.DataFrame()
 campagne_n_1 = lastcampagnes[-2]
 sorties = mouvements.query("campagne==@campagne_n_1")
-
 sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum})
 
 mois_en_cours = pd.DataFrame()
@@ -100,7 +107,6 @@ chiffres['cumul_sortie_campagne_n_1'] = sorties['volume mouvement']
 
 #Sorties du cumul de la campagne précédente à date
 sorties = mouvements.query("campagne==@campagne_n_1")
-
 
 # In[ ]:
 
@@ -125,7 +131,7 @@ chiffres['cumul_sortie_campagne_n_1_a_date'] = sorties['volume mouvement']
 
 campagne_courante = lastcampagnes[-1]
 sorties = mouvements.query("campagne==@campagne_courante")
-sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum})
+sorties = sorties.groupby(["identifiant"]).agg({'periode': max,  'volume mouvement': sum, 'date mouvement' : max})
 mois_en_cours = pd.DataFrame()
 mois_en_cours['mois'] = sorties['periode'].apply(lambda x: (int(x.split('-')[1]) + 4) % 12)
 mois_en_cours.reset_index(inplace=True)
@@ -133,6 +139,9 @@ chiffres['cumul_sortie_campagne_en_cours'] = sorties['volume mouvement']
 
 #Evolution à date
 chiffres['evolution_cumul_sortie_campagne_en_cours'] = (sorties['volume mouvement'] - chiffres['cumul_sortie_campagne_n_1_a_date']) * 100 / chiffres['cumul_sortie_campagne_n_1_a_date']
+
+#date de la dernière validation de mouvement du tableau.
+chiffres['last_date_validation_campagne_en_cours'] = sorties['date mouvement'].map(lambda f: pd.to_datetime(f).strftime('%d/%m/%Y'))
 
 
 # In[ ]:
@@ -156,9 +165,19 @@ acheteurs = etablissements[etablissements['famille'] != 'producteur']
 contrats = pd.read_csv(csv_contrats,sep=";",encoding="iso-8859-1", low_memory=False, index_col=False)
 contrats = contrats.query("statut == 'SOLDE' or statut == 'NONSOLDE'")
 contrats = contrats.query("appellation != 'CDP'")
+
 contrats.rename(columns = {'type de vente':'type_de_vente','date de validation':'date_validation'}, inplace = True)
 contrats = contrats.query("type_de_vente == 'vrac'")
 contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','é') #problème d'encoddage.
+<<<<<<< HEAD
+=======
+contrats['date_validation'] = pd.to_datetime(contrats['date_validation'], utc=True)
+contrats['date_validation'] = contrats['date_validation'].map(datetime.date)
+
+#changement de la campagne en fonction de la date de validation
+contrats['campagne']  = contrats['date_validation'].apply(lambda v: str((v - relativedelta(months=7)).year)+"-"+str((v - relativedelta(months=7)).year+1) )
+
+>>>>>>> 8988254dfc350a1553dde9adcac128f23163390a
 
 #TOUTE LA CAMPAGNE PRECEDENTE JUSQU'A DATE
 contrat_passe = contrats.query('campagne == @campagne_n_1 and date_validation<=@date')
@@ -185,6 +204,7 @@ chiffres['evolution_par_rapport_a_n_1'] = (chiffres['volume_contractualisation']
 
 
 chiffres.fillna(0, inplace=True)
+#chiffres
 
 
 # In[ ]:
