@@ -463,7 +463,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                 <?php endif;?>
                                 <?php if(file_exists($contrat_graph_path."/contrats-contractualisation-comparaison-deroulement-par-campagne.html")): ?>
                                     <div id="slide-8" class="row mt-3 shadow bg-white p-1 graphs-container">
-                                        <h3 class="col-xs-8 p-4 text-center fw-bold entete"><span>Déroulement de la campagne</span></h3>
+                                        <h3 class="col-xs-8 pt-4 text-center fw-bold entete"><span>Déroulement de la campagne</span></h3>
                                         <p class="explications">
                                             Comparaison du cumul courant hebdomadaire des volumes contractualisés sur les 5 dernières campagnes.
                                         </p>
