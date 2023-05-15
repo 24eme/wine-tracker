@@ -29,7 +29,11 @@ if (!isset($GET['id'])  || !$GET['id']) {
 
 $identifiant = $GET['id'];
 
-if (! $_SESSION['etablissement_id'] || !isset($_SESSION['etablissement_id']) || ($_SESSION['etablissement_id'] != $identifiant) ) {
+if (
+    !isset($_SESSION['etablissement_id']) || ! $_SESSION['etablissement_id']
+    || (strpos($identifiant, ".") > 0)  || (strpos($identifiant, "/") > 0)
+    || (($_SESSION['etablissement_id'] != $identifiant) && ($identifiant !== "CXXXX-01"))
+   ) {
     if (!file_exists('../debug')) {
         header('Location: /');
         exit;
