@@ -79,6 +79,8 @@ $list_produits_contrats = $data['produits']['contrats'];
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="jquery-3.2.1.min.js"></script>
     <script src="plotly-2.18.0.min.js"></script>
+    <script src="plotly-locale-fr.js"></script>
+    <script>Plotly.setPlotConfig({locale: 'fr'})</script>
 </head>
 <body>
     <header>
