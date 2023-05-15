@@ -28,3 +28,5 @@ if ! grep -l _demo.csv src/*/*py > /dev/null ; then
 fi
 
 bash bin/generate_macave.sh CXXXX-01
+
+sed -i 's/_demo.csv/.csv/' src/*/*py
