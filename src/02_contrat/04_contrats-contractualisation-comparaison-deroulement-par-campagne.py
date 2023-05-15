@@ -63,7 +63,7 @@ contrats = contrats.query("type_de_vente == 'vrac'")
 contrats = contrats.query("appellation != 'CDP'")
 
 contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
-contrats['semaine'] = contrats['date de validation'].dt.isocalendar().week
+contrats['semaine'] = contrats['date de validation'].dt.isocalendar().week.apply(lambda x: int(x))
 contrats['annee'] = contrats['date de validation'].dt.isocalendar().year
 contrats['A-WS'] = contrats['annee'].apply(str)+'-W'+contrats['semaine'].apply(str)+ '-1'
 contrats['firstdayoftheweek'] = contrats['A-WS'].map(lambda x: dt.datetime.strptime(x, "%G-W%V-%u"))
@@ -160,11 +160,11 @@ df_final = df_final.round({'volume propose': 0})
 # In[ ]:
 
 
-def create_graphe(df,identifiant,appellation,couleur):
+def create_graphe(df,filename):
 
     df['firstdayoftheweek'] = df['firstdayoftheweek'].dt.strftime('%d/%m/%Y')
 
-    fig = px.line(df, x="semaine", y="volume", color='campagne', custom_data=['semaine-sort','campagne','firstdayoftheweek'], width=1250, height=650,color_discrete_sequence=["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#ea4f57"],
+    fig = px.line(df, x="semaine", y="volume", color='campagne', custom_data=['semaine','campagne','firstdayoftheweek'], width=1250, height=650,color_discrete_sequence=["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#ea4f57"],
                  labels={
                      "semaine": "Numéro de la semaine - Début de campagne : Semaine 31",
                      "volume": "Volume contractualisé hebdomadaire (en hl)"})
@@ -200,7 +200,7 @@ def create_graphe(df,identifiant,appellation,couleur):
     )
     #fig.show()
 
-    dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur
+    dossier = dossier_graphes+"/"+filename
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
     pathlib.Path(dossier).parent.parent.touch()
 
@@ -232,5 +232,15 @@ for bloc in df_final.index.unique():
     df = df.reset_index(drop=True)
     df = df.sort_values(by=['identifiant_vendeur', 'filtre_produit','couleur','campagne','semaine-sort'])
     df['volume'] = df.groupby(["identifiant_vendeur","filtre_produit", "couleur","campagne"])['volume propose'].cumsum()
-    create_graphe(df,bloc[0],bloc[1],bloc[2])
+    
+    identifiant = bloc[0]
+    appellation = bloc[1]
+    couleur = bloc[2]
+    create_graphe(df,identifiant+"/contrat/"+appellation+"-"+couleur)
+
+
+# In[ ]:
+
+
+
 
