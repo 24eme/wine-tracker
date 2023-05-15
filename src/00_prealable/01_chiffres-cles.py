@@ -168,6 +168,7 @@ contrats['date_validation'] = contrats['date_validation'].map(datetime.date)
 
 #changement de la campagne en fonction de la date de validation
 contrats['campagne']  = contrats['date_validation'].apply(lambda v: str((v - relativedelta(months=7)).year)+"-"+str((v - relativedelta(months=7)).year+1) )
+contrats['date_validation'] = contrats['date_validation'].apply(lambda x: x.isoformat())
 
 
 #TOUTE LA CAMPAGNE PRECEDENTE JUSQU'A DATE
