@@ -164,7 +164,7 @@ def create_graphe(df,filename):
 
     df['firstdayoftheweek'] = df['firstdayoftheweek'].dt.strftime('%d/%m/%Y')
 
-    fig = px.line(df, x="semaine", y="volume", color='campagne', custom_data=['semaine-sort','campagne','firstdayoftheweek'], width=1250, height=650,color_discrete_sequence=["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#ea4f57"],
+    fig = px.line(df, x="semaine", y="volume", color='campagne', custom_data=['semaine','campagne','firstdayoftheweek'], width=1250, height=650,color_discrete_sequence=["#CFCFCF", "#A1A1A1", "#5D5D5D","#0A0A0A","#ea4f57"],
                  labels={
                      "semaine": "Numéro de la semaine - Début de campagne : Semaine 31",
                      "volume": "Volume contractualisé hebdomadaire (en hl)"})
