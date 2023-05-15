@@ -219,15 +219,13 @@ for bloc in df_final.index.unique():
     for campagne in lastcampagnes:
         annee = str(campagne[5:])
         if campagne+'-31' not in df['campagne-semaine'].unique():
-            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne,dt.datetime.strptime(annee+'-W31-1', "%G-W%V-%u"),31,0,0,campagne+'-31']
-
+            df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne,dt.datetime.strptime(str(int(annee)-1)+'-W31-1', "%G-W%V-%u"),31,0,0,campagne+'-31']
         if campagne+'-30' not in df['campagne-semaine'].unique() and campagne != lastcampagnes[-1:][0]:
             df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne,dt.datetime.strptime(annee+'-W30-1', "%G-W%V-%u"),30,0,53,campagne+'-30']
 
         currentweek = datetime.today().isocalendar()[1]
         if campagne+'-'+str(currentweek) not in df['campagne-semaine'].unique() and campagne == lastcampagnes[-1:][0]:
             df.loc[len(df)] = [bloc[0], bloc[1], bloc[2], campagne,dt.datetime.strptime(annee+'-W'+str(currentweek)+'-1', "%G-W%V-%u"),currentweek,0,(currentweek-31)%53,campagne+'-'+str(currentweek)]
-
     df = df.sort_values(by=['campagne'])
     df = df.reset_index(drop=True)
     df = df.sort_values(by=['identifiant_vendeur', 'filtre_produit','couleur','campagne','semaine-sort'])
@@ -237,10 +235,4 @@ for bloc in df_final.index.unique():
     appellation = bloc[1]
     couleur = bloc[2]
     create_graphe(df,identifiant+"/contrat/"+appellation+"-"+couleur)
-
-
-# In[ ]:
-
-
-
 
