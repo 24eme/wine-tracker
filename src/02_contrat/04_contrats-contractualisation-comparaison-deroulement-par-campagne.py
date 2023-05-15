@@ -160,7 +160,7 @@ df_final = df_final.round({'volume propose': 0})
 # In[ ]:
 
 
-def create_graphe(df,identifiant,appellation,couleur):
+def create_graphe(df,filename):
 
     df['firstdayoftheweek'] = df['firstdayoftheweek'].dt.strftime('%d/%m/%Y')
 
@@ -200,7 +200,7 @@ def create_graphe(df,identifiant,appellation,couleur):
     )
     #fig.show()
 
-    dossier = dossier_graphes+"/"+identifiant+"/contrat/"+appellation+"-"+couleur
+    dossier = dossier_graphes+"/"+filename
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
     pathlib.Path(dossier).parent.parent.touch()
 
@@ -232,5 +232,15 @@ for bloc in df_final.index.unique():
     df = df.reset_index(drop=True)
     df = df.sort_values(by=['identifiant_vendeur', 'filtre_produit','couleur','campagne','semaine-sort'])
     df['volume'] = df.groupby(["identifiant_vendeur","filtre_produit", "couleur","campagne"])['volume propose'].cumsum()
-    create_graphe(df,bloc[0],bloc[1],bloc[2])
+    
+    identifiant = bloc[0]
+    appellation = bloc[1]
+    couleur = bloc[2]
+    create_graphe(df,identifiant+"/contrat/"+appellation+"-"+couleur)
+
+
+# In[ ]:
+
+
+
 
