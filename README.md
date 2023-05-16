@@ -12,7 +12,7 @@ source dir/bin/activate
 Pour la génération des graphes, jupyter notebook est utilisé :
 
 ```
-pip3 install jupyter pandas plotly argparse
+pip3 install -r requirements.txt
 ```
 
 Pour la génération des .py à partir des jupyter :
