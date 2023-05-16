@@ -152,7 +152,8 @@ def create_graphe(final,appellation,couleur):
                       yaxis=dict(tickformat=".0f"),
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False,
-                      legend_font_size=15
+                      legend_font_size=15,
+                      modebar_remove=["select2d","lasso"]
                      )
 
     fig.update_yaxes(tickformat=",")

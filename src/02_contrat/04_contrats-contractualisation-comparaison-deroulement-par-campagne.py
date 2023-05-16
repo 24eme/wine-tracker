@@ -178,7 +178,8 @@ def create_graphe(df,filename):
                           legend_itemdoubleclick=False,
                           legend_title=None,
                           legend_font_size=15,
-                          legend_traceorder="reversed"
+                          legend_traceorder="reversed",
+                          modebar_remove=["select2d","lasso"]
                          )
     fig.for_each_xaxis(lambda x: x.update(showgrid=False))
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))

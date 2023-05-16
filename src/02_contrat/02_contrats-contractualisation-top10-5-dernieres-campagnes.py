@@ -154,7 +154,8 @@ def create_graphe(df, identifiant, appellation, couleur):
                       plot_bgcolor = "white",
                       hovermode = False,
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
-                      legend_itemdoubleclick=False
+                      legend_itemdoubleclick=False,
+                      modebar_remove=["select2d","lasso"]
                      )
     fig.update_xaxes(matches=None, showticklabels=True, fixedrange=True)
     fig.update_xaxes(tickformat=",")

@@ -170,7 +170,8 @@ def create_graphique(data,graph_filename):
                       plot_bgcolor = "white",
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False,
-                      legend_font_size=15
+                      legend_font_size=15,
+                      modebar_remove=["select2d","lasso"]
                      )
 
     fig.update_yaxes(tickformat=",")
