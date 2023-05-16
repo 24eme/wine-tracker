@@ -19,7 +19,7 @@ csv = path+"/data/contrats/export_bi_contrats.csv"  #il manque un ; à la fin du
 csv_etablissements = path+"/data/contrats/export_bi_etablissements.csv" #il manque un ; à la fin du header.
 source = "DRM Inter-Rhône"
 
-sort_week = [31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+sort_week = ["31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"]
 
 
 # In[ ]:
@@ -66,7 +66,6 @@ contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], 
 contrats['semaine'] = contrats['date de validation'].dt.isocalendar().week.apply(lambda x: int(x))
 contrats['semaine-sort'] = (contrats['semaine']-31)%53
 contrats['semaine'] = contrats['semaine'].apply(lambda x: '%02d' % x)
-contrats['semaine-sort'] = contrats['semaine-sort'].apply(lambda x: '%02d' % x)
 
 contrats['annee'] = contrats['date de validation'].dt.isocalendar().year
 #contrats['semaine'] = pd.to_numeric(contrats['semaine'], downcast='integer')

@@ -239,3 +239,9 @@ for bloc in df_final.index.unique():
     df = df.reset_index(drop=True)
     create_graphe(df,bloc[0],bloc[1],bloc[2])
 
+
+# In[ ]:
+
+
+
+
