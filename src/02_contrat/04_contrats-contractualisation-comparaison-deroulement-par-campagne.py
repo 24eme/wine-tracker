@@ -65,14 +65,9 @@ contrats = contrats.query("appellation != 'CDP'")
 contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
 contrats['semaine'] = contrats['date de validation'].dt.isocalendar().week.apply(lambda x: int(x))
 contrats['semaine-sort'] = (contrats['semaine']-31)%53
-contrats['semaine'] = contrats['semaine'].apply(lambda x: '%02d' % x)
-contrats['semaine-sort'] = contrats['semaine-sort'].apply(lambda x: '%02d' % x)
 
 contrats['annee'] = contrats['date de validation'].dt.isocalendar().year
-#contrats['semaine'] = pd.to_numeric(contrats['semaine'], downcast='integer')
 
-
-#contrats['semaine'].unique()
 lastcampagnes = contrats['campagne'].unique()
 lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-5:]
@@ -149,8 +144,8 @@ df_final = pd.concat([contrats_spe_spe, contrats_spe_all])
 df_final = pd.concat([df_final, contrats_all_all])
 df_final = df_final.sort_values(by=['identifiant_vendeur', 'filtre_produit','couleur'])
 
-
-df_final['campagne-semaine'] = df_final[['campagne', 'semaine']].agg('-'.join, axis=1)
+df_final['semainestr'] = df_final['semaine'].apply(lambda x: "%02d" % x)
+df_final['campagne-semaine'] = df_final[['campagne', 'semainestr']].agg('-'.join, axis=1)
 df_final['A-WS'] = df_final['annee'].apply(str)+'-W'+df_final['semaine'].apply(str)+ '-1'
 df_final['firstdayoftheweek'] = df_final['A-WS'].map(lambda x: dt.datetime.strptime(x, "%G-W%V-%u"))
 
