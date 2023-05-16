@@ -153,7 +153,7 @@ def create_graphe(final,identifiant,appellation,couleur):
                  color_discrete_sequence=couleurs)
     fig.update_layout(title={
                         'text': "<b>MA CAVE</b>",
-                        'y':0.98,
+                        'y':0.950,
                         'x':0.489,
                         'xanchor': 'center',
                         'yanchor': 'top'},
@@ -169,7 +169,8 @@ def create_graphe(final,identifiant,appellation,couleur):
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False,
                       legend_font_size=15,
-                      modebar_remove=["select2d","lasso"]
+                      modebar_remove=["select2d","lasso"],
+                      hoverlabel=dict(font_family="Josefin Sans Medium")
                      )
     fig.for_each_xaxis(lambda x: x.update(showgrid=False))
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))

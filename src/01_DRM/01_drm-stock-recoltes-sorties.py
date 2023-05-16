@@ -161,7 +161,7 @@ def create_graphique(data,graph_filename):
                         'x':0.5,
                         'xanchor': 'center',
                         'yanchor': 'top'},
-                      title_font_size=24,,
+                      title_font_size=24,
                       font_family="Josefin Sans Medium",
                       title_font_color='#f7bb58',
                       xaxis_title=None,
@@ -172,7 +172,8 @@ def create_graphique(data,graph_filename):
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False,
                       legend_font_size=15,
-                      modebar_remove=["select2d","lasso"]
+                      modebar_remove=["select2d","lasso"],
+                      hoverlabel=dict(font_family="Josefin Sans Medium")
                      )
 
     fig.update_yaxes(tickformat=",")

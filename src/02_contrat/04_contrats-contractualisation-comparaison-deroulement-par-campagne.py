@@ -180,7 +180,8 @@ def create_graphe(df,filename):
                           legend_font_size=15,
                           font_family="Josefin Sans Medium",
                           legend_traceorder="reversed",
-                          modebar_remove=["select2d","lasso"]
+                          modebar_remove=["select2d","lasso"],
+                          hoverlabel=dict(font_family="Josefin Sans Medium")
                          )
     fig.for_each_xaxis(lambda x: x.update(showgrid=False))
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))

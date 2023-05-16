@@ -200,7 +200,8 @@ def create_graphique(final,appellation,couleur):
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False,
                       legend_font_size=15,
-                      modebar_remove=["select2d","lasso"]
+                      modebar_remove=["select2d","lasso"],
+                      hoverlabel=dict(font_family="Josefin Sans Medium")
                      )
 
     fig.update_yaxes(tickformat=",")
@@ -211,11 +212,11 @@ def create_graphique(final,appellation,couleur):
     fig.update_xaxes(fixedrange=True,showline=True, linewidth=1, linecolor='Lightgrey')
     fig.update_yaxes(fixedrange=True,rangemode="tozero")
 
-    fig.update_traces(
-    hovertemplate="<br>".join([
+    fig.update_traces(hovertemplate="<br>".join([
         "%{y} hl",
     ])
     )
+
     #fig.show()
 
     dossier = dossier_graphes+"/LE_VIGNOBLE/drm/"+appellation+"-"+couleur

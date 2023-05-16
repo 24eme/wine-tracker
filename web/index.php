@@ -140,7 +140,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                     <h4 style='color:red;'>DEBUG</h4>
             </div>
             <?php endif; ?>
-            <div class="col-3 offset-9 text-muted">
+            <div class="col-3 offset-9 text-muted text-end">
                 Dernière mise à jour : <?php echo $data["date"];?>
             </div>
         </div>

@@ -156,7 +156,8 @@ def create_graphe(df, identifiant, appellation, couleur):
                       hovermode = False,
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False,
-                      modebar_remove=["select2d","lasso"]
+                      modebar_remove=["select2d","lasso"],
+                      hoverlabel=dict(font_family="Josefin Sans Medium")
                      )
     fig.update_xaxes(matches=None, showticklabels=True, fixedrange=True)
     fig.update_xaxes(tickformat=",")
