@@ -146,6 +146,7 @@ df_final = df_final.round({'volume': 0, 'prix': 0})
 def create_graphe(df, identifiant, appellation, couleur):
     fig = px.bar(df, y='Client',x="volume",color_discrete_sequence=["#ea4f57"],text_auto=True, width=1250, height=650,orientation='h')
     fig.update_layout(title_font_size=24,
+                      font_family="Josefin Sans Medium",
                       title_font_color="#f7bb58",
                       xaxis_title=None,
                       yaxis_title=None,

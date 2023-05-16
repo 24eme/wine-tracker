@@ -1,5 +1,11 @@
 body{
-  font-family : 'Josefin, Trebuchet, Liberation Sans'
+  font-family : Josefin Sans Medium,Trebuchet,Liberation Sans;
+}
+
+p{
+  font-family : Josefin Sans,Trebuchet,Liberation Sans;
+  line-height: 1;
+  font-size : 1.5rem !important;
 }
 
 .chiffre{

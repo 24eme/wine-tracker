@@ -165,6 +165,7 @@ def create_graphe(final,identifiant,appellation,couleur):
                         'xanchor': 'center',
                         'yanchor': 'top'},
                       title_font_size=24,
+                      font_family="Josefin Sans Medium",
                       title_font_color="#f7bb58",
                       xaxis_title=None,
                       yaxis_title=None,

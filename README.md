@@ -1,5 +1,9 @@
 # wine-tracker
 
+##Polices
+
+Télécharger les fonts qui se trouvent dans le dossier web/fonts/
+
 ## Dépendances
 
 Pour éviter tout conflit avec les librairies systèmes, il est recommandé d'utiliser un virtualenv :

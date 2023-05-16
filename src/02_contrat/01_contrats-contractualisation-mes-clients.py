@@ -163,7 +163,7 @@ def format_euro(x):
 def create_graphe(df, identifiant, appellation, couleur):
     fig = px.pie(df, values='volume', names='Client',custom_data=['Client','volume','commune'], color_discrete_sequence=px.colors.sequential.Agsunset, width=1250, height=650)
     fig.update_traces(textposition='inside', textinfo='label+text', text=(df['volume'].map(format_hl)))
-    fig.update_layout(legend_font_size=15)
+    fig.update_layout(legend_font_size=15,font_family="Josefin Sans Medium")
     fig.update_yaxes(tickformat=",")
     fig.update_layout(separators=". .*")
     fig.update_traces(
@@ -187,7 +187,7 @@ def create_graphe(df, identifiant, appellation, couleur):
     fig.update_traces(textposition='inside', textinfo='label+text', text=(df["Chiffre d'affaire"].map(format_euro)))
     fig.update_yaxes(tickformat=",")
     fig.update_layout(separators=". .*")
-    fig.update_layout(legend_font_size=15)
+    fig.update_layout(legend_font_size=15,font_family="Josefin Sans Medium")
     fig.update_traces(
     hovertemplate="<br>".join([
         "%{customdata[0][0]}",
