@@ -143,7 +143,8 @@ df_final.set_index(['identifiant', 'filtre_produit', 'couleurs'], inplace=True)
 df_final = df_final.round({'Entrées revendication (hl)': 0, 'Sorties de chais (hl)': 0, "Stock physique en début de camp production (hl)":0, 'sortie': 0})
 
 df_final = df_final[['campagne', 'Stock physique en début de camp production (hl)','Entrées revendication (hl)','Sorties de chais (hl)']] #, 'sortie'
-#df_final
+df_final['Stock physique en début de camp production (hl)'] = df_final['Stock physique en début de camp production (hl)'].apply(lambda x: x if (x > 0) else None)
+df_final['Stock physique en début de camp production (hl)'].dropna(inplace=True)
 
 
 # In[ ]:
