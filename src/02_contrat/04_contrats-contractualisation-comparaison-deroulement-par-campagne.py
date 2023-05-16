@@ -64,9 +64,11 @@ contrats = contrats.query("appellation != 'CDP'")
 
 contrats['date de validation'] = pd.to_datetime(contrats['date de validation'], utc=True)
 contrats['semaine'] = contrats['date de validation'].dt.isocalendar().week.apply(lambda x: int(x))
+contrats['semaine-sort'] = (contrats['semaine']-31)%53
+contrats['semaine'] = contrats['semaine'].apply(lambda x: '%02d' % x)
+contrats['semaine-sort'] = contrats['semaine-sort'].apply(lambda x: '%02d' % x)
+
 contrats['annee'] = contrats['date de validation'].dt.isocalendar().year
-contrats['A-WS'] = contrats['annee'].apply(str)+'-W'+contrats['semaine'].apply(str)+ '-1'
-contrats['firstdayoftheweek'] = contrats['A-WS'].map(lambda x: dt.datetime.strptime(x, "%G-W%V-%u"))
 #contrats['semaine'] = pd.to_numeric(contrats['semaine'], downcast='integer')
 
 
@@ -108,9 +110,8 @@ if 'negociant' in famille:
 
 contrats['filtre_produit'] = contrats['appellation'] + "-" + contrats['lieu'] + "-" +contrats['certification']+ "-" +contrats['genre']+ "-" +contrats['mention']
 
-contrats_spe_spe = contrats.groupby(["identifiant_vendeur","filtre_produit", "couleur","campagne","semaine","firstdayoftheweek"]).sum(["volume propose"])[["volume propose"]]
+contrats_spe_spe = contrats.groupby(["identifiant_vendeur","filtre_produit", "couleur","campagne","annee","semaine","semaine-sort"]).sum(["volume propose"])[["volume propose"]]
 contrats_spe_spe.reset_index(level=['semaine'], inplace=True)
-contrats_spe_spe['semaine-sort'] = (contrats_spe_spe['semaine']-31)%53
 contrats_spe_spe = contrats_spe_spe.sort_values(by=["identifiant_vendeur","filtre_produit", "couleur","campagne",'semaine-sort'])
 #contrats_spe_spe['volume'] = contrats_spe_spe.groupby(["identifiant_vendeur","filtre_produit", "couleur","campagne"])['volume propose'].cumsum()
 contrats_spe_spe = contrats_spe_spe.reset_index()
@@ -120,9 +121,8 @@ contrats_spe_spe.set_index(['identifiant_vendeur','filtre_produit','couleur'], i
 
 # PAR APPELLATIONS
 
-contrats_spe_all = contrats.groupby(["identifiant_vendeur","filtre_produit", "campagne","semaine","firstdayoftheweek"]).sum(["volume propose"])[["volume propose"]]
+contrats_spe_all = contrats.groupby(["identifiant_vendeur","filtre_produit", "campagne","annee","semaine","semaine-sort"]).sum(["volume propose"])[["volume propose"]]
 contrats_spe_all.reset_index(level=['semaine'], inplace=True)
-contrats_spe_all['semaine-sort'] = (contrats_spe_all['semaine']-31)%53
 contrats_spe_all = contrats_spe_all.sort_values(by=["identifiant_vendeur","filtre_produit","campagne",'semaine-sort'])
 #contrats_spe_all['volume'] = contrats_spe_all.groupby(["identifiant_vendeur","filtre_produit","campagne"])['volume propose'].cumsum()
 contrats_spe_all["couleur"] = "TOUT"
@@ -133,9 +133,8 @@ contrats_spe_all.set_index(['identifiant_vendeur','filtre_produit','couleur'], i
 
 #AUCUN FILTRE TOUTES LES APPELLATIONS ET TOUTES LES COULEURS
 
-contrats_all_all = contrats.groupby(["identifiant_vendeur","campagne","semaine","firstdayoftheweek"]).sum(["volume propose"])[["volume propose"]]
+contrats_all_all = contrats.groupby(["identifiant_vendeur","campagne","annee","semaine","semaine-sort"]).sum(["volume propose"])[["volume propose"]]
 contrats_all_all.reset_index(level=['semaine'], inplace=True)
-contrats_all_all['semaine-sort'] = (contrats_all_all['semaine']-31)%53
 contrats_all_all = contrats_all_all.sort_values(by=["identifiant_vendeur","campagne",'semaine-sort'])
 #contrats_all_all['volume'] = contrats_all_all.groupby(["identifiant_vendeur","campagne"])['volume propose'].cumsum()
 contrats_all_all["couleur"] = "TOUT"
@@ -151,10 +150,11 @@ df_final = pd.concat([df_final, contrats_all_all])
 df_final = df_final.sort_values(by=['identifiant_vendeur', 'filtre_produit','couleur'])
 
 
-df_final['campagne-semaine'] = df_final['campagne']+"-"+df_final['semaine'].apply(str)
+df_final['campagne-semaine'] = df_final[['campagne', 'semaine']].agg('-'.join, axis=1)
+df_final['A-WS'] = df_final['annee'].apply(str)+'-W'+df_final['semaine'].apply(str)+ '-1'
+df_final['firstdayoftheweek'] = df_final['A-WS'].map(lambda x: dt.datetime.strptime(x, "%G-W%V-%u"))
 
-
-df_final = df_final.round({'volume propose': 0})
+df_final = df_final.round({'volume propose': 0})[['campagne','firstdayoftheweek','semaine','volume propose','semaine-sort','campagne-semaine']]
 
 
 # In[ ]:
