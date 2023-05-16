@@ -1,0 +1,4 @@
+jupyter
+pandas
+plotly==5.12.0
+argparse
