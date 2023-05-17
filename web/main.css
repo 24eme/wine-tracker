@@ -1,3 +1,13 @@
+@font-face{
+  font-family: "Josefin Sans Medium";
+  src: url("../fonts/JosefinSans-Medium.ttf");
+}
+
+@font-face{
+  font-family: "Josefin Sans";
+  src: url("../fonts/JosefinSans-Regular.ttf");
+}
+
 body,h1,h2,h3,h4,h5,h6{
   font-family : Josefin Sans Medium,Trebuchet,Liberation Sans;
 }
