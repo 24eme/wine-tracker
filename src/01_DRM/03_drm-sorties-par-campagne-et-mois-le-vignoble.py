@@ -213,7 +213,7 @@ for bloc in df_final.index.unique():
             if(m+'-'+campagne not in df.periode.values):
                 if(campagne == lastcampagnes[-1] and mois_sort[m] > current_month_order):
                     continue
-                tmp = { "campagne": campagne, "mois": m, "volume" : 0, "ordre-mois" : mois_sort[m],"campagne-ordre-mois":campagne+'-'+mois_sort[m], "periode":m+'-'+campagne}
+                tmp = { "campagne": campagne, "mois": m, "volume" : None, "ordre-mois" : mois_sort[m],"campagne-ordre-mois":campagne+'-'+mois_sort[m], "periode":m+'-'+campagne}
                 tmp = pd.DataFrame(data=tmp, index=[bloc])
                 df= pd.concat([df, tmp], axis=0).sort_index()
 

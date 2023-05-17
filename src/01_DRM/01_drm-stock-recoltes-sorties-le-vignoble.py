@@ -171,7 +171,8 @@ df_final = pd.concat([df_final, drm_merge_all_all])
 df_final = df_final.sort_values(by=['filtre_produit','couleurs'])
 df_final = df_final.fillna(0)
 df_final = df_final.round({'Entrées revendication (hl)': 0, 'Sorties de chais (hl)': 0, "Stock physique en début de camp production (hl)":0})
-#df_final
+df_final['Stock physique en début de camp production (hl)'] = df_final['Stock physique en début de camp production (hl)'].apply(lambda x: x if (x > 0) else None)
+df_final['Stock physique en début de camp production (hl)'].dropna(inplace=True)
 
 
 # In[ ]:
