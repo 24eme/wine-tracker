@@ -149,7 +149,6 @@ def create_graphe(final,appellation,couleur):
                       legend_title=None,
                       paper_bgcolor="#F7F7F7",
                       plot_bgcolor = "#F7F7F7",
-                      hovermode = False,
                       yaxis=dict(tickformat=".0f"),
                       legend=dict(orientation="h",xanchor = "center",x = 0.5),
                       legend_itemdoubleclick=False,
@@ -165,8 +164,9 @@ def create_graphe(final,appellation,couleur):
     fig.for_each_yaxis(lambda x: x.update(gridcolor='Lightgrey'))
     fig.update_xaxes(fixedrange=True)
     fig.update_yaxes(fixedrange=True)
-    #fig.show()
+    fig.update_traces(hovertemplate="<br>".join(["%{y} hl"]))
 
+    #fig.show()
 
     dossier = dossier_graphes+"/LE_VIGNOBLE/drm/"+appellation+"-"+couleur
     pathlib.Path(dossier).mkdir(parents=True, exist_ok=True)
