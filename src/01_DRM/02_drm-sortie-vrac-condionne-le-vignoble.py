@@ -26,6 +26,7 @@ lastcampagnes = mouvements['campagne'].unique()
 lastcampagnes.sort()
 lastcampagnes = lastcampagnes[-10:]
 mouvements = mouvements.query('campagne in @lastcampagnes')
+mouvements = mouvements.loc[mouvements['famille DRM'] == 'producteur']
 mouvements = mouvements[mouvements['libelle type'] == 'Suspendu']
 mouvements = mouvements[mouvements['genre'] != 'VCI']
 mouvements = mouvements.query("appellation != 'CDP'")
