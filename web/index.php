@@ -162,7 +162,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                                 <?php echo number_format($chiffres["cumul_sortie_campagne_n_1"], 0, ',', '&nbsp;'); ?> hl
                                                 <span class="fs-6 badge"> </span>
                                             </h3>
-                                            <p>Total des volumes de sortie sur la campagne précédente</p>
+                                            <p>Total des volumes de sortie sur la <b style="color: #E94E56">campagne précédente</b></p>
                                         </div>
                                     </div>
                                 <?php endif; ?>
