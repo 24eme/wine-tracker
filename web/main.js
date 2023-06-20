@@ -53,6 +53,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
   $(window).on('load', function(){$(".loader").fadeOut(2000);});
 
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+
 });
 
 // quand on change de filtre l'url est mis à jour et la page est rechargée.

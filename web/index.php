@@ -171,7 +171,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         <div class="chiffre">
                                             <h3 class="mb-0">
                                                 <?php echo number_format($chiffres["cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> hl
-                                                <span title="Evolution par rapport à la campagne précédente <?php echo "\n(".number_format($chiffres["cumul_sortie_campagne_n_1_a_date"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo $chiffres['last_date_validation_campagne_en_cours'].")"; ?> " class="fs-6 badge <?php if($chiffres["evolution_cumul_sortie_campagne_en_cours"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> %</span>
+                                                <a href="#" data-toggle="tooltip" data-placement="top" title="Evolution par rapport à la campagne précédente <?php echo "&nbsp;(".number_format($chiffres["cumul_sortie_campagne_n_1_a_date"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo $chiffres['last_date_validation_campagne_en_cours'].")"; ?>" ><span class="fs-6 badge <?php if($chiffres["evolution_cumul_sortie_campagne_en_cours"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> %</span></a>
                                             </h3>
                                             <p>Volume de sortie sur la campagne en cours</p>
                                         </div>
@@ -182,8 +182,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         <div class="chiffre left-border">
                                             <h3 class="mb-0">
                                                 <?php echo number_format($chiffres["volume_contractualisation"], 0, ',', '&nbsp;'); ?> hl
-                                                <span title="Evolution par rapport à la campagne précédente <?php echo "\n(".number_format($chiffres["volume_contractualisation_n_1"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo date('d/m/Y',strtotime('-1 year', strtotime(date("Y-m-d", strtotime(str_replace('/', '-',$data["date"])))))).")"; ?> "
-                                                  class="fs-6 badge <?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>+<?php endif;echo number_format($chiffres["evolution_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span>
+                                                <a href="#" data-toggle="tooltip" data-placement="top" title="Evolution par rapport à la campagne précédente <?php echo "&nbsp;&nbsp;&nbsp;&nbsp;(".number_format($chiffres["volume_contractualisation_n_1"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo date('d/m/Y',strtotime('-1 year', strtotime(date("Y-m-d", strtotime(str_replace('/', '-',$data["date"])))))).")"; ?>"><span  class="fs-6 badge <?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>+<?php endif;echo number_format($chiffres["evolution_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></a>
                                             </h3>
                                             <p>Volume contractualisé sur la campagne en cours</p>
                                         </div>
