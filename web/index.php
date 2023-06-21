@@ -74,6 +74,12 @@ $chiffres = json_decode($json_chiffre, true);
 
 $list_produits_drm = $data['produits']['drm'];
 $list_produits_contrats = $data['produits']['contrats'];
+
+$dateDRM = strtotime(str_replace('/', '-', $chiffres['last_date_validation_campagne_en_cours']));
+$dateContrat = strtotime(str_replace('/', '-', $chiffres['last_date_validation_contrat']));
+
+$maxDate = date('d/m/Y', max($dateDRM, $dateContrat));
+
 ?><!DOCTYPE html>
 <html lang='fr'>
 <head>
@@ -141,7 +147,7 @@ $list_produits_contrats = $data['produits']['contrats'];
             </div>
             <?php endif; ?>
             <div class="col-3 offset-9 text-muted text-end">
-                Dernière mise à jour : <?php echo $data["date"];?>
+                <a class="text-decoration-none" style="color: inherit;" href="#" data-toggle="tooltip" data-placement="top" title="Dernière DRM : <?php echo $chiffres['last_date_validation_campagne_en_cours']; ?> Dernier Contrat : <?php echo $chiffres['last_date_validation_contrat']; ?>">Dernière mise à jour : <?php echo $maxDate;?></a>
             </div>
         </div>
 
@@ -171,7 +177,7 @@ $list_produits_contrats = $data['produits']['contrats'];
                                         <div class="chiffre">
                                             <h3 class="mb-0">
                                                 <?php echo number_format($chiffres["cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> hl
-                                                <a href="#" data-toggle="tooltip" data-placement="top" title="Evolution par rapport à la campagne précédente <?php echo "&nbsp;(".number_format($chiffres["cumul_sortie_campagne_n_1_a_date"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo $chiffres['last_date_validation_campagne_en_cours'].")"; ?>" ><span class="fs-6 badge <?php if($chiffres["evolution_cumul_sortie_campagne_en_cours"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> %</span></a>
+                                                <a href="#" data-toggle="tooltip" data-placement="top" title="Evolution par rapport à la campagne précédente <?php echo "&nbsp;(".number_format($chiffres["cumul_sortie_campagne_n_1_a_date"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo date('d/m/Y',strtotime('-1 year', strtotime(date("Y-m-d", strtotime(str_replace('/', '-',$chiffres['last_date_validation_campagne_en_cours'])))))).")"; ?>" ><span class="fs-6 badge <?php if($chiffres["evolution_cumul_sortie_campagne_en_cours"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> %</span></a>
                                             </h3>
                                             <p>Volume de sortie sur la campagne en cours</p>
                                         </div>

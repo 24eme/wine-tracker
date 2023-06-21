@@ -166,8 +166,11 @@ contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','
 contrats['date_validation'] = pd.to_datetime(contrats['date_validation'], utc=True)
 contrats['date_validation'] = contrats['date_validation'].map(datetime.date)
 
+chiffres['last_date_validation_contrat']  = contrats['date_validation'].max().strftime("%d/%m/%Y")
+
 #changement de la campagne en fonction de la date de validation
 contrats['campagne']  = contrats['date_validation'].apply(lambda v: str((v - relativedelta(months=7)).year)+"-"+str((v - relativedelta(months=7)).year+1) )
+
 contrats['date_validation'] = contrats['date_validation'].apply(lambda x: x.isoformat())
 
 
