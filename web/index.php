@@ -177,7 +177,7 @@ $maxDate = date('d/m/Y', max($dateDRM, $dateContrat));
                                         <div class="chiffre">
                                             <h3 class="mb-0">
                                                 <?php echo number_format($chiffres["cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> hl
-                                                <a href="#" data-toggle="tooltip" data-placement="top" title="Evolution par rapport à la campagne précédente <?php echo "&nbsp;(".number_format($chiffres["cumul_sortie_campagne_n_1_a_date"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo date('d/m/Y',strtotime('-1 year', strtotime(date("Y-m-d", strtotime(str_replace('/', '-',$chiffres['last_date_validation_campagne_en_cours'])))))).")"; ?>" ><span class="fs-6 badge <?php if($chiffres["evolution_cumul_sortie_campagne_en_cours"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> %</span></a>
+                                                <a href="#" data-toggle="tooltip" data-placement="top" title="Évolution par rapport à la campagne précédente <?php echo "&nbsp;(".number_format($chiffres["cumul_sortie_campagne_n_1_a_date"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo date('d/m/Y',strtotime('-1 year', strtotime(date("Y-m-d", strtotime(str_replace('/', '-',$chiffres['last_date_validation_campagne_en_cours'])))))).")"; ?>" ><span class="fs-6 badge <?php if($chiffres["evolution_cumul_sortie_campagne_en_cours"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php echo number_format($chiffres["evolution_cumul_sortie_campagne_en_cours"], 0, ',', '&nbsp;'); ?> %</span></a>
                                             </h3>
                                             <p>Volume de sortie sur la campagne en cours</p>
                                         </div>
@@ -188,7 +188,7 @@ $maxDate = date('d/m/Y', max($dateDRM, $dateContrat));
                                         <div class="chiffre left-border">
                                             <h3 class="mb-0">
                                                 <?php echo number_format($chiffres["volume_contractualisation"], 0, ',', '&nbsp;'); ?> hl
-                                                <a href="#" data-toggle="tooltip" data-placement="top" title="Evolution par rapport à la campagne précédente <?php echo "&nbsp;&nbsp;&nbsp;&nbsp;(".number_format($chiffres["volume_contractualisation_n_1"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo date('d/m/Y',strtotime('-1 year', strtotime(date("Y-m-d", strtotime(str_replace('/', '-',$data["date"])))))).")"; ?>"><span  class="fs-6 badge <?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>+<?php endif;echo number_format($chiffres["evolution_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></a>
+                                                <a href="#" data-toggle="tooltip" data-placement="top" title="Évolution par rapport à la campagne précédente <?php echo "&nbsp;&nbsp;&nbsp;&nbsp;(".number_format($chiffres["volume_contractualisation_n_1"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo date('d/m/Y',strtotime('-1 year', strtotime(date("Y-m-d", strtotime(str_replace('/', '-',$data["date"])))))).")"; ?>"><span  class="fs-6 badge <?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>+<?php endif;echo number_format($chiffres["evolution_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></a>
                                             </h3>
                                             <p>Volume contractualisé sur la campagne en cours</p>
                                         </div>
@@ -216,7 +216,7 @@ $maxDate = date('d/m/Y', max($dateDRM, $dateContrat));
                                 <div class="mt-5">
                                     <div id="slide-1" class="row shadow bg-white p-1 graphs-container">
                                         <h3 class="col-xs-8 entete"><span>Stocks, récoltes et sorties</span></h3>
-                                        <p class="explications">Évolution des stocks physiques de production en début de campagne, des récoltes et des sorties de chais (hors replis et déclassement) sur 10 campagnes.</p>
+                                        <p class="explications">Évolution des stocks en début de campagne, des récoltes et des sorties de chais (hors replis, déclassement et vendanges fraîches) sur 10 campagnes.</p>
                                         <div class="col-xs-4"></div>
                                         <div class="mt-3 d-flex align-items-end flex-column">
                                             <div class="col-md-5 shadow bg-white rounded">
