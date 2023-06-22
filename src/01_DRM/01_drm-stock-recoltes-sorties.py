@@ -177,6 +177,20 @@ def create_graphique(data,graph_filename):
                       hoverlabel=dict(font_family="Josefin Sans Medium")
                      )
 
+    # récupère les deux dernières valeurs de chaque lignes
+    dernier_x = data['campagne'].values[-2:]
+    dernier_y = data[data.columns].tail(2).values.T
+
+    # Ajoute les pointillé entre ces dernières valeurs
+    for i, column_name in enumerate(data.columns):
+        dernier_y_values = dernier_y[i:4][0]
+        fig.add_shape(type='line',
+                      x0=dernier_x[0],
+                      y0=dernier_y_values[0],
+                      x1=dernier_x[1],
+                      y1=dernier_y_values[1],
+                      line=dict(dash=["dot","dot","dot","dot"][i], color=["white","white","white","white"][i],width=2))
+
     fig.update_yaxes(tickformat=",")
     fig.update_layout(separators="* .*")
 
