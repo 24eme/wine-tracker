@@ -29,6 +29,11 @@ if (!isset($GET['id'])  || !$GET['id']) {
 
 $identifiant = $GET['id'];
 
+if (!$identifiant && isset($_SESSION['etablissement_id'])) {
+    header('Location: ./?'.http_build_query(['id' => $_SESSION['etablissement_id'], 'filtre' => (isset($GET['filtre'])) ?  $GET['filtre'] : 'TOUT-TOUT']));
+    exit;
+}
+
 if (
     !isset($_SESSION['etablissement_id']) || ! $_SESSION['etablissement_id']
     || (strpos($identifiant, ".") > 0)  || (strpos($identifiant, "/") > 0)
