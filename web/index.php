@@ -45,17 +45,16 @@ if (
     }
 }
 
-if (! $GET['filtre']) {
-    header('Location: ./?'.http_build_query(['id' => $identifiant, 'filtre' => 'TOUT-TOUT']));
-    exit;
-}
-
 $path_cave = "../graphes/".$identifiant;
 $path_vignoble = "../graphes/LE_VIGNOBLE";
 
-
 if (! is_dir($path_cave."/drm") && ! is_dir($path_cave."/contrat")) {
     die('Il manque au moins les dossiers de données. La génération a été lancée ?');
+}
+
+if (! $GET['filtre']) {
+    header('Location: ./?'.http_build_query(['id' => $identifiant, 'filtre' => 'TOUT-TOUT']));
+    exit;
 }
 
 $ls_dossier_drm = array_diff((scandir($path_cave."/drm")) ?: [], array('.', '..'));
