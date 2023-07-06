@@ -193,6 +193,7 @@ contrat_extract = pd.concat([
 chiffres['volume_contractualisation'] = contrat_extract.groupby(['identifiant'])['volume propose (en hl)'].sum()
 
 chiffres['evolution_par_rapport_a_n_1'] = (chiffres['volume_contractualisation'] - chiffres['volume_contractualisation_n_1']) * 100 / chiffres['volume_contractualisation_n_1']
+chiffres["date_generation"] = datetime.today().strftime("%d/%m/%Y")
 
 
 # In[ ]:
