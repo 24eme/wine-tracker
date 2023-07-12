@@ -146,7 +146,11 @@ $list_produits_contrats = $data['produits']['contrats'];
             </div>
             <?php endif; ?>
             <div class="col-3 offset-9 text-muted text-end">
-                <a class="text-decoration-none" style="color: inherit;" href="#" data-toggle="tooltip" data-placement="top" title="Dernière DRM : <?php echo $chiffres['last_date_validation_campagne_en_cours']; ?> Dernier Contrat : <?php echo $chiffres['last_date_validation_contrat']; ?>">Dernière mise à jour : <?php echo $chiffres['date_generation'];?></a>
+                <a class="text-decoration-none" style="color: inherit;" href="#" data-toggle="tooltip" data-placement="top"
+                  title="<?php if (count($ls_dossier_drm)): ?>Dernière DRM : <?php echo $chiffres['last_date_validation_campagne_en_cours']; endif;?>
+                         <?php if (count($ls_dossier_contrats)): ?>Dernier Contrat : <?php echo $chiffres['last_date_validation_contrat']; endif;?>
+                ">
+                Dernière mise à jour : <?php echo $chiffres['date_generation'];?></a>
             </div>
         </div>
 
