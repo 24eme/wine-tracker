@@ -145,7 +145,7 @@ df_final = pd.concat([df_final, contrats_all_all])
 df_final = df_final.sort_values(by=['identifiant_vendeur', 'filtre_produit','couleur'])
 
 df_final['semainestr'] = df_final['semaine'].apply(lambda x: "%02d" % x)
-df_final['campagne-semaine'] = df_final[['campagne', 'semainestr']].agg('-'.join, axis=1)
+df_final['campagne-semaine'] = df_final[['campagne', 'semainestr']].agg('-'.join, axis="columns").reset_index()[0]
 df_final['A-WS'] = df_final['annee'].apply(str)+'-W'+df_final['semaine'].apply(str)+ '-1'
 df_final['firstdayoftheweek'] = df_final['A-WS'].map(lambda x: dt.datetime.strptime(x, "%G-W%V-%u"))
 
