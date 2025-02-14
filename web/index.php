@@ -79,11 +79,6 @@ $chiffres = json_decode($json_chiffre, true);
 $list_produits_drm = $data['produits']['drm'];
 $list_produits_contrats = $data['produits']['contrats'];
 
-$dateDRM = strtotime(str_replace('/', '-', $chiffres['last_date_validation_campagne_en_cours']));
-$dateContrat = strtotime(str_replace('/', '-', $chiffres['last_date_validation_contrat']));
-
-$maxDate = date('d/m/Y', max($dateDRM, $dateContrat));
-
 ?><!DOCTYPE html>
 <html lang='fr'>
 <head>
@@ -151,7 +146,11 @@ $maxDate = date('d/m/Y', max($dateDRM, $dateContrat));
             </div>
             <?php endif; ?>
             <div class="col-3 offset-9 text-muted text-end">
-                <a class="text-decoration-none" style="color: inherit;" href="#" data-toggle="tooltip" data-placement="top" title="Dernière DRM : <?php echo $chiffres['last_date_validation_campagne_en_cours']; ?> Dernier Contrat : <?php echo $chiffres['last_date_validation_contrat']; ?>">Dernière mise à jour : <?php echo $maxDate;?></a>
+                <a class="text-decoration-none" style="color: inherit;" href="#" data-toggle="tooltip" data-placement="top"
+                  title="<?php if (count($ls_dossier_drm)): ?>Dernière DRM : <?php echo $chiffres['last_date_validation_campagne_en_cours']; endif;?>
+                         <?php if (count($ls_dossier_contrats)): ?>Dernier Contrat : <?php echo $chiffres['last_date_validation_contrat']; endif;?>
+                ">
+                Dernière mise à jour : <?php echo $chiffres['date_generation'];?></a>
             </div>
         </div>
 
@@ -192,7 +191,7 @@ $maxDate = date('d/m/Y', max($dateDRM, $dateContrat));
                                         <div class="chiffre left-border">
                                             <h3 class="mb-0">
                                                 <?php echo number_format($chiffres["volume_contractualisation"], 0, ',', '&nbsp;'); ?> hl
-                                                <a href="#" data-toggle="tooltip" data-placement="top" title="Évolution par rapport à la campagne précédente <?php echo "&nbsp;&nbsp;&nbsp;&nbsp;(".number_format($chiffres["volume_contractualisation_n_1"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo date('d/m/Y',strtotime('-1 year', strtotime(date("Y-m-d", strtotime(str_replace('/', '-',$data["date"])))))).")"; ?>"><span  class="fs-6 badge <?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>+<?php endif;echo number_format($chiffres["evolution_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></a>
+                                                <a href="#" data-toggle="tooltip" data-placement="top" title="Évolution par rapport à la campagne précédente <?php echo "&nbsp;&nbsp;&nbsp;&nbsp;(".number_format($chiffres["volume_contractualisation_n_1"], 0, ',', '&nbsp;')." hl"; ?> au <?php echo date('d/m/Y',strtotime('-1 year', strtotime(date("Y-m-d", strtotime(str_replace('/', '-',$chiffres['last_date_validation_contrat'])))))).")"; ?>" ><span  class="fs-6 badge <?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>bg-success<?php else: ?>bg-danger <?php endif; ?>"><?php if($chiffres["evolution_par_rapport_a_n_1"] >= 0):?>+<?php endif;echo number_format($chiffres["evolution_par_rapport_a_n_1"], 0, ',', '&nbsp;'); ?> %</span></a>
                                             </h3>
                                             <p>Volume contractualisé sur la campagne en cours</p>
                                         </div>

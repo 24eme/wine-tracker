@@ -103,7 +103,7 @@ drm_sortie = drm_sortie.groupby(["identifiant", "campagne","filtre_produit", "co
 drm_stock_debut = drm
 drm_stock_debut['debut_campagne'] = drm["date"].str.lower().str.endswith("08")
 drm_stock_debut = drm_stock_debut.query("debut_campagne == True")
-drm_stock_debut = drm_stock_debut.groupby(["identifiant", "campagne","filtre_produit", "couleurs"]).first(["stock debut"])[["stock debut"]]
+drm_stock_debut = drm_stock_debut.groupby(["identifiant", "campagne","filtre_produit", "couleurs"]).sum(["stock debut"])[["stock debut"]]
 
 df_final = pd.merge(drm_recolte, drm_sortie,how='outer', on=["identifiant", "campagne","filtre_produit", "couleurs"])
 df_final = pd.merge(df_final, drm_stock_debut ,how='outer', on=["identifiant", "campagne","filtre_produit", "couleurs"])

@@ -166,8 +166,6 @@ contrats['libelle produit'] = contrats['libelle produit'].str.replace('ï¿½','
 contrats['date_validation'] = pd.to_datetime(contrats['date_validation'], utc=True)
 contrats['date_validation'] = contrats['date_validation'].map(datetime.date)
 
-chiffres['last_date_validation_contrat']  = contrats['date_validation'].max().strftime("%d/%m/%Y")
-
 #changement de la campagne en fonction de la date de validation
 contrats['campagne']  = contrats['date_validation'].apply(lambda v: str((v - relativedelta(months=7)).year)+"-"+str((v - relativedelta(months=7)).year+1) )
 
@@ -186,13 +184,18 @@ chiffres['volume_contractualisation_n_1'] = contrat_extract.groupby(['identifian
 #CAMPAGNE ACTUELLE
 contrats = contrats.query('campagne==@campagne_courante')
 contrat_extract = pd.concat([
-    contrats[contrats['identifiant acheteur'].isin(acheteurs['identifiant'])][['identifiant acheteur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant acheteur' : 'identifiant'}),
-    contrats[contrats['identifiant vendeur'].isin(vendeurs['identifiant'])][['identifiant vendeur', 'libelle produit', 'volume propose (en hl)']].rename(columns = {'identifiant vendeur' : 'identifiant'})
+    contrats[contrats['identifiant acheteur'].isin(acheteurs['identifiant'])][['identifiant acheteur', 'libelle produit', 'volume propose (en hl)','date_validation']].rename(columns = {'identifiant acheteur' : 'identifiant'}),
+    contrats[contrats['identifiant vendeur'].isin(vendeurs['identifiant'])][['identifiant vendeur', 'libelle produit', 'volume propose (en hl)','date_validation']].rename(columns = {'identifiant vendeur' : 'identifiant'})
 ])
+
+contrat_extract['date_validation'] = pd.to_datetime(contrat_extract['date_validation'], errors='coerce')
+
+chiffres['last_date_validation_contrat'] = contrat_extract.groupby(['identifiant'])['date_validation'].max().dt.strftime("%d/%m/%Y")
 
 chiffres['volume_contractualisation'] = contrat_extract.groupby(['identifiant'])['volume propose (en hl)'].sum()
 
 chiffres['evolution_par_rapport_a_n_1'] = (chiffres['volume_contractualisation'] - chiffres['volume_contractualisation_n_1']) * 100 / chiffres['volume_contractualisation_n_1']
+chiffres["date_generation"] = datetime.today().strftime("%d/%m/%Y")
 
 
 # In[ ]:

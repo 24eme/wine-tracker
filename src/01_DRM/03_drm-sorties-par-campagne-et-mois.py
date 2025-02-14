@@ -150,8 +150,8 @@ df_final.rename(columns = {'volume mouvement':'volume',"mois-campagne":'periode'
 
 df_final['volume'].dropna(inplace=True)
 df_final = df_final.round({'volume': 0})
-df_final['volume'] = df_final['volume'].apply(lambda x: x if (x > 0) else None)
-df_final['volume'].dropna(inplace=True)
+#df_final['volume'] = df_final['volume'].apply(lambda x: x if (x > 0) else None)
+#df_final['volume'].dropna(inplace=True)
 
 
 # In[ ]:
@@ -220,9 +220,9 @@ for bloc in df_final.index.unique():
     for m in mois_sort.keys():
         for campagne in lastcampagnes:
             if(m+'-'+campagne not in df.periode.values):
-                if(campagne == lastcampagnes[-1] and mois_sort[m] > current_month_order):
+                if(campagne == lastcampagnes[-1] and mois_sort[m] >= current_month_order):
                     continue
-                tmp = { "campagne": campagne, "mois": m, "volume" : None, "ordre-mois" : mois_sort[m],"campagne-ordre-mois":campagne+'-'+mois_sort[m], "periode":m+'-'+campagne}
+                tmp = { "campagne": campagne, "mois": m, "volume" : 0, "ordre-mois" : mois_sort[m],"campagne-ordre-mois":campagne+'-'+mois_sort[m], "periode":m+'-'+campagne}
                 tmp = pd.DataFrame(data=tmp, index=[bloc])
                 df= pd.concat([df, tmp], axis=0).sort_index()
 
