@@ -213,6 +213,8 @@ def create_graphe(df,filename):
 #AJOUT DES 0
 for bloc in df_final.index.unique():
     df = df_final.loc[[bloc]]
+    if len(df.shape) <= 1:
+        continue
     df = df.reset_index()
     for campagne in lastcampagnes:
         annee = str(campagne[5:])
